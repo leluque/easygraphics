@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 51);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -5157,326 +5157,6 @@ exports.default = DefaultImageDrawer;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
-
-var _util = __webpack_require__(10);
-
-var _util2 = _interopRequireDefault(_util);
-
-var _point = __webpack_require__(52);
-
-var _point2 = _interopRequireDefault(_point);
-
-var _boundingBox = __webpack_require__(2);
-
-var _boundingBox2 = _interopRequireDefault(_boundingBox);
-
-var _graphicalElement = __webpack_require__(0);
-
-var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
-
-var _circle = __webpack_require__(11);
-
-var _circle2 = _interopRequireDefault(_circle);
-
-var _ellipse = __webpack_require__(12);
-
-var _ellipse2 = _interopRequireDefault(_ellipse);
-
-var _rectangle = __webpack_require__(13);
-
-var _rectangle2 = _interopRequireDefault(_rectangle);
-
-var _diamond = __webpack_require__(14);
-
-var _diamond2 = _interopRequireDefault(_diamond);
-
-var _text = __webpack_require__(15);
-
-var _text2 = _interopRequireDefault(_text);
-
-var _line = __webpack_require__(17);
-
-var _line2 = _interopRequireDefault(_line);
-
-var _image = __webpack_require__(18);
-
-var _image2 = _interopRequireDefault(_image);
-
-var _verticalGroup = __webpack_require__(7);
-
-var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
-
-var _changeListener = __webpack_require__(4);
-
-var _changeListener2 = _interopRequireDefault(_changeListener);
-
-var _verticalGroupChildChangeListener = __webpack_require__(21);
-
-var _verticalGroupChildChangeListener2 = _interopRequireDefault(_verticalGroupChildChangeListener);
-
-var _linearGroup = __webpack_require__(19);
-
-var _linearGroup2 = _interopRequireDefault(_linearGroup);
-
-var _stylingAttributes = __webpack_require__(1);
-
-var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
-
-var _groupStylingAttributes = __webpack_require__(8);
-
-var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
-
-var _fontStylingAttributes = __webpack_require__(16);
-
-var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
-
-var _generalPositionChangeListener = __webpack_require__(5);
-
-var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
-
-var _rectanglePositionChangeListener = __webpack_require__(22);
-
-var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
-
-var _diamondPositionChangeListener = __webpack_require__(23);
-
-var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
-
-var _ellipsePositionChangeListener = __webpack_require__(24);
-
-var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
-
-var _imagePositionChangeListener = __webpack_require__(25);
-
-var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
-
-var _textPositionChangeListener = __webpack_require__(26);
-
-var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
-
-var _linePositionChangeListener = __webpack_require__(27);
-
-var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
-
-var _circlePositionChangeListener = __webpack_require__(28);
-
-var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
-
-var _generalDimensionChangeListener = __webpack_require__(6);
-
-var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
-
-var _rectangleDimensionChangeListener = __webpack_require__(29);
-
-var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
-
-var _diamondDimensionChangeListener = __webpack_require__(30);
-
-var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
-
-var _ellipseDimensionChangeListener = __webpack_require__(31);
-
-var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
-
-var _imageDimensionChangeListener = __webpack_require__(32);
-
-var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
-
-var _textDimensionChangeListener = __webpack_require__(33);
-
-var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
-
-var _circleDimensionChangeListener = __webpack_require__(34);
-
-var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
-
-var _lineDimensionChangeListener = __webpack_require__(35);
-
-var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
-
-var _generalTransformationChangeListener = __webpack_require__(20);
-
-var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
-
-var _vgroupTransformationChangeListener = __webpack_require__(36);
-
-var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
-
-var _linearGroupTransformationChangeListener = __webpack_require__(37);
-
-var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
-
-var _textChangeListener = __webpack_require__(38);
-
-var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
-
-var _fontChangeListener = __webpack_require__(39);
-
-var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
-
-var _styleChangeListener = __webpack_require__(40);
-
-var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
-
-var _defaultDrawer = __webpack_require__(3);
-
-var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
-
-var _lookAndFeel = __webpack_require__(9);
-
-var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
-
-var _defaultLookAndFeelFactory = __webpack_require__(41);
-
-var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
-
-var _defaultCircleDrawer = __webpack_require__(42);
-
-var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
-
-var _defaultEllipseDrawer = __webpack_require__(43);
-
-var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
-
-var _defaultRectangleDrawer = __webpack_require__(44);
-
-var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
-
-var _defaultDiamondDrawer = __webpack_require__(45);
-
-var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
-
-var _defaultTextDrawer = __webpack_require__(46);
-
-var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
-
-var _defaultLineDrawer = __webpack_require__(49);
-
-var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
-
-var _defaultImageDrawer = __webpack_require__(50);
-
-var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
-
-var _defaultVerticalGroupDrawer = __webpack_require__(47);
-
-var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
-
-var _defaultLinearGroupDrawer = __webpack_require__(48);
-
-var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
-
-var _svgArea = __webpack_require__(53);
-
-var _svgArea2 = _interopRequireDefault(_svgArea);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// Graphical primitives.
-exports.StylingAttributes = _stylingAttributes2.default;
-exports.FontStylingAttributes = _fontStylingAttributes2.default;
-exports.GroupStylingAttributes = _groupStylingAttributes2.default;
-exports.VerticalGroup = _verticalGroup2.default;
-exports.SVGArea = _svgArea2.default;
-// export { A, B, C, D, E, ... }
-
-// SVG implementation.
-// Util.
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(10);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * This class implements two dimensional points.
- */
-var Point = function () {
-    function Point() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-        _classCallCheck(this, Point);
-
-        this._x = x;
-        this._y = y;
-    }
-
-    _createClass(Point, [{
-        key: "rotateAround",
-
-
-        /**
-         * This method rotates "angle" degrees the point around the specified coordinate.
-         * @param centerX The x-coordinate of the rotation center.
-         * @param centerY The y-coordinate of the rotation center.
-         * @param angle The angle in degrees.
-         */
-        value: function rotateAround(centerX, centerY, angle) {
-            // See https://stackoverflow.com/questions/22491178/how-to-rotate-a-point-around-another-point
-            var x1 = this.x - centerX;
-            var y1 = this.y - centerY;
-
-            var x2 = x1 * Math.cos((0, _util.toRadians)(angle)) - y1 * Math.sin((0, _util.toRadians)(angle));
-            var y2 = x1 * Math.sin((0, _util.toRadians)(angle)) + y1 * Math.cos((0, _util.toRadians)(angle));
-
-            this.x = x2 + centerX;
-            this.y = y2 + centerY;
-        }
-    }, {
-        key: "x",
-        get: function get() {
-            return this._x;
-        },
-        set: function set(value) {
-            this._x = value;
-        }
-    }, {
-        key: "y",
-        get: function get() {
-            return this._y;
-        },
-        set: function set(value) {
-            this._y = value;
-        }
-    }]);
-
-    return Point;
-}();
-
-exports.default = Point;
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
@@ -5958,6 +5638,388 @@ var SVGArea = function () {
 }();
 
 exports.default = SVGArea;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
+
+var _util = __webpack_require__(10);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _point = __webpack_require__(53);
+
+var _point2 = _interopRequireDefault(_point);
+
+var _boundingBox = __webpack_require__(2);
+
+var _boundingBox2 = _interopRequireDefault(_boundingBox);
+
+var _graphicalElement = __webpack_require__(0);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _circle = __webpack_require__(11);
+
+var _circle2 = _interopRequireDefault(_circle);
+
+var _ellipse = __webpack_require__(12);
+
+var _ellipse2 = _interopRequireDefault(_ellipse);
+
+var _rectangle = __webpack_require__(13);
+
+var _rectangle2 = _interopRequireDefault(_rectangle);
+
+var _diamond = __webpack_require__(14);
+
+var _diamond2 = _interopRequireDefault(_diamond);
+
+var _text = __webpack_require__(15);
+
+var _text2 = _interopRequireDefault(_text);
+
+var _line = __webpack_require__(17);
+
+var _line2 = _interopRequireDefault(_line);
+
+var _image = __webpack_require__(18);
+
+var _image2 = _interopRequireDefault(_image);
+
+var _verticalGroup = __webpack_require__(7);
+
+var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
+
+var _changeListener = __webpack_require__(4);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+var _verticalGroupChildChangeListener = __webpack_require__(21);
+
+var _verticalGroupChildChangeListener2 = _interopRequireDefault(_verticalGroupChildChangeListener);
+
+var _linearGroup = __webpack_require__(19);
+
+var _linearGroup2 = _interopRequireDefault(_linearGroup);
+
+var _stylingAttributes = __webpack_require__(1);
+
+var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _groupStylingAttributes = __webpack_require__(8);
+
+var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
+
+var _fontStylingAttributes = __webpack_require__(16);
+
+var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
+
+var _generalPositionChangeListener = __webpack_require__(5);
+
+var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
+
+var _rectanglePositionChangeListener = __webpack_require__(22);
+
+var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
+
+var _diamondPositionChangeListener = __webpack_require__(23);
+
+var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
+
+var _ellipsePositionChangeListener = __webpack_require__(24);
+
+var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
+
+var _imagePositionChangeListener = __webpack_require__(25);
+
+var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
+
+var _textPositionChangeListener = __webpack_require__(26);
+
+var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
+
+var _linePositionChangeListener = __webpack_require__(27);
+
+var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
+
+var _circlePositionChangeListener = __webpack_require__(28);
+
+var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
+
+var _generalDimensionChangeListener = __webpack_require__(6);
+
+var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
+
+var _rectangleDimensionChangeListener = __webpack_require__(29);
+
+var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
+
+var _diamondDimensionChangeListener = __webpack_require__(30);
+
+var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
+
+var _ellipseDimensionChangeListener = __webpack_require__(31);
+
+var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
+
+var _imageDimensionChangeListener = __webpack_require__(32);
+
+var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
+
+var _textDimensionChangeListener = __webpack_require__(33);
+
+var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
+
+var _circleDimensionChangeListener = __webpack_require__(34);
+
+var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
+
+var _lineDimensionChangeListener = __webpack_require__(35);
+
+var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
+
+var _generalTransformationChangeListener = __webpack_require__(20);
+
+var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
+
+var _vgroupTransformationChangeListener = __webpack_require__(36);
+
+var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
+
+var _linearGroupTransformationChangeListener = __webpack_require__(37);
+
+var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
+
+var _textChangeListener = __webpack_require__(38);
+
+var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
+
+var _fontChangeListener = __webpack_require__(39);
+
+var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
+
+var _styleChangeListener = __webpack_require__(40);
+
+var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
+
+var _defaultDrawer = __webpack_require__(3);
+
+var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
+
+var _lookAndFeel = __webpack_require__(9);
+
+var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
+
+var _defaultLookAndFeelFactory = __webpack_require__(41);
+
+var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
+
+var _defaultCircleDrawer = __webpack_require__(42);
+
+var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
+
+var _defaultEllipseDrawer = __webpack_require__(43);
+
+var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
+
+var _defaultRectangleDrawer = __webpack_require__(44);
+
+var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
+
+var _defaultDiamondDrawer = __webpack_require__(45);
+
+var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
+
+var _defaultTextDrawer = __webpack_require__(46);
+
+var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
+
+var _defaultLineDrawer = __webpack_require__(49);
+
+var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
+
+var _defaultImageDrawer = __webpack_require__(50);
+
+var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
+
+var _defaultVerticalGroupDrawer = __webpack_require__(47);
+
+var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
+
+var _defaultLinearGroupDrawer = __webpack_require__(48);
+
+var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
+
+var _svgArea = __webpack_require__(51);
+
+var _svgArea2 = _interopRequireDefault(_svgArea);
+
+var _area = __webpack_require__(54);
+
+var _area2 = _interopRequireDefault(_area);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// SVG implementation.
+// Util.
+exports.StylingAttributes = _stylingAttributes2.default;
+exports.FontStylingAttributes = _fontStylingAttributes2.default;
+exports.GroupStylingAttributes = _groupStylingAttributes2.default;
+exports.VerticalGroup = _verticalGroup2.default;
+exports.SVGArea = _svgArea2.default;
+exports.Area = _area2.default;
+// export { A, B, C, D, E, ... }
+
+
+// General.
+
+// Graphical primitives.
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(10);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * This class implements two dimensional points.
+ */
+var Point = function () {
+    function Point() {
+        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+        _classCallCheck(this, Point);
+
+        this._x = x;
+        this._y = y;
+    }
+
+    _createClass(Point, [{
+        key: "rotateAround",
+
+
+        /**
+         * This method rotates "angle" degrees the point around the specified coordinate.
+         * @param centerX The x-coordinate of the rotation center.
+         * @param centerY The y-coordinate of the rotation center.
+         * @param angle The angle in degrees.
+         */
+        value: function rotateAround(centerX, centerY, angle) {
+            // See https://stackoverflow.com/questions/22491178/how-to-rotate-a-point-around-another-point
+            var x1 = this.x - centerX;
+            var y1 = this.y - centerY;
+
+            var x2 = x1 * Math.cos((0, _util.toRadians)(angle)) - y1 * Math.sin((0, _util.toRadians)(angle));
+            var y2 = x1 * Math.sin((0, _util.toRadians)(angle)) + y1 * Math.cos((0, _util.toRadians)(angle));
+
+            this.x = x2 + centerX;
+            this.y = y2 + centerY;
+        }
+    }, {
+        key: "x",
+        get: function get() {
+            return this._x;
+        },
+        set: function set(value) {
+            this._x = value;
+        }
+    }, {
+        key: "y",
+        get: function get() {
+            return this._y;
+        },
+        set: function set(value) {
+            this._y = value;
+        }
+    }]);
+
+    return Point;
+}();
+
+exports.default = Point;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 09/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _svgArea = __webpack_require__(51);
+
+var _svgArea2 = _interopRequireDefault(_svgArea);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Area = function () {
+    function Area() {
+        _classCallCheck(this, Area);
+    }
+
+    _createClass(Area, null, [{
+        key: "init",
+        value: function init() {
+            var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#area";
+
+            var area = document.querySelector(selector);
+            var name = area.tagName;
+            if (name.toLowerCase() === "svg") {
+                return new _svgArea2.default(selector);
+            } else {
+                throw "Invalid area tag type: " + name;
+            }
+        }
+    }]);
+
+    return Area;
+}();
+
+exports.default = Area;
 
 /***/ })
 /******/ ]);

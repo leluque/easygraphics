@@ -55,5 +55,8 @@ import DefaultVerticalGroupDrawer from "./src/js/svg/default-vertical-group-draw
 import DefaultLinearGroupDrawer from "./src/js/svg/default-linear-group-drawer.js";
 import SVGArea from './src/js/svg/svg-area.js';
 
-export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea }
+// General.
+import Area from './src/js/core/area.js';
+
+export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area }
 // export { A, B, C, D, E, ... }
