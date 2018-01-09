@@ -349,7 +349,7 @@ export default class GraphicalElement {
     // Events.
     fireOnClick(event) {
         if (this._onClick !== null && this._onClick) {
-            if(typeof(this._onClick) === "function") {
+            if (typeof(this._onClick) === "function") {
                 this._onClick(event.clientX, event.clientY);
             } else {
                 throw "Callback is not a function: " + typeof(this._onClick);
@@ -359,7 +359,7 @@ export default class GraphicalElement {
 
     fireOnDblClick(event) {
         if (this._onDblClick !== null && this._onDblClick) {
-            if(typeof(this._onDblClick) === "function") {
+            if (typeof(this._onDblClick) === "function") {
                 this._onDblClick(event.clientX, event.clientY);
             } else {
                 throw "Callback is not a function: " + typeof(this._onDblClick);
@@ -369,7 +369,7 @@ export default class GraphicalElement {
 
     fireOnMouseDown(event) {
         if (this._onMouseDown !== null && this._onMouseDown) {
-            if(typeof(this._onMouseDown) === "function") {
+            if (typeof(this._onMouseDown) === "function") {
                 this._onMouseDown(event.clientX, event.clientY);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseDown);
@@ -379,7 +379,7 @@ export default class GraphicalElement {
 
     fireOnMouseMove(event) {
         if (this._onMouseMove !== null && this._onMouseMove) {
-            if(typeof(this._onMouseMove) === "function") {
+            if (typeof(this._onMouseMove) === "function") {
                 this._onMouseMove(event.clientX, event.clientY);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseMove);
@@ -389,7 +389,7 @@ export default class GraphicalElement {
 
     fireOnMouseUp(event) {
         if (this._onMouseUp !== null && this._onMouseUp) {
-            if(typeof(this._onMouseUp) === "function") {
+            if (typeof(this._onMouseUp) === "function") {
                 this._onMouseUp(event.clientX, event.clientY);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseUp);

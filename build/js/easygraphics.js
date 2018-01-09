@@ -4583,6 +4583,14 @@ var _defaultImageDrawer = __webpack_require__(50);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
+var _defaultPolylineDrawer = __webpack_require__(55);
+
+var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
+
+var _polyline = __webpack_require__(58);
+
+var _polyline2 = _interopRequireDefault(_polyline);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -4614,6 +4622,8 @@ var DefaultLookAndFeelFactory = function () {
                 return new _defaultLinearGroupDrawer2.default();
             } else if (element instanceof _line2.default) {
                 return new _defaultLineDrawer2.default();
+            } else if (element instanceof _polyline2.default) {
+                return new _defaultPolylineDrawer2.default();
             } else if (element instanceof _image2.default) {
                 return new _defaultImageDrawer2.default();
             }
@@ -5403,6 +5413,18 @@ var _stylingAttributes = __webpack_require__(1);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
+var _polylineDimensionChangeListener = __webpack_require__(57);
+
+var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
+
+var _polylinePositionChangeListener = __webpack_require__(56);
+
+var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
+
+var _polyline = __webpack_require__(58);
+
+var _polyline2 = _interopRequireDefault(_polyline);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5722,6 +5744,36 @@ var SVGArea = function () {
                         return this.addElement(newLine);
                 }
         }, {
+                key: 'polyLine',
+                value: function polyLine() {
+                        var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1, "black", "none");
+
+                        //*****************************
+                        // Create a new line and set its id.
+                        var coordinates = Array.from(arguments).slice(1);
+                        alert(coordinates.length);
+                        var newPolyline = new _polyline2.default(stylingAttributes, coordinates);
+                        newPolyline.id = this.generateId();
+
+                        //*****************************
+                        // Add change listeners.
+                        newPolyline.addChangeListener(new _polylineDimensionChangeListener2.default());
+                        newPolyline.addChangeListener(new _polylinePositionChangeListener2.default());
+                        newPolyline.addChangeListener(new _styleChangeListener2.default());
+
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newPolyline);
+                        drawer.svgArea = this;
+                        var drawnLine = drawer.draw(newPolyline);
+                        this.svg.appendChild(drawnLine);
+
+                        newPolyline.drawn = drawnLine;
+
+                        this.registerEvents(newPolyline, drawnLine);
+
+                        return this.addElement(newPolyline);
+                }
+        }, {
                 key: 'registerEvents',
                 value: function registerEvents(model, drawn) {
                         drawn.onclick = model.fireOnClick.bind(model);
@@ -5821,6 +5873,10 @@ var _line = __webpack_require__(17);
 
 var _line2 = _interopRequireDefault(_line);
 
+var _polyline = __webpack_require__(58);
+
+var _polyline2 = _interopRequireDefault(_polyline);
+
 var _image = __webpack_require__(18);
 
 var _image2 = _interopRequireDefault(_image);
@@ -5881,6 +5937,10 @@ var _linePositionChangeListener = __webpack_require__(27);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
+var _polylinePositionChangeListener = __webpack_require__(56);
+
+var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
+
 var _circlePositionChangeListener = __webpack_require__(28);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
@@ -5916,6 +5976,10 @@ var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionCha
 var _lineDimensionChangeListener = __webpack_require__(35);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
+
+var _polylineDimensionChangeListener = __webpack_require__(57);
+
+var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
 var _generalTransformationChangeListener = __webpack_require__(20);
 
@@ -5977,6 +6041,10 @@ var _defaultLineDrawer = __webpack_require__(49);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
+var _defaultPolylineDrawer = __webpack_require__(55);
+
+var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
+
 var _defaultImageDrawer = __webpack_require__(50);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
@@ -5999,7 +6067,6 @@ var _area2 = _interopRequireDefault(_area);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// SVG implementation.
 // Util.
 exports.StylingAttributes = _stylingAttributes2.default;
 exports.FontStylingAttributes = _fontStylingAttributes2.default;
@@ -6012,6 +6079,8 @@ exports.Ellipse = _ellipse2.default;
 
 
 // General.
+
+// SVG implementation.
 
 // Graphical primitives.
 
@@ -6047,11 +6116,13 @@ var Point = function () {
     function Point() {
         var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
 
         _classCallCheck(this, Point);
 
         this._x = x;
         this._y = y;
+        this._id = id;
     }
 
     _createClass(Point, [{
@@ -6074,6 +6145,14 @@ var Point = function () {
 
             this.x = x2 + centerX;
             this.y = y2 + centerY;
+        }
+    }, {
+        key: "id",
+        get: function get() {
+            return this._id;
+        },
+        set: function set(value) {
+            this._id = value;
         }
     }, {
         key: "x",
@@ -6151,6 +6230,407 @@ var Area = function () {
 }();
 
 exports.default = Area;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _defaultDrawer = __webpack_require__(3);
+
+var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DefaultPolyLineDrawer = function (_DefaultDrawer) {
+    _inherits(DefaultPolyLineDrawer, _DefaultDrawer);
+
+    function DefaultPolyLineDrawer() {
+        _classCallCheck(this, DefaultPolyLineDrawer);
+
+        return _possibleConstructorReturn(this, (DefaultPolyLineDrawer.__proto__ || Object.getPrototypeOf(DefaultPolyLineDrawer)).apply(this, arguments));
+    }
+
+    _createClass(DefaultPolyLineDrawer, [{
+        key: 'draw',
+        value: function draw(element) {
+            var newPath = document.createElementNS(this.svgArea.namespace, "path");
+            newPath.setAttribute("id", element.id);
+
+            // Construct the path.
+            var path = DefaultPolyLineDrawer.generatePath(element);
+            console.log(path);
+
+            newPath.setAttribute("d", path);
+            newPath.setAttribute("style", element.stylingAttributes.toString());
+            newPath.setAttribute("shape-rendering", "geometricPrecision");
+            return newPath;
+        }
+    }], [{
+        key: 'generatePath',
+        value: function generatePath(polyLine) {
+            var path = "M";
+            for (var i = 0; i < polyLine.countPoints(); i++) {
+                path += polyLine.points[i].x + " " + polyLine.points[i].y + " L";
+            }
+            return path.substring(0, path.length - 2);
+        }
+    }]);
+
+    return DefaultPolyLineDrawer;
+}(_defaultDrawer2.default);
+
+exports.default = DefaultPolyLineDrawer;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _generalPositionChangeListener = __webpack_require__(5);
+
+var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLinePositionChangeListener = function (_GeneralPositionChang) {
+    _inherits(PolyLinePositionChangeListener, _GeneralPositionChang);
+
+    function PolyLinePositionChangeListener() {
+        _classCallCheck(this, PolyLinePositionChangeListener);
+
+        return _possibleConstructorReturn(this, (PolyLinePositionChangeListener.__proto__ || Object.getPrototypeOf(PolyLinePositionChangeListener)).apply(this, arguments));
+    }
+
+    _createClass(PolyLinePositionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            // Construct the path.
+            var path = "M";
+            for (var i = 0; i < target.countPoints(); i++) {
+                path += target.points[i].x + " " + target.points[i].y + " L";
+            }
+            path = path.substring(0, path.length - 2);
+
+            target.drawn.setAttribute("d", path);
+        }
+    }]);
+
+    return PolyLinePositionChangeListener;
+}(_generalPositionChangeListener2.default);
+
+exports.default = PolyLinePositionChangeListener;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 09/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _generalDimensionChangeListener = __webpack_require__(6);
+
+var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLineDimensionChangeListener = function (_GeneralDimensionChan) {
+    _inherits(PolyLineDimensionChangeListener, _GeneralDimensionChan);
+
+    function PolyLineDimensionChangeListener() {
+        _classCallCheck(this, PolyLineDimensionChangeListener);
+
+        return _possibleConstructorReturn(this, (PolyLineDimensionChangeListener.__proto__ || Object.getPrototypeOf(PolyLineDimensionChangeListener)).apply(this, arguments));
+    }
+
+    _createClass(PolyLineDimensionChangeListener, [{
+        key: 'changeWidth',
+        value: function changeWidth(target) {
+            this.update(target);
+        }
+    }, {
+        key: 'changeHeight',
+        value: function changeHeight(target) {
+            this.update(target);
+        }
+    }, {
+        key: 'update',
+        value: function update(target) {
+            // Construct the path.
+            var path = "M";
+            for (var i = 0; i < target.countPoints(); i++) {
+                path += target.points[i].x + " " + target.points[i].y + " L";
+            }
+            path = path.substring(0, path.length - 2);
+
+            target.drawn.setAttribute("d", path);
+        }
+    }]);
+
+    return PolyLineDimensionChangeListener;
+}(_generalDimensionChangeListener2.default);
+
+exports.default = PolyLineDimensionChangeListener;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 09/01/2018.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _graphicalElement = __webpack_require__(0);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _stylingAttributes = __webpack_require__(1);
+
+var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _boundingBox = __webpack_require__(2);
+
+var _boundingBox2 = _interopRequireDefault(_boundingBox);
+
+var _point = __webpack_require__(53);
+
+var _point2 = _interopRequireDefault(_point);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLine = function (_GraphicalElement) {
+    _inherits(PolyLine, _GraphicalElement);
+
+    function PolyLine() {
+        var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1);
+
+        _classCallCheck(this, PolyLine);
+
+        var _this = _possibleConstructorReturn(this, (PolyLine.__proto__ || Object.getPrototypeOf(PolyLine)).call(this, 0, 0, 0, 0, stylingAttributes));
+
+        _this._idCount = 1;
+        _this._points = [];
+        var coordinates = Array.from(arguments).slice(1);
+        if (Array.isArray(coordinates)) {
+            coordinates = coordinates[0]; // SVGArea may have passed it as an array.
+        }
+
+        for (var i = 0; i < coordinates.length; i += 2) {
+            _this.addPoint(coordinates[i], coordinates[i + 1]);
+            console.log("new point at: (" + coordinates[i] + "," + coordinates[i + 1] + ")");
+        }
+        _this.updateBoundingBox();
+        return _this;
+    }
+
+    _createClass(PolyLine, [{
+        key: 'generateId',
+        value: function generateId() {
+            return "point_" + this._idCount++;
+        }
+    }, {
+        key: 'addPoint',
+        value: function addPoint(x, y) {
+            this._points.push(new _point2.default(x, y, this.generateId()));
+            return true;
+        }
+    }, {
+        key: 'removePointAt',
+        value: function removePointAt(position) {
+            if (position >= 0 && position < this.countPoints()) {
+                this._points.splice(position, 1);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: 'removePoint',
+        value: function removePoint(point) {
+            for (var i = 0; i < this._points.length; i++) {
+                if (this._points[i].id === point.id) {
+                    this.removePointAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: 'removePointById',
+        value: function removePointById(id) {
+            for (var i = 0; i < this._points.length; i++) {
+                if (this._points[i].id === id) {
+                    this.removePointAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: 'countPoints',
+        value: function countPoints() {
+            return this._points.length;
+        }
+    }, {
+        key: 'findBoundingBox',
+        value: function findBoundingBox() {
+            var minX = Number.MAX_SAFE_INTEGER;
+            var minY = Number.MAX_SAFE_INTEGER;
+            var maxX = Number.MIN_SAFE_INTEGER;
+            var maxY = Number.MIN_SAFE_INTEGER;
+            for (var i = 0; i < this.points.length; i++) {
+                if (this._points[i].x < minX) {
+                    minX = this._points[i].x;
+                }
+                if (this._points[i].x > maxX) {
+                    maxX = this._points[i].x;
+                }
+                if (this._points[i].y < minY) {
+                    minY = this._points[i].y;
+                }
+                if (this._points[i].y > maxY) {
+                    maxY = this._points[i].y;
+                }
+            }
+            return new _boundingBox2.default(minX, minY, maxX, maxY);
+        }
+    }, {
+        key: 'updateBoundingBox',
+        value: function updateBoundingBox() {
+            var boundingBox = this.findBoundingBox();
+            this.x1 = boundingBox.x1;
+            this.y1 = boundingBox.y1;
+            this.x2 = boundingBox.x2;
+            this.y2 = boundingBox.y2;
+        }
+    }, {
+        key: 'x1',
+        get: function get() {
+            return this.x;
+        },
+        set: function set(value) {
+            this.x = value;
+        }
+    }, {
+        key: 'y1',
+        get: function get() {
+            return this.y;
+        },
+        set: function set(value) {
+            this.y = value;
+        }
+    }, {
+        key: 'minWidth',
+        get: function get() {
+            if (this.stylingAttributes !== null) {
+                return this.stylingAttributes.strokeWidth;
+            }
+            return 1;
+        }
+    }, {
+        key: 'minHeight',
+        get: function get() {
+            if (this.stylingAttributes !== null) {
+                return this.stylingAttributes.strokeWidth;
+            }
+            return 1;
+        }
+    }, {
+        key: 'points',
+        get: function get() {
+            return this._points;
+        },
+        set: function set(value) {
+            this._points = value;
+        }
+    }]);
+
+    return PolyLine;
+}(_graphicalElement2.default);
+
+exports.default = PolyLine;
 
 /***/ })
 /******/ ]);

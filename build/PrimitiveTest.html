@@ -112,13 +112,15 @@
 		
 		let circle1 = svgArea.circle(100, 500, 100);
 		
-		function teste() { alert('opa'); }
+		function teste() { alert('Clicou no círculo.'); }
 		circle1.onClick = teste;
 		//console.log(circle1.id);
 		//alert(circle1.onClickCallback);
 		//circle1.onClickCallback();
 
-
+		svgArea.polyLine(new easygraphics.StylingAttributes(1), 50, 500, 100, 450, 300, 475);
+		
+		
         //****************************
         // Graph node.
         node = svgArea.vgroup(340, 50);

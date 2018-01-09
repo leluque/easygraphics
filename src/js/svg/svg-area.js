@@ -40,6 +40,9 @@ import LookAndFeel from './look-and-feel.js';
 import GroupStylingAttributes from '../core/group-styling-attributes.js';
 import FontStylingAttributes from '../core/font-styling-attributes.js';
 import StylingAttributes from '../core/styling-attributes.js';
+import PolyLineDimensionChangeListener from "./polyline-dimension-change-listener";
+import PolyLinePositionChangeListener from "./polyline-position-change-listener";
+import PolyLine from "../core/polyline";
 
 export default class SVGArea {
 
@@ -319,6 +322,33 @@ export default class SVGArea {
         this.registerEvents(newLine, drawnLine);
 
         return this.addElement(newLine);
+    }
+
+    polyLine(stylingAttributes = new StylingAttributes(1, "black", "none")) {
+        //*****************************
+        // Create a new line and set its id.
+        let coordinates = Array.from(arguments).slice(1);
+        alert(coordinates.length);
+        let newPolyline = new PolyLine(stylingAttributes, coordinates);
+        newPolyline.id = this.generateId();
+
+        //*****************************
+        // Add change listeners.
+        newPolyline.addChangeListener(new PolyLineDimensionChangeListener());
+        newPolyline.addChangeListener(new PolyLinePositionChangeListener());
+        newPolyline.addChangeListener(new StyleChangeListener());
+
+        let lookAndFeel = new LookAndFeel();
+        let drawer = lookAndFeel.getDrawerFor(newPolyline);
+        drawer.svgArea = this;
+        var drawnLine = drawer.draw(newPolyline);
+        this.svg.appendChild(drawnLine);
+
+        newPolyline.drawn = drawnLine;
+
+        this.registerEvents(newPolyline, drawnLine);
+
+        return this.addElement(newPolyline);
     }
 
     registerEvents(model, drawn) {

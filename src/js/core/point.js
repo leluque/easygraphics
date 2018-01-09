@@ -14,9 +14,18 @@ import {toRadians} from "./util";
  */
 export default class Point {
 
-    constructor(x = 0, y = 0) {
+    constructor(x = 0, y = 0, id = -1) {
         this._x = x;
         this._y = y;
+        this._id = id;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    set id(value) {
+        this._id = value;
     }
 
     get x() {

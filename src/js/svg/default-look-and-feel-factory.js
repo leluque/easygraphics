@@ -26,6 +26,8 @@ import Line from '../core/line.js';
 import DefaultLineDrawer from './default-line-drawer.js';
 import Image from '../core/image.js';
 import DefaultImageDrawer from './default-image-drawer.js';
+import DefaultPolyLineDrawer from "./default-polyline-drawer";
+import PolyLine from "../core/polyline";
 
 /**
  * This class implements a default look and feel factory.
@@ -49,6 +51,8 @@ export default class DefaultLookAndFeelFactory {
             return new DefaultLinearGroupDrawer();
         } else if (element instanceof Line) {
             return new DefaultLineDrawer();
+        } else if (element instanceof PolyLine) {
+            return new DefaultPolyLineDrawer();
         } else if (element instanceof Image) {
             return new DefaultImageDrawer();
         }
