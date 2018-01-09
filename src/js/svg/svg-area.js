@@ -100,6 +100,7 @@ export default class SVGArea {
         // Create a new circle and set its id.
         let newCircle = new Circle(centerX, centerY, radius);
         newCircle.id = this.generateId();
+        //console.log(newCircle.id);
 
         //*****************************
         // Add change listeners.
@@ -114,6 +115,8 @@ export default class SVGArea {
         this.svg.appendChild(drawnCircle);
 
         newCircle.drawn = drawnCircle;
+
+        this.registerEvents(newCircle, drawnCircle);
 
         return this.addElement(newCircle);
     }
@@ -138,6 +141,8 @@ export default class SVGArea {
 
         newEllipse.drawn = drawnEllipse;
 
+        this.registerEvents(newEllipse, drawnEllipse);
+
         return this.addElement(newEllipse);
     }
 
@@ -161,30 +166,34 @@ export default class SVGArea {
 
         newRectangle.drawn = drawnRectangle;
 
+        this.registerEvents(newRectangle, drawnRectangle);
+
         return this.addElement(newRectangle);
     }
 
     diamond(x1 = 10, y1 = 10, width = 50, height = 50, preserveAspectRatio = false, stylingAttributes = new StylingAttributes(3)) {
         //*****************************
         // Create a new diamond and set its id.
-        let newDiamong = new Diamond(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
-        newDiamong.id = this.generateId();
+        let newDiamond = new Diamond(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
+        newDiamond.id = this.generateId();
 
         //*****************************
         // Add change listeners.
-        newDiamong.addChangeListener(new DiamondDimensionChangeListener());
-        newDiamong.addChangeListener(new DiamondPositionChangeListener());
-        newDiamong.addChangeListener(new StyleChangeListener());
+        newDiamond.addChangeListener(new DiamondDimensionChangeListener());
+        newDiamond.addChangeListener(new DiamondPositionChangeListener());
+        newDiamond.addChangeListener(new StyleChangeListener());
 
         let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newDiamong);
+        let drawer = lookAndFeel.getDrawerFor(newDiamond);
         drawer.svgArea = this;
-        var drawnDiamong = drawer.draw(newDiamong);
-        this.svg.appendChild(drawnDiamong);
+        var drawnDiamond = drawer.draw(newDiamond);
+        this.svg.appendChild(drawnDiamond);
 
-        newDiamong.drawn = drawnDiamong;
+        newDiamond.drawn = drawnDiamond;
 
-        return this.addElement(newDiamong);
+        this.registerEvents(newDiamond, drawnDiamond);
+
+        return this.addElement(newDiamond);
     }
 
     text(x = 10, y = 10, text = "This is an example text", fontStylingAttributes = new FontStylingAttributes()) {
@@ -211,6 +220,8 @@ export default class SVGArea {
         newText.text = text; // Recalculate the text width calling a listener.
         //newText.calculateDimensions();
 
+        this.registerEvents(newText, drawnText);
+
         return this.addElement(newText);
     }
 
@@ -229,10 +240,12 @@ export default class SVGArea {
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newImage);
         drawer.svgArea = this;
-        var drawnText = drawer.draw(newImage);
-        this.svg.appendChild(drawnText);
+        var drawnImage = drawer.draw(newImage);
+        this.svg.appendChild(drawnImage);
 
-        newImage.drawn = drawnText;
+        newImage.drawn = drawnImage;
+
+        this.registerEvents(newImage, drawnImage);
 
         return this.addElement(newImage);
     }
@@ -255,6 +268,8 @@ export default class SVGArea {
 
         newVGroup.drawn = drawnVGroup;
 
+        this.registerEvents(newVGroup, drawnVGroup);
+
         return this.addElement(newVGroup);
     }
 
@@ -275,6 +290,8 @@ export default class SVGArea {
         this.svg.appendChild(drawnLinearGroup);
 
         newLinearGroup.drawn = drawnLinearGroup;
+
+        this.registerEvents(newLinearGroup, drawnLinearGroup);
 
         return this.addElement(newLinearGroup);
     }
@@ -299,7 +316,17 @@ export default class SVGArea {
 
         newLine.drawn = drawnLine;
 
+        this.registerEvents(newLine, drawnLine);
+
         return this.addElement(newLine);
+    }
+
+    registerEvents(model, drawn) {
+        drawn.onclick = model.fireOnClick.bind(model);
+        drawn.ondblclick = model.fireOnDblClick.bind(model);
+        drawn.onmousedown = model.fireOnMouseDown.bind(model);
+        drawn.onmousemove = model.fireOnMouseMove.bind(model);
+        drawn.onmouseup = model.fireOnMouseUp.bind(model);
     }
 
 }

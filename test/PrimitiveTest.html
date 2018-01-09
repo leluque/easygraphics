@@ -108,6 +108,9 @@
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "extension points", new easygraphics.FontStylingAttributes(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "Another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "Yet another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		
+		alert(typeof(umlUseCase1.frame));
+		umlUseCase1.frame.onClick = function() { alert("Clicked on UseCase"); }
         //****************************
 
 

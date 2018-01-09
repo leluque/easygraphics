@@ -36,17 +36,18 @@ export default class GraphicalElement {
         this._rotation = 0; // Rotation angle in degrees.
         this._rotationCenterX = this.x + this.width / 2; // The rotation point x coordinate.
         this._rotationCenterY = this.y + this.height / 2; // The rotation point y coordinate.
+
+        // Events.
+        this._onClick = null;
+        this._onDblClick = null;
+        this._onMouseDown = null;
+        this._onMouseMove = null;
+        this._onMouseUp = null;
     }
 
     get changeNotificationsEnabled() {
         return this._changeNotificationsEnabled === 0;
     }
-
-/*
-    set changeNotificationsEnabled(value) {
-        this._changeNotificationsEnabled = value;
-    }
-*/
 
     get x() {
         return this._x;
@@ -219,6 +220,46 @@ export default class GraphicalElement {
         this._changeListeners = value;
     }
 
+    get onClick() {
+        return this._onClick;
+    }
+
+    set onClick(value) {
+        this._onClick = value;
+    }
+
+    get onDblClick() {
+        return this._onDblClick;
+    }
+
+    set onDblClick(value) {
+        this._onDblClick = value;
+    }
+
+    get onMouseDown() {
+        return this._onMouseDown;
+    }
+
+    set onMouseDown(value) {
+        this._onMouseDown = value;
+    }
+
+    get onMouseMove() {
+        return this._onMouseMove;
+    }
+
+    set onMouseMove(value) {
+        this._onMouseMove = value;
+    }
+
+    get onMouseUp() {
+        return this._onMouseUp;
+    }
+
+    set onMouseUp(value) {
+        this._onMouseUp = value;
+    }
+
     disableChangeNotifications() {
         //this.changeNotificationsEnabled = false;
         this._changeNotificationsEnabled++;
@@ -305,4 +346,54 @@ export default class GraphicalElement {
         }
     }
 
+    // Events.
+    fireOnClick(event) {
+        if (this._onClick !== null && this._onClick) {
+            if(typeof(this._onClick) === "function") {
+                this._onClick(event.clientX, event.clientY);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onClick);
+            }
+        }
+    }
+
+    fireOnDblClick(event) {
+        if (this._onDblClick !== null && this._onDblClick) {
+            if(typeof(this._onDblClick) === "function") {
+                this._onDblClick(event.clientX, event.clientY);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onDblClick);
+            }
+        }
+    }
+
+    fireOnMouseDown(event) {
+        if (this._onMouseDown !== null && this._onMouseDown) {
+            if(typeof(this._onMouseDown) === "function") {
+                this._onMouseDown(event.clientX, event.clientY);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseDown);
+            }
+        }
+    }
+
+    fireOnMouseMove(event) {
+        if (this._onMouseMove !== null && this._onMouseMove) {
+            if(typeof(this._onMouseMove) === "function") {
+                this._onMouseMove(event.clientX, event.clientY);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseMove);
+            }
+        }
+    }
+
+    fireOnMouseUp(event) {
+        if (this._onMouseUp !== null && this._onMouseUp) {
+            if(typeof(this._onMouseUp) === "function") {
+                this._onMouseUp(event.clientX, event.clientY);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseUp);
+            }
+        }
+    }
 }

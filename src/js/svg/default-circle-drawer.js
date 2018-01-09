@@ -20,6 +20,7 @@ export default class DefaultCircleDrawer extends DefaultDrawer {
         newCircle.setAttribute("r", element.radius);
         newCircle.setAttribute("style", element.stylingAttributes.toString());
         newCircle.setAttribute("shape-rendering", "geometricPrecision");
+
         return newCircle;
     }
 

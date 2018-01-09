@@ -21,6 +21,7 @@ export default class DefaultEllipseDrawer extends DefaultDrawer {
         newEllipse.setAttribute("ry", element.radiusY);
         newEllipse.setAttribute("style", element.stylingAttributes.toString());
         newEllipse.setAttribute("shape-rendering", "geometricPrecision");
+
         return newEllipse;
     }
 

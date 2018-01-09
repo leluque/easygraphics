@@ -58,5 +58,5 @@ import SVGArea from './src/js/svg/svg-area.js';
 // General.
 import Area from './src/js/core/area.js';
 
-export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area }
+export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area, Ellipse }
 // export { A, B, C, D, E, ... }

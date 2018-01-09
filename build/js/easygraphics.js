@@ -92,6 +92,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _stylingAttributes = __webpack_require__(1);
@@ -136,6 +138,13 @@ var GraphicalElement = function () {
         this._rotation = 0; // Rotation angle in degrees.
         this._rotationCenterX = this.x + this.width / 2; // The rotation point x coordinate.
         this._rotationCenterY = this.y + this.height / 2; // The rotation point y coordinate.
+
+        // Events.
+        this._onClick = null;
+        this._onDblClick = null;
+        this._onMouseDown = null;
+        this._onMouseMove = null;
+        this._onMouseUp = null;
     }
 
     _createClass(GraphicalElement, [{
@@ -267,18 +276,69 @@ var GraphicalElement = function () {
                 }
             }
         }
+
+        // Events.
+
+    }, {
+        key: 'fireOnClick',
+        value: function fireOnClick(event) {
+            if (this._onClick !== null && this._onClick) {
+                if (typeof this._onClick === "function") {
+                    this._onClick(event.clientX, event.clientY);
+                } else {
+                    throw "Callback is not a function: " + _typeof(this._onClick);
+                }
+            }
+        }
+    }, {
+        key: 'fireOnDblClick',
+        value: function fireOnDblClick(event) {
+            if (this._onDblClick !== null && this._onDblClick) {
+                if (typeof this._onDblClick === "function") {
+                    this._onDblClick(event.clientX, event.clientY);
+                } else {
+                    throw "Callback is not a function: " + _typeof(this._onDblClick);
+                }
+            }
+        }
+    }, {
+        key: 'fireOnMouseDown',
+        value: function fireOnMouseDown(event) {
+            if (this._onMouseDown !== null && this._onMouseDown) {
+                if (typeof this._onMouseDown === "function") {
+                    this._onMouseDown(event.clientX, event.clientY);
+                } else {
+                    throw "Callback is not a function: " + _typeof(this._onMouseDown);
+                }
+            }
+        }
+    }, {
+        key: 'fireOnMouseMove',
+        value: function fireOnMouseMove(event) {
+            if (this._onMouseMove !== null && this._onMouseMove) {
+                if (typeof this._onMouseMove === "function") {
+                    this._onMouseMove(event.clientX, event.clientY);
+                } else {
+                    throw "Callback is not a function: " + _typeof(this._onMouseMove);
+                }
+            }
+        }
+    }, {
+        key: 'fireOnMouseUp',
+        value: function fireOnMouseUp(event) {
+            if (this._onMouseUp !== null && this._onMouseUp) {
+                if (typeof this._onMouseUp === "function") {
+                    this._onMouseUp(event.clientX, event.clientY);
+                } else {
+                    throw "Callback is not a function: " + _typeof(this._onMouseUp);
+                }
+            }
+        }
     }, {
         key: 'changeNotificationsEnabled',
         get: function get() {
             return this._changeNotificationsEnabled === 0;
         }
-
-        /*
-            set changeNotificationsEnabled(value) {
-                this._changeNotificationsEnabled = value;
-            }
-        */
-
     }, {
         key: 'x',
         get: function get() {
@@ -450,6 +510,46 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             this._changeListeners = value;
+        }
+    }, {
+        key: 'onClick',
+        get: function get() {
+            return this._onClick;
+        },
+        set: function set(value) {
+            this._onClick = value;
+        }
+    }, {
+        key: 'onDblClick',
+        get: function get() {
+            return this._onDblClick;
+        },
+        set: function set(value) {
+            this._onDblClick = value;
+        }
+    }, {
+        key: 'onMouseDown',
+        get: function get() {
+            return this._onMouseDown;
+        },
+        set: function set(value) {
+            this._onMouseDown = value;
+        }
+    }, {
+        key: 'onMouseMove',
+        get: function get() {
+            return this._onMouseMove;
+        },
+        set: function set(value) {
+            this._onMouseMove = value;
+        }
+    }, {
+        key: 'onMouseUp',
+        get: function get() {
+            return this._onMouseUp;
+        },
+        set: function set(value) {
+            this._onMouseUp = value;
         }
     }]);
 
@@ -4577,6 +4677,7 @@ var DefaultCircleDrawer = function (_DefaultDrawer) {
             newCircle.setAttribute("r", element.radius);
             newCircle.setAttribute("style", element.stylingAttributes.toString());
             newCircle.setAttribute("shape-rendering", "geometricPrecision");
+
             return newCircle;
         }
     }]);
@@ -4639,6 +4740,7 @@ var DefaultEllipseDrawer = function (_DefaultDrawer) {
             newEllipse.setAttribute("ry", element.radiusY);
             newEllipse.setAttribute("style", element.stylingAttributes.toString());
             newEllipse.setAttribute("shape-rendering", "geometricPrecision");
+
             return newEllipse;
         }
     }]);
@@ -5168,7 +5270,7 @@ exports.default = DefaultImageDrawer;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -5306,335 +5408,363 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var SVGArea = function () {
-    function SVGArea() {
-        var svgSelector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#svg";
+        function SVGArea() {
+                var svgSelector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#svg";
 
-        _classCallCheck(this, SVGArea);
+                _classCallCheck(this, SVGArea);
 
-        this._idCount = 1;
-        this._svg = document.querySelector(svgSelector);
-        this._namespace = "http://www.w3.org/2000/svg";
-        this._elements = [];
-    }
-
-    _createClass(SVGArea, [{
-        key: 'generateId',
-        value: function generateId() {
-            return "element_" + this._idCount++;
-        }
-    }, {
-        key: 'addElement',
-        value: function addElement(element) {
-            this._elements.push(element);
-            return element;
+                this._idCount = 1;
+                this._svg = document.querySelector(svgSelector);
+                this._namespace = "http://www.w3.org/2000/svg";
+                this._elements = [];
         }
 
-        // TODO: in all methods below, register listener events for all
-        // relevant events and register Circle (or the appropriate class)
-        // EVENThappened method as a callback function. This function
-        // just inform the event listeners that the event happened.
+        _createClass(SVGArea, [{
+                key: 'generateId',
+                value: function generateId() {
+                        return "element_" + this._idCount++;
+                }
+        }, {
+                key: 'addElement',
+                value: function addElement(element) {
+                        this._elements.push(element);
+                        return element;
+                }
 
-    }, {
-        key: 'circle',
-        value: function circle() {
-            var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
-            var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-            var radius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+                // TODO: in all methods below, register listener events for all
+                // relevant events and register Circle (or the appropriate class)
+                // EVENThappened method as a callback function. This function
+                // just inform the event listeners that the event happened.
 
-            //*****************************
-            // Create a new circle and set its id.
-            var newCircle = new _circle2.default(centerX, centerY, radius);
-            newCircle.id = this.generateId();
+        }, {
+                key: 'circle',
+                value: function circle() {
+                        var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
+                        var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
+                        var radius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
 
-            //*****************************
-            // Add change listeners.
-            newCircle.addChangeListener(new _circleDimensionChangeListener2.default());
-            newCircle.addChangeListener(new _circlePositionChangeListener2.default());
-            newCircle.addChangeListener(new _styleChangeListener2.default());
+                        //*****************************
+                        // Create a new circle and set its id.
+                        var newCircle = new _circle2.default(centerX, centerY, radius);
+                        newCircle.id = this.generateId();
+                        //console.log(newCircle.id);
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newCircle);
-            drawer.svgArea = this;
-            var drawnCircle = drawer.draw(newCircle);
-            this.svg.appendChild(drawnCircle);
+                        //*****************************
+                        // Add change listeners.
+                        newCircle.addChangeListener(new _circleDimensionChangeListener2.default());
+                        newCircle.addChangeListener(new _circlePositionChangeListener2.default());
+                        newCircle.addChangeListener(new _styleChangeListener2.default());
 
-            newCircle.drawn = drawnCircle;
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newCircle);
+                        drawer.svgArea = this;
+                        var drawnCircle = drawer.draw(newCircle);
+                        this.svg.appendChild(drawnCircle);
 
-            return this.addElement(newCircle);
-        }
-    }, {
-        key: 'ellipse',
-        value: function ellipse() {
-            var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
-            var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-            var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
+                        newCircle.drawn = drawnCircle;
 
-            //*****************************
-            // Create a new ellipse and set its id.
-            var newEllipse = new _ellipse2.default(centerX, centerY, radiusX, radiusY);
-            newEllipse.id = this.generateId();
+                        this.registerEvents(newCircle, drawnCircle);
 
-            //*****************************
-            // Add change listeners.
-            newEllipse.addChangeListener(new _ellipseDimensionChangeListener2.default());
-            newEllipse.addChangeListener(new _ellipsePositionChangeListener2.default());
-            newEllipse.addChangeListener(new _styleChangeListener2.default());
+                        return this.addElement(newCircle);
+                }
+        }, {
+                key: 'ellipse',
+                value: function ellipse() {
+                        var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
+                        var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
+                        var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+                        var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newEllipse);
-            drawer.svgArea = this;
-            var drawnEllipse = drawer.draw(newEllipse);
-            this.svg.appendChild(drawnEllipse);
+                        //*****************************
+                        // Create a new ellipse and set its id.
+                        var newEllipse = new _ellipse2.default(centerX, centerY, radiusX, radiusY);
+                        newEllipse.id = this.generateId();
 
-            newEllipse.drawn = drawnEllipse;
+                        //*****************************
+                        // Add change listeners.
+                        newEllipse.addChangeListener(new _ellipseDimensionChangeListener2.default());
+                        newEllipse.addChangeListener(new _ellipsePositionChangeListener2.default());
+                        newEllipse.addChangeListener(new _styleChangeListener2.default());
 
-            return this.addElement(newEllipse);
-        }
-    }, {
-        key: 'rect',
-        value: function rect() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newEllipse);
+                        drawer.svgArea = this;
+                        var drawnEllipse = drawer.draw(newEllipse);
+                        this.svg.appendChild(drawnEllipse);
 
-            //*****************************
-            // Create a new rectangle and set its id.
-            var newRectangle = new _rectangle2.default(x1, y1, x2, y2);
-            newRectangle.id = this.generateId();
+                        newEllipse.drawn = drawnEllipse;
 
-            //*****************************
-            // Add change listeners.
-            newRectangle.addChangeListener(new _rectangleDimensionChangeListener2.default());
-            newRectangle.addChangeListener(new _rectanglePositionChangeListener2.default());
-            newRectangle.addChangeListener(new _styleChangeListener2.default());
+                        this.registerEvents(newEllipse, drawnEllipse);
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newRectangle);
-            drawer.svgArea = this;
-            var drawnRectangle = drawer.draw(newRectangle);
-            this.svg.appendChild(drawnRectangle);
+                        return this.addElement(newEllipse);
+                }
+        }, {
+                key: 'rect',
+                value: function rect() {
+                        var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+                        var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
 
-            newRectangle.drawn = drawnRectangle;
+                        //*****************************
+                        // Create a new rectangle and set its id.
+                        var newRectangle = new _rectangle2.default(x1, y1, x2, y2);
+                        newRectangle.id = this.generateId();
 
-            return this.addElement(newRectangle);
-        }
-    }, {
-        key: 'diamond',
-        value: function diamond() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
-            var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
-            var preserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-            var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default(3);
+                        //*****************************
+                        // Add change listeners.
+                        newRectangle.addChangeListener(new _rectangleDimensionChangeListener2.default());
+                        newRectangle.addChangeListener(new _rectanglePositionChangeListener2.default());
+                        newRectangle.addChangeListener(new _styleChangeListener2.default());
 
-            //*****************************
-            // Create a new diamond and set its id.
-            var newDiamong = new _diamond2.default(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
-            newDiamong.id = this.generateId();
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newRectangle);
+                        drawer.svgArea = this;
+                        var drawnRectangle = drawer.draw(newRectangle);
+                        this.svg.appendChild(drawnRectangle);
 
-            //*****************************
-            // Add change listeners.
-            newDiamong.addChangeListener(new _diamondDimensionChangeListener2.default());
-            newDiamong.addChangeListener(new _diamondPositionChangeListener2.default());
-            newDiamong.addChangeListener(new _styleChangeListener2.default());
+                        newRectangle.drawn = drawnRectangle;
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newDiamong);
-            drawer.svgArea = this;
-            var drawnDiamong = drawer.draw(newDiamong);
-            this.svg.appendChild(drawnDiamong);
+                        this.registerEvents(newRectangle, drawnRectangle);
 
-            newDiamong.drawn = drawnDiamong;
+                        return this.addElement(newRectangle);
+                }
+        }, {
+                key: 'diamond',
+                value: function diamond() {
+                        var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
+                        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
+                        var preserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+                        var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default(3);
 
-            return this.addElement(newDiamong);
-        }
-    }, {
-        key: 'text',
-        value: function text() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        //*****************************
+                        // Create a new diamond and set its id.
+                        var newDiamond = new _diamond2.default(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
+                        newDiamond.id = this.generateId();
 
-            var _text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "This is an example text";
+                        //*****************************
+                        // Add change listeners.
+                        newDiamond.addChangeListener(new _diamondDimensionChangeListener2.default());
+                        newDiamond.addChangeListener(new _diamondPositionChangeListener2.default());
+                        newDiamond.addChangeListener(new _styleChangeListener2.default());
 
-            var fontStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _fontStylingAttributes2.default();
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newDiamond);
+                        drawer.svgArea = this;
+                        var drawnDiamond = drawer.draw(newDiamond);
+                        this.svg.appendChild(drawnDiamond);
 
-            //*****************************
-            // Create a new text and set its id.
-            var newText = new _text3.default(x, y, "", undefined, fontStylingAttributes);
-            newText.id = this.generateId();
+                        newDiamond.drawn = drawnDiamond;
 
-            //*****************************
-            // Add change listeners.
-            newText.addChangeListener(new _textDimensionChangeListener2.default());
-            newText.addChangeListener(new _textPositionChangeListener2.default());
-            newText.addChangeListener(new _textChangeListener2.default());
-            newText.addChangeListener(new _fontChangeListener2.default());
-            newText.addChangeListener(new _styleChangeListener2.default());
+                        this.registerEvents(newDiamond, drawnDiamond);
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newText);
-            drawer.svgArea = this;
-            var drawnText = drawer.draw(newText);
-            this.svg.appendChild(drawnText);
+                        return this.addElement(newDiamond);
+                }
+        }, {
+                key: 'text',
+                value: function text() {
+                        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
 
-            newText.drawn = drawnText;
-            newText.text = _text; // Recalculate the text width calling a listener.
-            //newText.calculateDimensions();
+                        var _text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "This is an example text";
 
-            return this.addElement(newText);
-        }
-    }, {
-        key: 'image',
-        value: function image() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
-            var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
+                        var fontStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _fontStylingAttributes2.default();
 
-            var _image = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+                        //*****************************
+                        // Create a new text and set its id.
+                        var newText = new _text3.default(x, y, "", undefined, fontStylingAttributes);
+                        newText.id = this.generateId();
 
-            //*****************************
-            // Create a new image and set its id.
-            var newImage = new _image3.default(x, y, width, height, _image);
-            newImage.id = this.generateId();
+                        //*****************************
+                        // Add change listeners.
+                        newText.addChangeListener(new _textDimensionChangeListener2.default());
+                        newText.addChangeListener(new _textPositionChangeListener2.default());
+                        newText.addChangeListener(new _textChangeListener2.default());
+                        newText.addChangeListener(new _fontChangeListener2.default());
+                        newText.addChangeListener(new _styleChangeListener2.default());
 
-            //*****************************
-            // Add change listeners.
-            newImage.addChangeListener(new _imageDimensionChangeListener2.default());
-            newImage.addChangeListener(new _imagePositionChangeListener2.default());
-            newImage.addChangeListener(new _styleChangeListener2.default());
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newText);
+                        drawer.svgArea = this;
+                        var drawnText = drawer.draw(newText);
+                        this.svg.appendChild(drawnText);
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newImage);
-            drawer.svgArea = this;
-            var drawnText = drawer.draw(newImage);
-            this.svg.appendChild(drawnText);
+                        newText.drawn = drawnText;
+                        newText.text = _text; // Recalculate the text width calling a listener.
+                        //newText.calculateDimensions();
 
-            newImage.drawn = drawnText;
+                        this.registerEvents(newText, drawnText);
 
-            return this.addElement(newImage);
-        }
-    }, {
-        key: 'vgroup',
-        value: function vgroup() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var groupStyling = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _groupStylingAttributes2.default();
+                        return this.addElement(newText);
+                }
+        }, {
+                key: 'image',
+                value: function image() {
+                        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
+                        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
 
-            //*****************************
-            // Create a new vertical group and set its id.
-            var newVGroup = new _verticalGroup2.default(x, y, undefined, groupStyling);
-            newVGroup.id = this.generateId();
+                        var _image = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
 
-            //*****************************
-            // Add change listeners.
-            newVGroup.addChangeListener(new _vgroupTransformationChangeListener2.default());
+                        //*****************************
+                        // Create a new image and set its id.
+                        var newImage = new _image3.default(x, y, width, height, _image);
+                        newImage.id = this.generateId();
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newVGroup);
-            drawer.svgArea = this;
-            var drawnVGroup = drawer.draw(newVGroup);
-            this.svg.appendChild(drawnVGroup);
+                        //*****************************
+                        // Add change listeners.
+                        newImage.addChangeListener(new _imageDimensionChangeListener2.default());
+                        newImage.addChangeListener(new _imagePositionChangeListener2.default());
+                        newImage.addChangeListener(new _styleChangeListener2.default());
 
-            newVGroup.drawn = drawnVGroup;
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newImage);
+                        drawer.svgArea = this;
+                        var drawnImage = drawer.draw(newImage);
+                        this.svg.appendChild(drawnImage);
 
-            return this.addElement(newVGroup);
-        }
-    }, {
-        key: 'linearGroup',
-        value: function linearGroup() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+                        newImage.drawn = drawnImage;
 
-            //*****************************
-            // Create a new linear group and set its id.
-            var newLinearGroup = new _linearGroup2.default(x1, y1, x2, y2, undefined, new _groupStylingAttributes2.default(0, 0));
-            newLinearGroup.id = this.generateId();
+                        this.registerEvents(newImage, drawnImage);
 
-            //*****************************
-            // Add change listeners.
-            newLinearGroup.addChangeListener(new _linearGroupTransformationChangeListener2.default());
+                        return this.addElement(newImage);
+                }
+        }, {
+                key: 'vgroup',
+                value: function vgroup() {
+                        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var groupStyling = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _groupStylingAttributes2.default();
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newLinearGroup);
-            drawer.svgArea = this;
-            var drawnLinearGroup = drawer.draw(newLinearGroup);
-            this.svg.appendChild(drawnLinearGroup);
+                        //*****************************
+                        // Create a new vertical group and set its id.
+                        var newVGroup = new _verticalGroup2.default(x, y, undefined, groupStyling);
+                        newVGroup.id = this.generateId();
 
-            newLinearGroup.drawn = drawnLinearGroup;
+                        //*****************************
+                        // Add change listeners.
+                        newVGroup.addChangeListener(new _vgroupTransformationChangeListener2.default());
 
-            return this.addElement(newLinearGroup);
-        }
-    }, {
-        key: 'line',
-        value: function line() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
-            var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newVGroup);
+                        drawer.svgArea = this;
+                        var drawnVGroup = drawer.draw(newVGroup);
+                        this.svg.appendChild(drawnVGroup);
 
-            //*****************************
-            // Create a new line and set its id.
-            var newLine = new _line2.default(x1, y1, x2, y2, stylingAttributes);
-            newLine.id = this.generateId();
+                        newVGroup.drawn = drawnVGroup;
 
-            //*****************************
-            // Add change listeners.
-            newLine.addChangeListener(new _lineDimensionChangeListener2.default());
-            newLine.addChangeListener(new _linePositionChangeListener2.default());
-            newLine.addChangeListener(new _styleChangeListener2.default());
+                        this.registerEvents(newVGroup, drawnVGroup);
 
-            var lookAndFeel = new _lookAndFeel2.default();
-            var drawer = lookAndFeel.getDrawerFor(newLine);
-            drawer.svgArea = this;
-            var drawnLine = drawer.draw(newLine);
-            this.svg.appendChild(drawnLine);
+                        return this.addElement(newVGroup);
+                }
+        }, {
+                key: 'linearGroup',
+                value: function linearGroup() {
+                        var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+                        var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
 
-            newLine.drawn = drawnLine;
+                        //*****************************
+                        // Create a new linear group and set its id.
+                        var newLinearGroup = new _linearGroup2.default(x1, y1, x2, y2, undefined, new _groupStylingAttributes2.default(0, 0));
+                        newLinearGroup.id = this.generateId();
 
-            return this.addElement(newLine);
-        }
-    }, {
-        key: 'idCount',
-        get: function get() {
-            return this._idCount;
-        },
-        set: function set(value) {
-            this._idCount = value;
-        }
-    }, {
-        key: 'svg',
-        get: function get() {
-            return this._svg;
-        },
-        set: function set(value) {
-            this._svg = value;
-        }
-    }, {
-        key: 'namespace',
-        get: function get() {
-            return this._namespace;
-        },
-        set: function set(value) {
-            this._namespace = value;
-        }
-    }, {
-        key: 'elements',
-        get: function get() {
-            return this._elements;
-        },
-        set: function set(value) {
-            this._elements = value;
-        }
-    }]);
+                        //*****************************
+                        // Add change listeners.
+                        newLinearGroup.addChangeListener(new _linearGroupTransformationChangeListener2.default());
 
-    return SVGArea;
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newLinearGroup);
+                        drawer.svgArea = this;
+                        var drawnLinearGroup = drawer.draw(newLinearGroup);
+                        this.svg.appendChild(drawnLinearGroup);
+
+                        newLinearGroup.drawn = drawnLinearGroup;
+
+                        this.registerEvents(newLinearGroup, drawnLinearGroup);
+
+                        return this.addElement(newLinearGroup);
+                }
+        }, {
+                key: 'line',
+                value: function line() {
+                        var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+                        var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+                        var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+                        var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
+                        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
+
+                        //*****************************
+                        // Create a new line and set its id.
+                        var newLine = new _line2.default(x1, y1, x2, y2, stylingAttributes);
+                        newLine.id = this.generateId();
+
+                        //*****************************
+                        // Add change listeners.
+                        newLine.addChangeListener(new _lineDimensionChangeListener2.default());
+                        newLine.addChangeListener(new _linePositionChangeListener2.default());
+                        newLine.addChangeListener(new _styleChangeListener2.default());
+
+                        var lookAndFeel = new _lookAndFeel2.default();
+                        var drawer = lookAndFeel.getDrawerFor(newLine);
+                        drawer.svgArea = this;
+                        var drawnLine = drawer.draw(newLine);
+                        this.svg.appendChild(drawnLine);
+
+                        newLine.drawn = drawnLine;
+
+                        this.registerEvents(newLine, drawnLine);
+
+                        return this.addElement(newLine);
+                }
+        }, {
+                key: 'registerEvents',
+                value: function registerEvents(model, drawn) {
+                        drawn.onclick = model.fireOnClick.bind(model);
+                        drawn.ondblclick = model.fireOnDblClick.bind(model);
+                        drawn.onmousedown = model.fireOnMouseDown.bind(model);
+                        drawn.onmousemove = model.fireOnMouseMove.bind(model);
+                        drawn.onmouseup = model.fireOnMouseUp.bind(model);
+                }
+        }, {
+                key: 'idCount',
+                get: function get() {
+                        return this._idCount;
+                },
+                set: function set(value) {
+                        this._idCount = value;
+                }
+        }, {
+                key: 'svg',
+                get: function get() {
+                        return this._svg;
+                },
+                set: function set(value) {
+                        this._svg = value;
+                }
+        }, {
+                key: 'namespace',
+                get: function get() {
+                        return this._namespace;
+                },
+                set: function set(value) {
+                        this._namespace = value;
+                }
+        }, {
+                key: 'elements',
+                get: function get() {
+                        return this._elements;
+                },
+                set: function set(value) {
+                        this._elements = value;
+                }
+        }]);
+
+        return SVGArea;
 }();
 
 exports.default = SVGArea;
@@ -5649,7 +5779,7 @@ exports.default = SVGArea;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
+exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
 
 var _util = __webpack_require__(10);
 
@@ -5877,6 +6007,7 @@ exports.GroupStylingAttributes = _groupStylingAttributes2.default;
 exports.VerticalGroup = _verticalGroup2.default;
 exports.SVGArea = _svgArea2.default;
 exports.Area = _area2.default;
+exports.Ellipse = _ellipse2.default;
 // export { A, B, C, D, E, ... }
 
 

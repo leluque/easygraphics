@@ -109,6 +109,14 @@
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "Another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "Yet another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         //****************************
+		
+		let circle1 = svgArea.circle(100, 500, 100);
+		
+		function teste() { alert('opa'); }
+		circle1.onClick = teste;
+		//console.log(circle1.id);
+		//alert(circle1.onClickCallback);
+		//circle1.onClickCallback();
 
 
         //****************************
