@@ -2,7 +2,7 @@
 
 [![MIT License][license-image]][license]
 
-EasyGraphics is a client-side Javascript library to draw and work with vectorial graphics.
+EasyGraphics is a client-side Javascript library to work with vectorial graphics.
 It was started as a project to draw and work with UML diagrams using Javascript, but it is now a separated project.
 
 ## Features
