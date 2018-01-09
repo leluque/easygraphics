@@ -1,0 +1,50 @@
+{
+  "name": "easygraphics",
+  "version": "0.8.0",
+  "description": "A client-side Javascript library to work with vectorial graphics.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leluque/easygraphics.git"
+  },
+  "jshintConfig": {
+    "undef": true,
+    "unused": false,
+    "globals": {
+      "MY_GLOBAL": true
+    },
+    "browser": true
+  },
+  "scripts": {
+    "lint": "jshint src",
+    "prepareFolders": "mkdirp build/js",
+    "build:js": "webpack --progress --colors --watch",
+    "copyTests": "cpx test/** build",
+    "start": "npm run lint && npm run prepareFolders && npm run copyTests && npm run build:js",
+    "patchPublish": "npm version patch && npm publish"
+  },
+  "keywords": [
+    "Javascript",
+    "Client-side",
+    "Vectorial",
+    "Graphics"
+  ],
+  "author": "Leandro Luque <leandro.luque@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leluque/easygraphics/issues"
+  },
+  "homepage": "https://github.com/leluque/easygraphics#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-preset-es2015": "^6.24.1",
+    "cpx": "^1.5.0",
+    "eslint": "^4.15.0",
+    "eslint-loader": "^1.9.0",
+    "jshint": "^2.9.5",
+    "webpack": "^3.10.0"
+  }
+}

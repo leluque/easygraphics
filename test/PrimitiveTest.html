@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Primitive Test</title>
+    <script src="../build/js/easygraphics.js"></script>
+
+    <style>
+        #svg {
+            border: 1px solid #000;
+        }
+
+    </style>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
+    </style>
+
+</head>
+<body>
+
+<svg id="svg" width="1024" height="768"></svg>
+
+<script>
+
+    function randomText() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 1 + Math.random() * 100; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    var rect;
+    var text;
+    // var circle;
+    var umlClass;
+    var node;
+	
+    (function () {
+        let svgArea = new easygraphics.SVGArea("#svg");
+
+        //****************************
+        // Circle boundaries.
+        /*
+         let circ = svgArea.circle(500, 320, 50);
+         let x1 = circ.boundaryX1For(300);
+         let x2 = circ.boundaryX2For(300);
+         console.log(x1 + "," + x2);
+         svgArea.line(x1, 300, x2, 300);
+         */
+        //****************************
+
+        //****************************
+        // Ellipse boundaries.
+        /*
+         let el = svgArea.ellipse(480, 320, 36, 24);
+         let x1 = el.boundaryX1For(336);
+         let x2 = el.boundaryX2For(336);
+         svgArea.line(x1, 336, x2, 336);
+         */
+        //****************************
+
+        //****************************
+        // UML Interface.
+        rect = svgArea.rect()
+        umlClass = svgArea.vgroup(10, 10);
+        umlClass.frame = rect;
+        let stereotype = svgArea.text(undefined, undefined, "<<interface>>");
+        stereotype.fontStylingAttributes.style = "italic";
+        umlClass.addChild(stereotype, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlClass.addChild(svgArea.text(undefined, undefined, "Customer"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlClass.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
+        umlClass.addChild(svgArea.text(undefined, undefined, "- registry: String"));
+        umlClass.addChild(svgArea.text(undefined, undefined, "- name: String"));
+        umlClass.addChild(svgArea.text(undefined, undefined, "- birthDate: Date"));
+        umlClass.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
+        umlClass.addChild(svgArea.text(undefined, undefined, "+ save(): void"));
+        umlClass.addChild(svgArea.text(undefined, undefined, "+ update(): void"));
+        text = svgArea.text(undefined, undefined, "+ findByRegistry(registry: String): List<Customer>");
+        umlClass.addChild(text);
+        //****************************
+
+        //****************************
+        // UML Actor.
+        let umlActor = svgArea.vgroup(10, 300);
+        umlActor.addChild(svgArea.image(undefined, undefined, 25, 50, "images/uml_actor.svg"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlActor.addChild(svgArea.text(undefined, undefined, "Actor"));
+        //****************************
+
+        //****************************
+        // UML Use Case.
+        let umlUseCase = svgArea.vgroup(160, 320);
+        umlUseCase.frame = svgArea.ellipse();
+        let uctext = svgArea.text(undefined, undefined, "U.C.");
+        umlUseCase.addChild(uctext, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        //****************************
+
+        //****************************
+        // UML Use Case.
+        let umlUseCase1 = svgArea.vgroup(300, 320, new easygraphics.GroupStylingAttributes(0, 0));
+        umlUseCase1.frame = svgArea.ellipse();
+        umlUseCase1.addChild(svgArea.text(undefined, undefined, "Other Use Case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        let line = svgArea.line();
+        umlUseCase1.addChild(line, easygraphics.VerticalGroup.MATCH_PARENT);
+        umlUseCase1.addChild(svgArea.text(undefined, undefined, "extension points", new easygraphics.FontStylingAttributes(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase1.addChild(svgArea.text(undefined, undefined, "Another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase1.addChild(svgArea.text(undefined, undefined, "Yet another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        //****************************
+
+
+        //****************************
+        // Graph node.
+        node = svgArea.vgroup(340, 50);
+        node.frame = svgArea.circle();
+        let text1 = svgArea.text(undefined, undefined, "Graph Node");
+        node.addChild(text1, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        /*
+         node.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
+         node.addChild(svgArea.text(undefined, undefined, "2nd row"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+         node.addChild(svgArea.text(undefined, undefined, "3rd row"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+         */
+        //****************************
+
+        //****************************
+        // UML decision node.
+        let decisionNode = svgArea.vgroup(450, 450);
+        decisionNode.frame = svgArea.diamond(undefined, undefined, undefined, undefined, true);
+        decisionNode.addChild(svgArea.text(undefined, undefined, "Condition"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        //****************************
+
+        //****************************
+        // Vertical group with weight.
+        let vgroupWeight = svgArea.vgroup(650, 450, new easygraphics.GroupStylingAttributes(0, 0));
+        vgroupWeight.addChild(svgArea.line(10, 10, 10, 100, new easygraphics.StylingAttributes(3)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 1);
+        vgroupWeight.addChild(svgArea.diamond(undefined, undefined, 20, 20), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 0, -2);
+        vgroupWeight.rotation = 45;
+        //****************************
+
+        //****************************
+        // Positioned aggregation relationship.
+/*        let x1 = 100;
+        let y1 = 450;
+        let x2 = 200;
+        let y2 = 400;
+
+        let width = Math.abs(x2 - x1);
+        let height = Math.abs(y2 - y1);
+        let diamondWidth = 20;
+        let diamondOverlap = -2;
+
+        let aggRelationship = svgArea.vgroup(0, 0, new easygraphics.GroupStylingAttributes(0, 0));
+        aggRelationship.addChild(svgArea.line(0, 0, 0, 1, new easygraphics.StylingAttributes(3)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 1);
+        aggRelationship.addChild(svgArea.diamond(undefined, undefined, diamondWidth, diamondWidth, true, new easygraphics.StylingAttributes(10)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 0, diamondOverlap);
+
+        let lineHeight = 1 + Math.abs(Math.abs(aggRelationship.height - Math.sqrt(width * width + height * height)));
+        aggRelationship.increaseHeightBy(lineHeight);
+
+        let groupX = Math.min(x1, x2) + width / 2 - aggRelationship.width / 2;
+        let groupY = Math.min(y1, y2) - (aggRelationship.height - height) / 2;
+        aggRelationship.x = groupX;
+        aggRelationship.y = groupY;
+
+        let angle = angleBetween2Lines(aggRelationship.x + aggRelationship.width / 2, aggRelationship.y, aggRelationship.x + aggRelationship.width / 2, aggRelationship.y + aggRelationship.height,
+            x1, y1, x2, y2);
+        aggRelationship.rotation = -1 * angle;
+
+        svgArea.rect(x1 - 2, y1 - 2, x1 + 2, y1 + 2);
+        svgArea.rect(x2 - 2, y2 - 2, x2 + 2, y2 + 2);
+        //****************************
+
+
+        console.log(angleBetween2Lines(50, 0, 50, 100, 0, 100, 100, 0));
+        console.log(angleBetween2Lines(50, 0, 50, 100, 0, 0, 100, 100));*/
+
+    })();
+
+    function changeDimensions() {
+        if (umlClass.width > 400) {
+            umlClass.width -= 50;
+        } else {
+            umlClass.width += 10;
+        }
+        umlClass.fitContent = false;
+    }
+
+    function move() {
+        if (umlClass.x > 200) {
+            umlClass.x -= 50;
+        } else {
+            umlClass.x += 10;
+        }
+    }
+
+    function changeStyle() {
+        rect.appearance({
+            fill: "none",
+            stroke: "red",
+            strokeWidth: 2
+        });
+    }
+
+    function changeText() {
+        text.text = randomText();
+    }
+
+    function fitContent() {
+        umlClass.forceFitContent();
+    }
+
+</script>
+
+<button type="button" onclick="changeDimensions()">Change dimensions</button>
+<button type="button" onclick="move()">Move</button>
+<button type="button" onclick="changeStyle()">Change style</button>
+<button type="button" onclick="changeText()">Change text</button>
+<button type="button" onclick="fitContent()">Fit content</button>
+
+</body>
+</html>
