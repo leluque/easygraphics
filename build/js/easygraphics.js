@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 52);
+/******/ 	return __webpack_require__(__webpack_require__.s = 57);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -834,57 +834,13 @@ exports.default = DefaultDrawer;
 
 
 
-/**
- * This class implements a listener for changes in graphical elements.
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ChangeListener = function () {
-  function ChangeListener() {
-    _classCallCheck(this, ChangeListener);
-  }
-
-  _createClass(ChangeListener, [{
-    key: 'update',
-    value: function update(target) {
-      // Update.
-    }
-  }]);
-
-  return ChangeListener;
-}();
-
-exports.default = ChangeListener;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -929,7 +885,7 @@ var GeneralPositionChangeListener = function (_ChangeListener) {
 exports.default = GeneralPositionChangeListener;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -949,7 +905,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -994,6 +950,50 @@ var GeneralDimensionChangeListener = function (_ChangeListener) {
 exports.default = GeneralDimensionChangeListener;
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+/**
+ * This class implements a listener for changes in graphical elements.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ChangeListener = function () {
+  function ChangeListener() {
+    _classCallCheck(this, ChangeListener);
+  }
+
+  _createClass(ChangeListener, [{
+    key: 'update',
+    value: function update(target) {
+      // Update.
+    }
+  }]);
+
+  return ChangeListener;
+}();
+
+exports.default = ChangeListener;
+
+/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1026,7 +1026,7 @@ var _boundingBox = __webpack_require__(2);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _verticalGroupChildChangeListener = __webpack_require__(21);
+var _verticalGroupChildChangeListener = __webpack_require__(23);
 
 var _verticalGroupChildChangeListener2 = _interopRequireDefault(_verticalGroupChildChangeListener);
 
@@ -1994,7 +1994,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultLookAndFeelFactory = __webpack_require__(41);
+var _defaultLookAndFeelFactory = __webpack_require__(45);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
@@ -3085,6 +3085,201 @@ exports.default = Line;
 /* jshint -W097 */
 
 /**
+ * Created by Leandro Luque on 09/01/2018.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _graphicalElement = __webpack_require__(0);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _stylingAttributes = __webpack_require__(1);
+
+var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _boundingBox = __webpack_require__(2);
+
+var _boundingBox2 = _interopRequireDefault(_boundingBox);
+
+var _point = __webpack_require__(22);
+
+var _point2 = _interopRequireDefault(_point);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLine = function (_GraphicalElement) {
+    _inherits(PolyLine, _GraphicalElement);
+
+    function PolyLine() {
+        var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1);
+
+        _classCallCheck(this, PolyLine);
+
+        var _this = _possibleConstructorReturn(this, (PolyLine.__proto__ || Object.getPrototypeOf(PolyLine)).call(this, 0, 0, 0, 0, stylingAttributes));
+
+        _this._idCount = 1;
+        _this._points = [];
+        var coordinates = Array.from(arguments).slice(1);
+        if (Array.isArray(coordinates)) {
+            coordinates = coordinates[0]; // SVGArea may have passed it as an array.
+        }
+
+        for (var i = 0; i < coordinates.length; i += 2) {
+            _this.addPoint(coordinates[i], coordinates[i + 1]);
+        }
+        _this.updateBoundingBox();
+        return _this;
+    }
+
+    _createClass(PolyLine, [{
+        key: 'generateId',
+        value: function generateId() {
+            return "point_" + this._idCount++;
+        }
+    }, {
+        key: 'addPoint',
+        value: function addPoint(x, y) {
+            this._points.push(new _point2.default(x, y, this.generateId()));
+            return true;
+        }
+    }, {
+        key: 'removePointAt',
+        value: function removePointAt(position) {
+            if (position >= 0 && position < this.countPoints()) {
+                this._points.splice(position, 1);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: 'removePoint',
+        value: function removePoint(point) {
+            for (var i = 0; i < this._points.length; i++) {
+                if (this._points[i].id === point.id) {
+                    this.removePointAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: 'removePointById',
+        value: function removePointById(id) {
+            for (var i = 0; i < this._points.length; i++) {
+                if (this._points[i].id === id) {
+                    this.removePointAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+    }, {
+        key: 'countPoints',
+        value: function countPoints() {
+            return this._points.length;
+        }
+    }, {
+        key: 'findBoundingBox',
+        value: function findBoundingBox() {
+            var minX = Number.MAX_SAFE_INTEGER;
+            var minY = Number.MAX_SAFE_INTEGER;
+            var maxX = Number.MIN_SAFE_INTEGER;
+            var maxY = Number.MIN_SAFE_INTEGER;
+            for (var i = 0; i < this.points.length; i++) {
+                if (this._points[i].x < minX) {
+                    minX = this._points[i].x;
+                }
+                if (this._points[i].x > maxX) {
+                    maxX = this._points[i].x;
+                }
+                if (this._points[i].y < minY) {
+                    minY = this._points[i].y;
+                }
+                if (this._points[i].y > maxY) {
+                    maxY = this._points[i].y;
+                }
+            }
+            return new _boundingBox2.default(minX, minY, maxX, maxY);
+        }
+    }, {
+        key: 'updateBoundingBox',
+        value: function updateBoundingBox() {
+            var boundingBox = this.findBoundingBox();
+            this.x1 = boundingBox.x1;
+            this.y1 = boundingBox.y1;
+            this.x2 = boundingBox.x2;
+            this.y2 = boundingBox.y2;
+        }
+    }, {
+        key: 'x1',
+        get: function get() {
+            return this.x;
+        },
+        set: function set(value) {
+            this.x = value;
+        }
+    }, {
+        key: 'y1',
+        get: function get() {
+            return this.y;
+        },
+        set: function set(value) {
+            this.y = value;
+        }
+    }, {
+        key: 'minWidth',
+        get: function get() {
+            if (this.stylingAttributes !== null) {
+                return this.stylingAttributes.strokeWidth;
+            }
+            return 1;
+        }
+    }, {
+        key: 'minHeight',
+        get: function get() {
+            if (this.stylingAttributes !== null) {
+                return this.stylingAttributes.strokeWidth;
+            }
+            return 1;
+        }
+    }, {
+        key: 'points',
+        get: function get() {
+            return this._points;
+        },
+        set: function set(value) {
+            this._points = value;
+        }
+    }]);
+
+    return PolyLine;
+}(_graphicalElement2.default);
+
+exports.default = PolyLine;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
  * Created by Leandro Luque on 08/06/2017.
  */
 
@@ -3208,7 +3403,7 @@ var Image = function (_GraphicalElement) {
 exports.default = Image;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3316,7 +3511,7 @@ var LinearGroup = function (_GraphicalElement) {
 exports.default = LinearGroup;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3336,7 +3531,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -3370,7 +3565,7 @@ var GeneralTransformationChangeListener = function (_ChangeListener) {
 exports.default = GeneralTransformationChangeListener;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3390,7 +3585,100 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _util = __webpack_require__(10);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * This class implements two dimensional points.
+ */
+var Point = function () {
+    function Point() {
+        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
+
+        _classCallCheck(this, Point);
+
+        this._x = x;
+        this._y = y;
+        this._id = id;
+    }
+
+    _createClass(Point, [{
+        key: "rotateAround",
+
+
+        /**
+         * This method rotates "angle" degrees the point around the specified coordinate.
+         * @param centerX The x-coordinate of the rotation center.
+         * @param centerY The y-coordinate of the rotation center.
+         * @param angle The angle in degrees.
+         */
+        value: function rotateAround(centerX, centerY, angle) {
+            // See https://stackoverflow.com/questions/22491178/how-to-rotate-a-point-around-another-point
+            var x1 = this.x - centerX;
+            var y1 = this.y - centerY;
+
+            var x2 = x1 * Math.cos((0, _util.toRadians)(angle)) - y1 * Math.sin((0, _util.toRadians)(angle));
+            var y2 = x1 * Math.sin((0, _util.toRadians)(angle)) + y1 * Math.cos((0, _util.toRadians)(angle));
+
+            this.x = x2 + centerX;
+            this.y = y2 + centerY;
+        }
+    }, {
+        key: "id",
+        get: function get() {
+            return this._id;
+        },
+        set: function set(value) {
+            this._id = value;
+        }
+    }, {
+        key: "x",
+        get: function get() {
+            return this._x;
+        },
+        set: function set(value) {
+            this._x = value;
+        }
+    }, {
+        key: "y",
+        get: function get() {
+            return this._y;
+        },
+        set: function set(value) {
+            this._y = value;
+        }
+    }]);
+
+    return Point;
+}();
+
+exports.default = Point;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -3435,7 +3723,7 @@ var VerticalGroupChildChangeListener = function (_ChangeListener) {
 exports.default = VerticalGroupChildChangeListener;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3453,7 +3741,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3480,7 +3768,7 @@ var RectanglePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = RectanglePositionChangeListener;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3500,7 +3788,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3555,7 +3843,7 @@ var DiamondPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = DiamondPositionChangeListener;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3575,7 +3863,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3614,7 +3902,7 @@ var EllipsePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = EllipsePositionChangeListener;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3632,7 +3920,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3659,7 +3947,7 @@ var ImagePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = ImagePositionChangeListener;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3679,7 +3967,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3719,7 +4007,7 @@ var TextPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = TextPositionChangeListener;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3739,7 +4027,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3778,7 +4066,7 @@ var LinePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = LinePositionChangeListener;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3798,7 +4086,68 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
+
+var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLinePositionChangeListener = function (_GeneralPositionChang) {
+    _inherits(PolyLinePositionChangeListener, _GeneralPositionChang);
+
+    function PolyLinePositionChangeListener() {
+        _classCallCheck(this, PolyLinePositionChangeListener);
+
+        return _possibleConstructorReturn(this, (PolyLinePositionChangeListener.__proto__ || Object.getPrototypeOf(PolyLinePositionChangeListener)).apply(this, arguments));
+    }
+
+    _createClass(PolyLinePositionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            // Construct the path.
+            var path = "M";
+            for (var i = 0; i < target.countPoints(); i++) {
+                path += target.points[i].x + " " + target.points[i].y + " L";
+            }
+            path = path.substring(0, path.length - 2);
+
+            target.drawn.setAttribute("d", path);
+        }
+    }]);
+
+    return PolyLinePositionChangeListener;
+}(_generalPositionChangeListener2.default);
+
+exports.default = PolyLinePositionChangeListener;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -3837,7 +4186,7 @@ var CirclePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = CirclePositionChangeListener;
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3855,7 +4204,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -3882,7 +4231,7 @@ var RectangleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = RectangleDimensionChangeListener;
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3902,7 +4251,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -3957,7 +4306,7 @@ var DiamondDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = DiamondDimensionChangeListener;
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3977,7 +4326,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4016,7 +4365,7 @@ var EllipseDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = EllipseDimensionChangeListener;
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4034,7 +4383,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4061,7 +4410,7 @@ var ImageDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = ImageDimensionChangeListener;
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4079,7 +4428,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4106,7 +4455,7 @@ var TextDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = TextDimensionChangeListener;
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4126,7 +4475,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4165,7 +4514,7 @@ var CircleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = CircleDimensionChangeListener;
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4185,7 +4534,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4228,7 +4577,78 @@ var LineDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = LineDimensionChangeListener;
 
 /***/ }),
-/* 36 */
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 09/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _generalDimensionChangeListener = __webpack_require__(5);
+
+var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolyLineDimensionChangeListener = function (_GeneralDimensionChan) {
+    _inherits(PolyLineDimensionChangeListener, _GeneralDimensionChan);
+
+    function PolyLineDimensionChangeListener() {
+        _classCallCheck(this, PolyLineDimensionChangeListener);
+
+        return _possibleConstructorReturn(this, (PolyLineDimensionChangeListener.__proto__ || Object.getPrototypeOf(PolyLineDimensionChangeListener)).apply(this, arguments));
+    }
+
+    _createClass(PolyLineDimensionChangeListener, [{
+        key: 'changeWidth',
+        value: function changeWidth(target) {
+            this.update(target);
+        }
+    }, {
+        key: 'changeHeight',
+        value: function changeHeight(target) {
+            this.update(target);
+        }
+    }, {
+        key: 'update',
+        value: function update(target) {
+            // Construct the path.
+            var path = "M";
+            for (var i = 0; i < target.countPoints(); i++) {
+                path += target.points[i].x + " " + target.points[i].y + " L";
+            }
+            path = path.substring(0, path.length - 2);
+
+            target.drawn.setAttribute("d", path);
+        }
+    }]);
+
+    return PolyLineDimensionChangeListener;
+}(_generalDimensionChangeListener2.default);
+
+exports.default = PolyLineDimensionChangeListener;
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4246,7 +4666,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalTransformationChangeListener = __webpack_require__(20);
+var _generalTransformationChangeListener = __webpack_require__(21);
 
 var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
 
@@ -4273,7 +4693,7 @@ var VGroupTransformationChangeListener = function (_GeneralTransformatio) {
 exports.default = VGroupTransformationChangeListener;
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4291,7 +4711,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalTransformationChangeListener = __webpack_require__(20);
+var _generalTransformationChangeListener = __webpack_require__(21);
 
 var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
 
@@ -4318,7 +4738,7 @@ var LinearGroupTransformationChangeListener = function (_GeneralTransformatio) {
 exports.default = LinearGroupTransformationChangeListener;
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4338,7 +4758,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -4380,7 +4800,7 @@ var TextChangeListener = function (_ChangeListener) {
 exports.default = TextChangeListener;
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4400,7 +4820,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -4437,7 +4857,7 @@ var FontChangeListener = function (_ChangeListener) {
 exports.default = FontChangeListener;
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4457,7 +4877,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -4491,7 +4911,7 @@ var StyleChangeListener = function (_ChangeListener) {
 exports.default = StyleChangeListener;
 
 /***/ }),
-/* 41 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4515,7 +4935,7 @@ var _circle = __webpack_require__(11);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _defaultCircleDrawer = __webpack_require__(42);
+var _defaultCircleDrawer = __webpack_require__(46);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
@@ -4523,7 +4943,7 @@ var _ellipse = __webpack_require__(12);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _defaultEllipseDrawer = __webpack_require__(43);
+var _defaultEllipseDrawer = __webpack_require__(47);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
@@ -4531,7 +4951,7 @@ var _rectangle = __webpack_require__(13);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _defaultRectangleDrawer = __webpack_require__(44);
+var _defaultRectangleDrawer = __webpack_require__(48);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
@@ -4539,7 +4959,7 @@ var _diamond = __webpack_require__(14);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _defaultDiamondDrawer = __webpack_require__(45);
+var _defaultDiamondDrawer = __webpack_require__(49);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
@@ -4547,7 +4967,7 @@ var _text = __webpack_require__(15);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _defaultTextDrawer = __webpack_require__(46);
+var _defaultTextDrawer = __webpack_require__(50);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
@@ -4555,15 +4975,15 @@ var _verticalGroup = __webpack_require__(7);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(47);
+var _defaultVerticalGroupDrawer = __webpack_require__(51);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _linearGroup = __webpack_require__(19);
+var _linearGroup = __webpack_require__(20);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
-var _defaultLinearGroupDrawer = __webpack_require__(48);
+var _defaultLinearGroupDrawer = __webpack_require__(52);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
@@ -4571,15 +4991,15 @@ var _line = __webpack_require__(17);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _defaultLineDrawer = __webpack_require__(49);
+var _defaultLineDrawer = __webpack_require__(53);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
-var _image = __webpack_require__(18);
+var _image = __webpack_require__(19);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _defaultImageDrawer = __webpack_require__(50);
+var _defaultImageDrawer = __webpack_require__(54);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
@@ -4587,7 +5007,7 @@ var _defaultPolylineDrawer = __webpack_require__(55);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
-var _polyline = __webpack_require__(58);
+var _polyline = __webpack_require__(18);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
@@ -4636,7 +5056,7 @@ var DefaultLookAndFeelFactory = function () {
 exports.default = DefaultLookAndFeelFactory;
 
 /***/ }),
-/* 42 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4698,7 +5118,7 @@ var DefaultCircleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultCircleDrawer;
 
 /***/ }),
-/* 43 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4761,7 +5181,7 @@ var DefaultEllipseDrawer = function (_DefaultDrawer) {
 exports.default = DefaultEllipseDrawer;
 
 /***/ }),
-/* 44 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4823,7 +5243,7 @@ var DefaultRectangleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultRectangleDrawer;
 
 /***/ }),
-/* 45 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4893,7 +5313,7 @@ var DefaultDiamondDrawer = function (_DefaultDrawer) {
 exports.default = DefaultDiamondDrawer;
 
 /***/ }),
-/* 46 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4972,7 +5392,7 @@ var DefaultTextDrawer = function (_DefaultDrawer) {
 exports.default = DefaultTextDrawer;
 
 /***/ }),
-/* 47 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5055,7 +5475,7 @@ var DefaultVerticalGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultVerticalGroupDrawer;
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5138,7 +5558,7 @@ var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLinearGroupDrawer;
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5202,7 +5622,7 @@ var DefaultLineDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLineDrawer;
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5265,7 +5685,79 @@ var DefaultImageDrawer = function (_DefaultDrawer) {
 exports.default = DefaultImageDrawer;
 
 /***/ }),
-/* 51 */
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _defaultDrawer = __webpack_require__(3);
+
+var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DefaultPolyLineDrawer = function (_DefaultDrawer) {
+    _inherits(DefaultPolyLineDrawer, _DefaultDrawer);
+
+    function DefaultPolyLineDrawer() {
+        _classCallCheck(this, DefaultPolyLineDrawer);
+
+        return _possibleConstructorReturn(this, (DefaultPolyLineDrawer.__proto__ || Object.getPrototypeOf(DefaultPolyLineDrawer)).apply(this, arguments));
+    }
+
+    _createClass(DefaultPolyLineDrawer, [{
+        key: 'draw',
+        value: function draw(element) {
+            var newPath = document.createElementNS(this.svgArea.namespace, "path");
+            newPath.setAttribute("id", element.id);
+
+            // Construct the path.
+            var path = DefaultPolyLineDrawer.generatePath(element);
+
+            newPath.setAttribute("d", path);
+            newPath.setAttribute("style", element.stylingAttributes.toString());
+            newPath.setAttribute("shape-rendering", "geometricPrecision");
+            return newPath;
+        }
+    }], [{
+        key: 'generatePath',
+        value: function generatePath(polyLine) {
+            var path = "M";
+            for (var i = 0; i < polyLine.countPoints(); i++) {
+                path += polyLine.points[i].x + " " + polyLine.points[i].y + " L";
+            }
+            return path.substring(0, path.length - 2);
+        }
+    }]);
+
+    return DefaultPolyLineDrawer;
+}(_defaultDrawer2.default);
+
+exports.default = DefaultPolyLineDrawer;
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5289,11 +5781,11 @@ var _circle = __webpack_require__(11);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _circleDimensionChangeListener = __webpack_require__(34);
+var _circleDimensionChangeListener = __webpack_require__(37);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(28);
+var _circlePositionChangeListener = __webpack_require__(31);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
@@ -5301,11 +5793,11 @@ var _ellipse = __webpack_require__(12);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _ellipseDimensionChangeListener = __webpack_require__(31);
+var _ellipseDimensionChangeListener = __webpack_require__(34);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(24);
+var _ellipsePositionChangeListener = __webpack_require__(26);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
@@ -5313,11 +5805,11 @@ var _rectangle = __webpack_require__(13);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _rectangleDimensionChangeListener = __webpack_require__(29);
+var _rectangleDimensionChangeListener = __webpack_require__(32);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(22);
+var _rectanglePositionChangeListener = __webpack_require__(24);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
@@ -5325,11 +5817,11 @@ var _diamond = __webpack_require__(14);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _diamondDimensionChangeListener = __webpack_require__(30);
+var _diamondDimensionChangeListener = __webpack_require__(33);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(23);
+var _diamondPositionChangeListener = __webpack_require__(25);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
@@ -5337,31 +5829,31 @@ var _text2 = __webpack_require__(15);
 
 var _text3 = _interopRequireDefault(_text2);
 
-var _textDimensionChangeListener = __webpack_require__(33);
+var _textDimensionChangeListener = __webpack_require__(36);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(26);
+var _textPositionChangeListener = __webpack_require__(28);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _textChangeListener = __webpack_require__(38);
+var _textChangeListener = __webpack_require__(42);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(39);
+var _fontChangeListener = __webpack_require__(43);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _image2 = __webpack_require__(18);
+var _image2 = __webpack_require__(19);
 
 var _image3 = _interopRequireDefault(_image2);
 
-var _imageDimensionChangeListener = __webpack_require__(32);
+var _imageDimensionChangeListener = __webpack_require__(35);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(25);
+var _imagePositionChangeListener = __webpack_require__(27);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
@@ -5369,15 +5861,15 @@ var _verticalGroup = __webpack_require__(7);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _vgroupTransformationChangeListener = __webpack_require__(36);
+var _vgroupTransformationChangeListener = __webpack_require__(40);
 
 var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
 
-var _linearGroup = __webpack_require__(19);
+var _linearGroup = __webpack_require__(20);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
-var _linearGroupTransformationChangeListener = __webpack_require__(37);
+var _linearGroupTransformationChangeListener = __webpack_require__(41);
 
 var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
 
@@ -5385,15 +5877,15 @@ var _line = __webpack_require__(17);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _lineDimensionChangeListener = __webpack_require__(35);
+var _lineDimensionChangeListener = __webpack_require__(38);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(27);
+var _linePositionChangeListener = __webpack_require__(29);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(40);
+var _styleChangeListener = __webpack_require__(44);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -5413,15 +5905,15 @@ var _stylingAttributes = __webpack_require__(1);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _polylineDimensionChangeListener = __webpack_require__(57);
+var _polylineDimensionChangeListener = __webpack_require__(39);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(56);
+var _polylinePositionChangeListener = __webpack_require__(30);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _polyline = __webpack_require__(58);
+var _polyline = __webpack_require__(18);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
@@ -5751,7 +6243,6 @@ var SVGArea = function () {
                         //*****************************
                         // Create a new line and set its id.
                         var coordinates = Array.from(arguments).slice(1);
-                        alert(coordinates.length);
                         var newPolyline = new _polyline2.default(stylingAttributes, coordinates);
                         newPolyline.id = this.generateId();
 
@@ -5822,7 +6313,7 @@ var SVGArea = function () {
 exports.default = SVGArea;
 
 /***/ }),
-/* 52 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5837,7 +6328,7 @@ var _util = __webpack_require__(10);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _point = __webpack_require__(53);
+var _point = __webpack_require__(22);
 
 var _point2 = _interopRequireDefault(_point);
 
@@ -5873,11 +6364,11 @@ var _line = __webpack_require__(17);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _polyline = __webpack_require__(58);
+var _polyline = __webpack_require__(18);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
-var _image = __webpack_require__(18);
+var _image = __webpack_require__(19);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -5885,15 +6376,15 @@ var _verticalGroup = __webpack_require__(7);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _changeListener = __webpack_require__(4);
+var _changeListener = __webpack_require__(6);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _verticalGroupChildChangeListener = __webpack_require__(21);
+var _verticalGroupChildChangeListener = __webpack_require__(23);
 
 var _verticalGroupChildChangeListener2 = _interopRequireDefault(_verticalGroupChildChangeListener);
 
-var _linearGroup = __webpack_require__(19);
+var _linearGroup = __webpack_require__(20);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
@@ -5909,99 +6400,99 @@ var _fontStylingAttributes = __webpack_require__(16);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(22);
+var _rectanglePositionChangeListener = __webpack_require__(24);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(23);
+var _diamondPositionChangeListener = __webpack_require__(25);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(24);
+var _ellipsePositionChangeListener = __webpack_require__(26);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(25);
+var _imagePositionChangeListener = __webpack_require__(27);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(26);
+var _textPositionChangeListener = __webpack_require__(28);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(27);
+var _linePositionChangeListener = __webpack_require__(29);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(56);
+var _polylinePositionChangeListener = __webpack_require__(30);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(28);
+var _circlePositionChangeListener = __webpack_require__(31);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _rectangleDimensionChangeListener = __webpack_require__(29);
+var _rectangleDimensionChangeListener = __webpack_require__(32);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _diamondDimensionChangeListener = __webpack_require__(30);
+var _diamondDimensionChangeListener = __webpack_require__(33);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _ellipseDimensionChangeListener = __webpack_require__(31);
+var _ellipseDimensionChangeListener = __webpack_require__(34);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _imageDimensionChangeListener = __webpack_require__(32);
+var _imageDimensionChangeListener = __webpack_require__(35);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
-var _textDimensionChangeListener = __webpack_require__(33);
+var _textDimensionChangeListener = __webpack_require__(36);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _circleDimensionChangeListener = __webpack_require__(34);
+var _circleDimensionChangeListener = __webpack_require__(37);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _lineDimensionChangeListener = __webpack_require__(35);
+var _lineDimensionChangeListener = __webpack_require__(38);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _polylineDimensionChangeListener = __webpack_require__(57);
+var _polylineDimensionChangeListener = __webpack_require__(39);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
-var _generalTransformationChangeListener = __webpack_require__(20);
+var _generalTransformationChangeListener = __webpack_require__(21);
 
 var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
 
-var _vgroupTransformationChangeListener = __webpack_require__(36);
+var _vgroupTransformationChangeListener = __webpack_require__(40);
 
 var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
 
-var _linearGroupTransformationChangeListener = __webpack_require__(37);
+var _linearGroupTransformationChangeListener = __webpack_require__(41);
 
 var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
 
-var _textChangeListener = __webpack_require__(38);
+var _textChangeListener = __webpack_require__(42);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(39);
+var _fontChangeListener = __webpack_require__(43);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _styleChangeListener = __webpack_require__(40);
+var _styleChangeListener = __webpack_require__(44);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6013,31 +6504,31 @@ var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _defaultLookAndFeelFactory = __webpack_require__(41);
+var _defaultLookAndFeelFactory = __webpack_require__(45);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
-var _defaultCircleDrawer = __webpack_require__(42);
+var _defaultCircleDrawer = __webpack_require__(46);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
-var _defaultEllipseDrawer = __webpack_require__(43);
+var _defaultEllipseDrawer = __webpack_require__(47);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
-var _defaultRectangleDrawer = __webpack_require__(44);
+var _defaultRectangleDrawer = __webpack_require__(48);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
-var _defaultDiamondDrawer = __webpack_require__(45);
+var _defaultDiamondDrawer = __webpack_require__(49);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
-var _defaultTextDrawer = __webpack_require__(46);
+var _defaultTextDrawer = __webpack_require__(50);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
-var _defaultLineDrawer = __webpack_require__(49);
+var _defaultLineDrawer = __webpack_require__(53);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
@@ -6045,23 +6536,23 @@ var _defaultPolylineDrawer = __webpack_require__(55);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
-var _defaultImageDrawer = __webpack_require__(50);
+var _defaultImageDrawer = __webpack_require__(54);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(47);
+var _defaultVerticalGroupDrawer = __webpack_require__(51);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _defaultLinearGroupDrawer = __webpack_require__(48);
+var _defaultLinearGroupDrawer = __webpack_require__(52);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
-var _svgArea = __webpack_require__(51);
+var _svgArea = __webpack_require__(56);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 
-var _area = __webpack_require__(54);
+var _area = __webpack_require__(58);
 
 var _area2 = _interopRequireDefault(_area);
 
@@ -6085,100 +6576,7 @@ exports.Ellipse = _ellipse2.default;
 // Graphical primitives.
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(10);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * This class implements two dimensional points.
- */
-var Point = function () {
-    function Point() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -1;
-
-        _classCallCheck(this, Point);
-
-        this._x = x;
-        this._y = y;
-        this._id = id;
-    }
-
-    _createClass(Point, [{
-        key: "rotateAround",
-
-
-        /**
-         * This method rotates "angle" degrees the point around the specified coordinate.
-         * @param centerX The x-coordinate of the rotation center.
-         * @param centerY The y-coordinate of the rotation center.
-         * @param angle The angle in degrees.
-         */
-        value: function rotateAround(centerX, centerY, angle) {
-            // See https://stackoverflow.com/questions/22491178/how-to-rotate-a-point-around-another-point
-            var x1 = this.x - centerX;
-            var y1 = this.y - centerY;
-
-            var x2 = x1 * Math.cos((0, _util.toRadians)(angle)) - y1 * Math.sin((0, _util.toRadians)(angle));
-            var y2 = x1 * Math.sin((0, _util.toRadians)(angle)) + y1 * Math.cos((0, _util.toRadians)(angle));
-
-            this.x = x2 + centerX;
-            this.y = y2 + centerY;
-        }
-    }, {
-        key: "id",
-        get: function get() {
-            return this._id;
-        },
-        set: function set(value) {
-            this._id = value;
-        }
-    }, {
-        key: "x",
-        get: function get() {
-            return this._x;
-        },
-        set: function set(value) {
-            this._x = value;
-        }
-    }, {
-        key: "y",
-        get: function get() {
-            return this._y;
-        },
-        set: function set(value) {
-            this._y = value;
-        }
-    }]);
-
-    return Point;
-}();
-
-exports.default = Point;
-
-/***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6198,7 +6596,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _svgArea = __webpack_require__(51);
+var _svgArea = __webpack_require__(56);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 
@@ -6230,407 +6628,6 @@ var Area = function () {
 }();
 
 exports.default = Area;
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _defaultDrawer = __webpack_require__(3);
-
-var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DefaultPolyLineDrawer = function (_DefaultDrawer) {
-    _inherits(DefaultPolyLineDrawer, _DefaultDrawer);
-
-    function DefaultPolyLineDrawer() {
-        _classCallCheck(this, DefaultPolyLineDrawer);
-
-        return _possibleConstructorReturn(this, (DefaultPolyLineDrawer.__proto__ || Object.getPrototypeOf(DefaultPolyLineDrawer)).apply(this, arguments));
-    }
-
-    _createClass(DefaultPolyLineDrawer, [{
-        key: 'draw',
-        value: function draw(element) {
-            var newPath = document.createElementNS(this.svgArea.namespace, "path");
-            newPath.setAttribute("id", element.id);
-
-            // Construct the path.
-            var path = DefaultPolyLineDrawer.generatePath(element);
-            console.log(path);
-
-            newPath.setAttribute("d", path);
-            newPath.setAttribute("style", element.stylingAttributes.toString());
-            newPath.setAttribute("shape-rendering", "geometricPrecision");
-            return newPath;
-        }
-    }], [{
-        key: 'generatePath',
-        value: function generatePath(polyLine) {
-            var path = "M";
-            for (var i = 0; i < polyLine.countPoints(); i++) {
-                path += polyLine.points[i].x + " " + polyLine.points[i].y + " L";
-            }
-            return path.substring(0, path.length - 2);
-        }
-    }]);
-
-    return DefaultPolyLineDrawer;
-}(_defaultDrawer2.default);
-
-exports.default = DefaultPolyLineDrawer;
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _generalPositionChangeListener = __webpack_require__(5);
-
-var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var PolyLinePositionChangeListener = function (_GeneralPositionChang) {
-    _inherits(PolyLinePositionChangeListener, _GeneralPositionChang);
-
-    function PolyLinePositionChangeListener() {
-        _classCallCheck(this, PolyLinePositionChangeListener);
-
-        return _possibleConstructorReturn(this, (PolyLinePositionChangeListener.__proto__ || Object.getPrototypeOf(PolyLinePositionChangeListener)).apply(this, arguments));
-    }
-
-    _createClass(PolyLinePositionChangeListener, [{
-        key: 'update',
-        value: function update(target) {
-            // Construct the path.
-            var path = "M";
-            for (var i = 0; i < target.countPoints(); i++) {
-                path += target.points[i].x + " " + target.points[i].y + " L";
-            }
-            path = path.substring(0, path.length - 2);
-
-            target.drawn.setAttribute("d", path);
-        }
-    }]);
-
-    return PolyLinePositionChangeListener;
-}(_generalPositionChangeListener2.default);
-
-exports.default = PolyLinePositionChangeListener;
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 09/01/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _generalDimensionChangeListener = __webpack_require__(6);
-
-var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var PolyLineDimensionChangeListener = function (_GeneralDimensionChan) {
-    _inherits(PolyLineDimensionChangeListener, _GeneralDimensionChan);
-
-    function PolyLineDimensionChangeListener() {
-        _classCallCheck(this, PolyLineDimensionChangeListener);
-
-        return _possibleConstructorReturn(this, (PolyLineDimensionChangeListener.__proto__ || Object.getPrototypeOf(PolyLineDimensionChangeListener)).apply(this, arguments));
-    }
-
-    _createClass(PolyLineDimensionChangeListener, [{
-        key: 'changeWidth',
-        value: function changeWidth(target) {
-            this.update(target);
-        }
-    }, {
-        key: 'changeHeight',
-        value: function changeHeight(target) {
-            this.update(target);
-        }
-    }, {
-        key: 'update',
-        value: function update(target) {
-            // Construct the path.
-            var path = "M";
-            for (var i = 0; i < target.countPoints(); i++) {
-                path += target.points[i].x + " " + target.points[i].y + " L";
-            }
-            path = path.substring(0, path.length - 2);
-
-            target.drawn.setAttribute("d", path);
-        }
-    }]);
-
-    return PolyLineDimensionChangeListener;
-}(_generalDimensionChangeListener2.default);
-
-exports.default = PolyLineDimensionChangeListener;
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 09/01/2018.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _graphicalElement = __webpack_require__(0);
-
-var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
-
-var _stylingAttributes = __webpack_require__(1);
-
-var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
-
-var _boundingBox = __webpack_require__(2);
-
-var _boundingBox2 = _interopRequireDefault(_boundingBox);
-
-var _point = __webpack_require__(53);
-
-var _point2 = _interopRequireDefault(_point);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var PolyLine = function (_GraphicalElement) {
-    _inherits(PolyLine, _GraphicalElement);
-
-    function PolyLine() {
-        var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1);
-
-        _classCallCheck(this, PolyLine);
-
-        var _this = _possibleConstructorReturn(this, (PolyLine.__proto__ || Object.getPrototypeOf(PolyLine)).call(this, 0, 0, 0, 0, stylingAttributes));
-
-        _this._idCount = 1;
-        _this._points = [];
-        var coordinates = Array.from(arguments).slice(1);
-        if (Array.isArray(coordinates)) {
-            coordinates = coordinates[0]; // SVGArea may have passed it as an array.
-        }
-
-        for (var i = 0; i < coordinates.length; i += 2) {
-            _this.addPoint(coordinates[i], coordinates[i + 1]);
-            console.log("new point at: (" + coordinates[i] + "," + coordinates[i + 1] + ")");
-        }
-        _this.updateBoundingBox();
-        return _this;
-    }
-
-    _createClass(PolyLine, [{
-        key: 'generateId',
-        value: function generateId() {
-            return "point_" + this._idCount++;
-        }
-    }, {
-        key: 'addPoint',
-        value: function addPoint(x, y) {
-            this._points.push(new _point2.default(x, y, this.generateId()));
-            return true;
-        }
-    }, {
-        key: 'removePointAt',
-        value: function removePointAt(position) {
-            if (position >= 0 && position < this.countPoints()) {
-                this._points.splice(position, 1);
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'removePoint',
-        value: function removePoint(point) {
-            for (var i = 0; i < this._points.length; i++) {
-                if (this._points[i].id === point.id) {
-                    this.removePointAt(i);
-                    return true;
-                }
-            }
-            return false;
-        }
-    }, {
-        key: 'removePointById',
-        value: function removePointById(id) {
-            for (var i = 0; i < this._points.length; i++) {
-                if (this._points[i].id === id) {
-                    this.removePointAt(i);
-                    return true;
-                }
-            }
-            return false;
-        }
-    }, {
-        key: 'countPoints',
-        value: function countPoints() {
-            return this._points.length;
-        }
-    }, {
-        key: 'findBoundingBox',
-        value: function findBoundingBox() {
-            var minX = Number.MAX_SAFE_INTEGER;
-            var minY = Number.MAX_SAFE_INTEGER;
-            var maxX = Number.MIN_SAFE_INTEGER;
-            var maxY = Number.MIN_SAFE_INTEGER;
-            for (var i = 0; i < this.points.length; i++) {
-                if (this._points[i].x < minX) {
-                    minX = this._points[i].x;
-                }
-                if (this._points[i].x > maxX) {
-                    maxX = this._points[i].x;
-                }
-                if (this._points[i].y < minY) {
-                    minY = this._points[i].y;
-                }
-                if (this._points[i].y > maxY) {
-                    maxY = this._points[i].y;
-                }
-            }
-            return new _boundingBox2.default(minX, minY, maxX, maxY);
-        }
-    }, {
-        key: 'updateBoundingBox',
-        value: function updateBoundingBox() {
-            var boundingBox = this.findBoundingBox();
-            this.x1 = boundingBox.x1;
-            this.y1 = boundingBox.y1;
-            this.x2 = boundingBox.x2;
-            this.y2 = boundingBox.y2;
-        }
-    }, {
-        key: 'x1',
-        get: function get() {
-            return this.x;
-        },
-        set: function set(value) {
-            this.x = value;
-        }
-    }, {
-        key: 'y1',
-        get: function get() {
-            return this.y;
-        },
-        set: function set(value) {
-            this.y = value;
-        }
-    }, {
-        key: 'minWidth',
-        get: function get() {
-            if (this.stylingAttributes !== null) {
-                return this.stylingAttributes.strokeWidth;
-            }
-            return 1;
-        }
-    }, {
-        key: 'minHeight',
-        get: function get() {
-            if (this.stylingAttributes !== null) {
-                return this.stylingAttributes.strokeWidth;
-            }
-            return 1;
-        }
-    }, {
-        key: 'points',
-        get: function get() {
-            return this._points;
-        },
-        set: function set(value) {
-            this._points = value;
-        }
-    }]);
-
-    return PolyLine;
-}(_graphicalElement2.default);
-
-exports.default = PolyLine;
 
 /***/ })
 /******/ ]);

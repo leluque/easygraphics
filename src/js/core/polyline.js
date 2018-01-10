@@ -26,7 +26,6 @@ export default class PolyLine extends GraphicalElement {
 
         for (let i = 0; i < coordinates.length; i += 2) {
             this.addPoint(coordinates[i], coordinates[i + 1]);
-            console.log("new point at: (" + coordinates[i] + "," + coordinates[i + 1] + ")");
         }
         this.updateBoundingBox();
     }

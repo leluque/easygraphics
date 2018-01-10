@@ -328,7 +328,6 @@ export default class SVGArea {
         //*****************************
         // Create a new line and set its id.
         let coordinates = Array.from(arguments).slice(1);
-        alert(coordinates.length);
         let newPolyline = new PolyLine(stylingAttributes, coordinates);
         newPolyline.id = this.generateId();
 

@@ -18,7 +18,6 @@ export default class DefaultPolyLineDrawer extends DefaultDrawer {
 
         // Construct the path.
         let path = DefaultPolyLineDrawer.generatePath(element);
-        console.log(path);
 
         newPath.setAttribute("d", path);
         newPath.setAttribute("style", element.stylingAttributes.toString());
