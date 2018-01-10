@@ -19,6 +19,8 @@ import LinearGroup from "./src/js/core/linear-group.js";
 import StylingAttributes from "./src/js/core/styling-attributes.js";
 import GroupStylingAttributes from "./src/js/core/group-styling-attributes.js";
 import FontStylingAttributes from "./src/js/core/font-styling-attributes.js";
+import GraphicalElementDecorator from "./src/js/core/graphical-element-decorator.js";
+import BoxVerticesDecorator from "./src/js/core/box-vertices-decorator.js";
 // SVG implementation.
 import GeneralPositionChangeListener from "./src/js/svg/general-position-change-listener.js";
 import RectanglePositionChangeListener from "./src/js/svg/rectangle-position-change-listener.js";
@@ -57,10 +59,11 @@ import DefaultPolyLineDrawer from "./src/js/svg/default-polyline-drawer.js";
 import DefaultImageDrawer from "./src/js/svg/default-image-drawer.js";
 import DefaultVerticalGroupDrawer from "./src/js/svg/default-vertical-group-drawer.js";
 import DefaultLinearGroupDrawer from "./src/js/svg/default-linear-group-drawer.js";
+import DefaultBoxVerticesDecoratorDrawer from "./src/js/svg/default-box-vertices-decorator-drawer.js";
 import SVGArea from './src/js/svg/svg-area.js';
 
 // General.
 import Area from './src/js/core/area.js';
 
-export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area, Ellipse }
+export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area, Ellipse, BoxVerticesDecorator }
 // export { A, B, C, D, E, ... }

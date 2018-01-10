@@ -28,6 +28,8 @@ import Image from '../core/image.js';
 import DefaultImageDrawer from './default-image-drawer.js';
 import DefaultPolyLineDrawer from "./default-polyline-drawer";
 import PolyLine from "../core/polyline";
+import BoxVerticesDecorator from "../core/box-vertices-decorator";
+import DefaultBoxDecoratorVerticesDrawer from "./default-box-vertices-decorator-drawer";
 
 /**
  * This class implements a default look and feel factory.
@@ -55,6 +57,8 @@ export default class DefaultLookAndFeelFactory {
             return new DefaultPolyLineDrawer();
         } else if (element instanceof Image) {
             return new DefaultImageDrawer();
+        } else if (element instanceof BoxVerticesDecorator) {
+            return new DefaultBoxDecoratorVerticesDrawer();
         }
     }
 

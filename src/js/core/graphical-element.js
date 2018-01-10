@@ -16,7 +16,7 @@ import StylingAttributes from './styling-attributes.js';
  */
 export default class GraphicalElement {
 
-    constructor(x = 0, y = 0, width = 0, height = 0, stylingAttributes = new StylingAttributes(), id = -1) {
+     constructor(x = 0, y = 0, width = 0, height = 0, stylingAttributes = new StylingAttributes(), id = -1) {
         this._x = x;
         this._y = y;
         this._minWidth = 1;
@@ -34,8 +34,8 @@ export default class GraphicalElement {
                                               // Any value greater than 0 means a recursive call to
                                               // disable change notifications.
         this._rotation = 0; // Rotation angle in degrees.
-        this._rotationCenterX = this.x + this.width / 2; // The rotation point x coordinate.
-        this._rotationCenterY = this.y + this.height / 2; // The rotation point y coordinate.
+        this._rotationCenterX = x + width / 2; // The rotation point x coordinate.
+        this._rotationCenterY = y + height / 2; // The rotation point y coordinate.
 
         // Events.
         this._onClick = null;

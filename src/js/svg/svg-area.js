@@ -43,6 +43,7 @@ import StylingAttributes from '../core/styling-attributes.js';
 import PolyLineDimensionChangeListener from "./polyline-dimension-change-listener";
 import PolyLinePositionChangeListener from "./polyline-position-change-listener";
 import PolyLine from "../core/polyline";
+import BoxVerticesDecorator from "../core/box-vertices-decorator";
 
 export default class SVGArea {
 
@@ -348,6 +349,29 @@ export default class SVGArea {
         this.registerEvents(newPolyline, drawnLine);
 
         return this.addElement(newPolyline);
+    }
+
+    boxverticesdecorator(decorated) {
+        //*****************************
+        // Create a new box vertices decorator and set its id.
+        let newBoxVerticesDecorator = new BoxVerticesDecorator(decorated);
+        newBoxVerticesDecorator.id = this.generateId();
+
+        //*****************************
+        // Add change listeners.
+        //newBoxVerticesDecorator.addChangeListener(new BoxVerticesDecoratorDimensionChangeListener());
+
+        let lookAndFeel = new LookAndFeel();
+        let drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
+        drawer.svgArea = this;
+        var drawnVGroup = drawer.draw(newBoxVerticesDecorator);
+        this.svg.appendChild(drawnVGroup);
+
+        newBoxVerticesDecorator.drawn = drawnVGroup;
+
+        // this.registerEvents(newBoxVerticesDecorator, drawnVGroup);
+
+        return this.addElement(newBoxVerticesDecorator);
     }
 
     registerEvents(model, drawn) {
