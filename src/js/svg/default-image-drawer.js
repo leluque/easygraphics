@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import StyleChangeListener from "./style-change-listener";
+import ImagePositionChangeListener from "./image-position-change-listener";
+import ImageDimensionChangeListener from "./image-dimension-change-listener";
 
 export default class DefaultImageDrawer extends DefaultDrawer {
 
@@ -22,6 +25,13 @@ export default class DefaultImageDrawer extends DefaultDrawer {
         newImage.setAttribute("style", element.stylingAttributes.toString());
         newImage.setAttribute("visibility", "visible");
         newImage.setAttributeNS('http://www.w3.org/1999/xlink', 'href', element.image);
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new ImageDimensionChangeListener());
+        element.addChangeListener(new ImagePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
+
         return newImage;
     }
 

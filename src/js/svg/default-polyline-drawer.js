@@ -9,8 +9,19 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import PolyLineDimensionChangeListener from "./polyline-dimension-change-listener";
+import PolyLinePositionChangeListener from "./polyline-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultPolyLineDrawer extends DefaultDrawer {
+
+    static generatePath(polyLine) {
+        let path = "M";
+        for (let i = 0; i < polyLine.countPoints(); i++) {
+            path += polyLine.points[i].x + " " + polyLine.points[i].y + " L";
+        }
+        return path.substring(0, path.length - 2);
+    }
 
     draw(element) {
         let newPath = document.createElementNS(this.svgArea.namespace, "path");
@@ -22,15 +33,14 @@ export default class DefaultPolyLineDrawer extends DefaultDrawer {
         newPath.setAttribute("d", path);
         newPath.setAttribute("style", element.stylingAttributes.toString());
         newPath.setAttribute("shape-rendering", "geometricPrecision");
-        return newPath;
-    }
 
-    static generatePath(polyLine) {
-        let path = "M";
-        for (let i = 0; i < polyLine.countPoints(); i++) {
-            path += polyLine.points[i].x + " " + polyLine.points[i].y + " L";
-        }
-        return path.substring(0, path.length - 2);
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new PolyLineDimensionChangeListener());
+        element.addChangeListener(new PolyLinePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
+
+        return newPath;
     }
 
 }

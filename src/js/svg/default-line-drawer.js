@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import LineDimensionChangeListener from "./line-dimension-change-listener";
+import LinePositionChangeListener from "./line-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultLineDrawer extends DefaultDrawer {
 
@@ -23,6 +26,13 @@ export default class DefaultLineDrawer extends DefaultDrawer {
         newLine.setAttribute("y2", element.y2 - element.borderSize);
         newLine.setAttribute("style", element.stylingAttributes.toString());
         newLine.setAttribute("shape-rendering", "geometricPrecision");
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new LineDimensionChangeListener());
+        element.addChangeListener(new LinePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
+
         return newLine;
     }
 

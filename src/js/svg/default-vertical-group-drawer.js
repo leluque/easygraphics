@@ -10,6 +10,7 @@
 
 import DefaultDrawer from './default-drawer.js';
 import LookAndFeel from './look-and-feel.js';
+import VGroupTransformationChangeListener from "./vgroup-transformation-change-listener";
 
 export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
@@ -32,12 +33,17 @@ export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
         let i = 0;
         for (i = 0; i < element.countChildren(); i++) {
             let child = element.getChildAt(i);
-            let drawer = lookAndFeel.getDrawerFor(child);
-            drawer.svgArea = this.svgArea;
-            var drawnChild = drawer.draw(child);
-            child.drawn = drawnChild;
-            newGroup.appendChild(drawnChild);
+            //let drawer = lookAndFeel.getDrawerFor(child);
+            //drawer.svgArea = this.svgArea;
+            //var drawnChild = drawer.draw(child);
+            //child.drawn = drawnChild;
+            //newGroup.appendChild(drawnChild);
+            newGroup.appendChild(child.drawn);
         }
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new VGroupTransformationChangeListener());
 
         return newGroup;
     }

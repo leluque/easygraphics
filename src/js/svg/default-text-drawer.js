@@ -9,6 +9,11 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import TextDimensionChangeListener from "./text-dimension-change-listener";
+import TextPositionChangeListener from "./text-position-change-listener";
+import TextChangeListener from "./text-change-listener";
+import FontChangeListener from "./font-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultTextDrawer extends DefaultDrawer {
 
@@ -37,6 +42,14 @@ export default class DefaultTextDrawer extends DefaultDrawer {
 
         var textNode = document.createTextNode(element.text);
         newText.appendChild(textNode);
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new TextDimensionChangeListener());
+        element.addChangeListener(new TextPositionChangeListener());
+        element.addChangeListener(new TextChangeListener());
+        element.addChangeListener(new FontChangeListener());
+        element.addChangeListener(new StyleChangeListener());
 
         return newText;
     }

@@ -30,4 +30,4 @@ export default class VerticalGroupChildChangeListener
         this.vgroup.readjustDimensions();
     }
 
-	}
+}

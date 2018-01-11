@@ -38,9 +38,16 @@
     // var circle;
     var umlClass;
     var node;
+	var umlUseCase;
+	var ellipse;
+	var circle1;
+	var ellipse1;
 	
     (function () {
         let svgArea = new easygraphics.Area.init("#svg");
+		svgArea.onClick = function() {
+			console.log('Clicked on the area');
+		}
 
         //****************************
         // Circle boundaries.
@@ -92,7 +99,7 @@
 
         //****************************
         // UML Use Case.
-        let umlUseCase = svgArea.vgroup(160, 320);
+        umlUseCase = svgArea.vgroup(160, 320);
         umlUseCase.frame = svgArea.ellipse();
         let uctext = svgArea.text(undefined, undefined, "U.C.");
         umlUseCase.addChild(uctext, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
@@ -110,7 +117,8 @@
         umlUseCase1.addChild(svgArea.text(undefined, undefined, "Yet another use case"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         //****************************
 		
-		let circle1 = svgArea.circle(100, 500, 100);
+		circle1 = svgArea.circle(100, 500, 100);
+		ellipse1 = svgArea.ellipse(20, 600, 100, 50);
 		
 		function teste() { alert('Clicou no círculo.'); }
 		circle1.onClick = teste;
@@ -120,7 +128,42 @@
 
 		svgArea.polyLine(new easygraphics.StylingAttributes(1, "#00F", "none"), 50, 560, 100, 550, 200, 600);
 		
-		let decorator = svgArea.boxverticesdecorator(new easygraphics.Ellipse(500, 100, 50, 25));
+		ellipse = svgArea.ellipse(500, 100, 50, 25);
+		let decorator = svgArea.boxVerticesDecorator(ellipse);
+		let draggingDecorator = false
+		let initialX = 0;
+		let initialY = 0;
+		let initialWidth = 0;
+		let initialHeight = 0;
+		decorator.onVertexMouseDown = function(x, y, where) { 
+			initialX = x;
+			initialY = y;
+			initialWidth = decorator.width;
+			initialHeight = decorator.height;
+			draggingDecorator = true;
+			console.log('down');
+		};
+		decorator.onVertexMouseMove = function(x, y, where) { 
+			if(draggingDecorator) {
+				console.log(where.tag);
+				if(where.tag === easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT) {
+					let newWidth = initialWidth + (x - initialX);
+					let newHeight = initialHeight + (y - initialY);
+					if(newWidth > 0 && newHeight > 0) {
+						ellipse.width += 50;
+						//ellipse.height = initialHeight * 2;
+						console.log('chaging width to ' + ellipse.width + " - " + newWidth);
+					}
+				}
+				
+			}
+		};
+		decorator.onVertexMouseUp = function(x, y, where) { 
+			initialX = 0;
+			initialY = 0;
+			draggingDecorator = false;
+			console.log('up');
+		};
 		
         //****************************
         // Graph node.
@@ -189,12 +232,11 @@
     })();
 
     function changeDimensions() {
-        if (umlClass.width > 400) {
-            umlClass.width -= 50;
+        if (ellipse1.width > 400) {
+            ellipse1.width -= 50;
         } else {
-            umlClass.width += 10;
+            ellipse1.width += 10;
         }
-        umlClass.fitContent = false;
     }
 
     function move() {

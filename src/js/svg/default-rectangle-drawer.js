@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import RectangleDimensionChangeListener from "./rectangle-dimension-change-listener";
+import RectanglePositionChangeListener from "./rectangle-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultRectangleDrawer extends DefaultDrawer {
 
@@ -21,6 +24,13 @@ export default class DefaultRectangleDrawer extends DefaultDrawer {
         newRectangle.setAttribute("height", element.height);
         newRectangle.setAttribute("style", element.stylingAttributes.toString());
         newRectangle.setAttribute("shape-rendering", "geometricPrecision");
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new RectangleDimensionChangeListener());
+        element.addChangeListener(new RectanglePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
+
         return newRectangle;
     }
 

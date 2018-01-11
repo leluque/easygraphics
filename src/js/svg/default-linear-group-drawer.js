@@ -10,6 +10,7 @@
 
 import DefaultDrawer from './default-drawer.js';
 import LookAndFeel from "./look-and-feel";
+import LinearGroupTransformationChangeListener from "./linear-group-transformation-change-listener";
 
 export default class DefaultLinearGroupDrawer extends DefaultDrawer {
 
@@ -38,6 +39,10 @@ export default class DefaultLinearGroupDrawer extends DefaultDrawer {
             child.drawn = drawnChild;
             newGroup.appendChild(drawnChild);
         }
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new LinearGroupTransformationChangeListener());
 
         return newGroup;
     }

@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import DiamondDimensionChangeListener from "./diamond-dimension-change-listener";
+import DiamondPositionChangeListener from "./diamond-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultDiamondDrawer extends DefaultDrawer {
 
@@ -29,6 +32,13 @@ export default class DefaultDiamondDrawer extends DefaultDrawer {
         newDiamond.setAttribute("d", coordinates);
         newDiamond.setAttribute("style", element.stylingAttributes.toString());
         newDiamond.setAttribute("shape-rendering", "geometricPrecision");
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new DiamondDimensionChangeListener());
+        element.addChangeListener(new DiamondPositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
+
         return newDiamond;
     }
 

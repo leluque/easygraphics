@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import EllipseDimensionChangeListener from "./ellipse-dimension-change-listener";
+import EllipsePositionChangeListener from "./ellipse-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultEllipseDrawer extends DefaultDrawer {
 
@@ -21,6 +24,12 @@ export default class DefaultEllipseDrawer extends DefaultDrawer {
         newEllipse.setAttribute("ry", element.radiusY);
         newEllipse.setAttribute("style", element.stylingAttributes.toString());
         newEllipse.setAttribute("shape-rendering", "geometricPrecision");
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new EllipseDimensionChangeListener());
+        element.addChangeListener(new EllipsePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
 
         return newEllipse;
     }

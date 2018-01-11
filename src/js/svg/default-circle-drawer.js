@@ -9,6 +9,9 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
+import CircleDimensionChangeListener from "./circle-dimension-change-listener";
+import CirclePositionChangeListener from "./circle-position-change-listener";
+import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultCircleDrawer extends DefaultDrawer {
 
@@ -20,6 +23,12 @@ export default class DefaultCircleDrawer extends DefaultDrawer {
         newCircle.setAttribute("r", element.radius);
         newCircle.setAttribute("style", element.stylingAttributes.toString());
         newCircle.setAttribute("shape-rendering", "geometricPrecision");
+
+        //*****************************
+        // Add change listeners.
+        element.addChangeListener(new CircleDimensionChangeListener());
+        element.addChangeListener(new CirclePositionChangeListener());
+        element.addChangeListener(new StyleChangeListener());
 
         return newCircle;
     }

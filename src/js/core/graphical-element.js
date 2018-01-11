@@ -16,7 +16,7 @@ import StylingAttributes from './styling-attributes.js';
  */
 export default class GraphicalElement {
 
-     constructor(x = 0, y = 0, width = 0, height = 0, stylingAttributes = new StylingAttributes(), id = -1) {
+    constructor(x = 0, y = 0, width = 0, height = 0, stylingAttributes = new StylingAttributes(), id = -1) {
         this._x = x;
         this._y = y;
         this._minWidth = 1;
@@ -36,6 +36,7 @@ export default class GraphicalElement {
         this._rotation = 0; // Rotation angle in degrees.
         this._rotationCenterX = x + width / 2; // The rotation point x coordinate.
         this._rotationCenterY = y + height / 2; // The rotation point y coordinate.
+        this._tag = null;
 
         // Events.
         this._onClick = null;
@@ -260,6 +261,14 @@ export default class GraphicalElement {
         this._onMouseUp = value;
     }
 
+    get tag() {
+        return this._tag;
+    }
+
+    set tag(value) {
+        this._tag = value;
+    }
+
     disableChangeNotifications() {
         //this.changeNotificationsEnabled = false;
         this._changeNotificationsEnabled++;
@@ -350,7 +359,7 @@ export default class GraphicalElement {
     fireOnClick(event) {
         if (this._onClick !== null && this._onClick) {
             if (typeof(this._onClick) === "function") {
-                this._onClick(event.clientX, event.clientY);
+                this._onClick(event.clientX, event.clientY, this);
             } else {
                 throw "Callback is not a function: " + typeof(this._onClick);
             }
@@ -360,7 +369,7 @@ export default class GraphicalElement {
     fireOnDblClick(event) {
         if (this._onDblClick !== null && this._onDblClick) {
             if (typeof(this._onDblClick) === "function") {
-                this._onDblClick(event.clientX, event.clientY);
+                this._onDblClick(event.clientX, event.clientY, this);
             } else {
                 throw "Callback is not a function: " + typeof(this._onDblClick);
             }
@@ -370,7 +379,7 @@ export default class GraphicalElement {
     fireOnMouseDown(event) {
         if (this._onMouseDown !== null && this._onMouseDown) {
             if (typeof(this._onMouseDown) === "function") {
-                this._onMouseDown(event.clientX, event.clientY);
+                this._onMouseDown(event.clientX, event.clientY, this);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseDown);
             }
@@ -380,7 +389,7 @@ export default class GraphicalElement {
     fireOnMouseMove(event) {
         if (this._onMouseMove !== null && this._onMouseMove) {
             if (typeof(this._onMouseMove) === "function") {
-                this._onMouseMove(event.clientX, event.clientY);
+                this._onMouseMove(event.clientX, event.clientY, this);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseMove);
             }
@@ -390,7 +399,7 @@ export default class GraphicalElement {
     fireOnMouseUp(event) {
         if (this._onMouseUp !== null && this._onMouseUp) {
             if (typeof(this._onMouseUp) === "function") {
-                this._onMouseUp(event.clientX, event.clientY);
+                this._onMouseUp(event.clientX, event.clientY, this);
             } else {
                 throw "Callback is not a function: " + typeof(this._onMouseUp);
             }

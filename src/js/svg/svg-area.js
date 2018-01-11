@@ -9,39 +9,18 @@
 'use strict';
 
 import Circle from '../core/circle.js';
-import CircleDimensionChangeListener from './circle-dimension-change-listener.js';
-import CirclePositionChangeListener from './circle-position-change-listener.js';
 import Ellipse from '../core/ellipse.js';
-import EllipseDimensionChangeListener from './ellipse-dimension-change-listener.js';
-import EllipsePositionChangeListener from './ellipse-position-change-listener.js';
 import Rectangle from '../core/rectangle.js';
-import RectangleDimensionChangeListener from './rectangle-dimension-change-listener.js';
-import RectanglePositionChangeListener from './rectangle-position-change-listener.js';
 import Diamond from '../core/diamond.js';
-import DiamondDimensionChangeListener from './diamond-dimension-change-listener.js';
-import DiamondPositionChangeListener from './diamond-position-change-listener.js';
 import Text from '../core/text.js';
-import TextDimensionChangeListener from './text-dimension-change-listener.js';
-import TextPositionChangeListener from './text-position-change-listener.js';
-import TextChangeListener from './text-change-listener.js';
-import FontChangeListener from './font-change-listener.js';
 import Image from '../core/image.js';
-import ImageDimensionChangeListener from './image-dimension-change-listener.js';
-import ImagePositionChangeListener from './image-position-change-listener.js';
 import VerticalGroup from '../core/vertical-group.js';
-import VGroupTransformationChangeListener from './vgroup-transformation-change-listener.js';
 import LinearGroup from '../core/linear-group.js';
-import LinearGroupTransformationChangeListener from './linear-group-transformation-change-listener.js';
 import Line from '../core/line.js';
-import LineDimensionChangeListener from './line-dimension-change-listener.js';
-import LinePositionChangeListener from './line-position-change-listener.js';
-import StyleChangeListener from './style-change-listener.js';
 import LookAndFeel from './look-and-feel.js';
 import GroupStylingAttributes from '../core/group-styling-attributes.js';
 import FontStylingAttributes from '../core/font-styling-attributes.js';
 import StylingAttributes from '../core/styling-attributes.js';
-import PolyLineDimensionChangeListener from "./polyline-dimension-change-listener";
-import PolyLinePositionChangeListener from "./polyline-position-change-listener";
 import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
 
@@ -52,6 +31,19 @@ export default class SVGArea {
         this._svg = document.querySelector(svgSelector);
         this._namespace = "http://www.w3.org/2000/svg";
         this._elements = [];
+
+        // Events.
+        this._onClick = null;
+        this._onDblClick = null;
+        this._onMouseDown = null;
+        this._onMouseMove = null;
+        this._onMouseUp = null;
+
+        this._svg.onclick = this.fireOnClick.bind(this);
+        this._svg.ondblclick = this.fireOnDblClick.bind(this);
+        this._svg.onmousedown = this.fireOnMouseDown.bind(this);
+        this._svg.onmousemove = this.fireOnMouseMove.bind(this);
+        this._svg.onmouseup = this.fireOnMouseUp.bind(this);
     }
 
     get idCount() {
@@ -60,10 +52,6 @@ export default class SVGArea {
 
     set idCount(value) {
         this._idCount = value;
-    }
-
-    generateId() {
-        return "element_" + (this._idCount++);
     }
 
     get svg() {
@@ -90,14 +78,110 @@ export default class SVGArea {
         this._elements = value;
     }
 
+    get onClick() {
+        return this._onClick;
+    }
+
+    set onClick(value) {
+        this._onClick = value;
+    }
+
+    get onDblClick() {
+        return this._onDblClick;
+    }
+
+    set onDblClick(value) {
+        this._onDblClick = value;
+    }
+
+    get onMouseDown() {
+        return this._onMouseDown;
+    }
+
+    set onMouseDown(value) {
+        this._onMouseDown = value;
+    }
+
+    get onMouseMove() {
+        return this._onMouseMove;
+    }
+
+    set onMouseMove(value) {
+        this._onMouseMove = value;
+    }
+
+    get onMouseUp() {
+        return this._onMouseUp;
+    }
+
+    set onMouseUp(value) {
+        this._onMouseUp = value;
+    }
+
+    // Events.
+    fireOnClick(event) {
+        if (this._onClick !== null && this._onClick) {
+            if (typeof(this._onClick) === "function") {
+                this._onClick(event.clientX, event.clientY, this);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onClick);
+            }
+        }
+    }
+
+    fireOnDblClick(event) {
+        if (this._onDblClick !== null && this._onDblClick) {
+            if (typeof(this._onDblClick) === "function") {
+                this._onDblClick(event.clientX, event.clientY, this);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onDblClick);
+            }
+        }
+    }
+
+    fireOnMouseDown(event) {
+        if (this._onMouseDown !== null && this._onMouseDown) {
+            if (typeof(this._onMouseDown) === "function") {
+                this._onMouseDown(event.clientX, event.clientY, this);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseDown);
+            }
+        }
+    }
+
+    fireOnMouseMove(event) {
+        if (this._onMouseMove !== null && this._onMouseMove) {
+            if (typeof(this._onMouseMove) === "function") {
+                this._onMouseMove(event.clientX, event.clientY, this);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseMove);
+            }
+        }
+    }
+
+    fireOnMouseUp(event) {
+        if (this._onMouseUp !== null && this._onMouseUp) {
+            if (typeof(this._onMouseUp) === "function") {
+                this._onMouseUp(event.clientX, event.clientY, this);
+            } else {
+                throw "Callback is not a function: " + typeof(this._onMouseUp);
+            }
+        }
+    }
+
+    generateId() {
+        return "element_" + (this._idCount++);
+    }
+
     addElement(element) {
         this._elements.push(element);
         return element;
     }
 
-    // TODO: in all methods below, register listener events for all
+// TODO: in all methods below, register listener events for all
     // relevant events and register Circle (or the appropriate class)
     // EVENThappened method as a callback function. This function
+
     // just inform the event listeners that the event happened.
     circle(centerX = 50, centerY = 50, radius = 100) {
         //*****************************
@@ -105,12 +189,6 @@ export default class SVGArea {
         let newCircle = new Circle(centerX, centerY, radius);
         newCircle.id = this.generateId();
         //console.log(newCircle.id);
-
-        //*****************************
-        // Add change listeners.
-        newCircle.addChangeListener(new CircleDimensionChangeListener());
-        newCircle.addChangeListener(new CirclePositionChangeListener());
-        newCircle.addChangeListener(new StyleChangeListener());
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newCircle);
@@ -131,12 +209,6 @@ export default class SVGArea {
         let newEllipse = new Ellipse(centerX, centerY, radiusX, radiusY);
         newEllipse.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        newEllipse.addChangeListener(new EllipseDimensionChangeListener());
-        newEllipse.addChangeListener(new EllipsePositionChangeListener());
-        newEllipse.addChangeListener(new StyleChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newEllipse);
         drawer.svgArea = this;
@@ -155,12 +227,6 @@ export default class SVGArea {
         // Create a new rectangle and set its id.
         let newRectangle = new Rectangle(x1, y1, x2, y2);
         newRectangle.id = this.generateId();
-
-        //*****************************
-        // Add change listeners.
-        newRectangle.addChangeListener(new RectangleDimensionChangeListener());
-        newRectangle.addChangeListener(new RectanglePositionChangeListener());
-        newRectangle.addChangeListener(new StyleChangeListener());
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newRectangle);
@@ -181,12 +247,6 @@ export default class SVGArea {
         let newDiamond = new Diamond(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
         newDiamond.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        newDiamond.addChangeListener(new DiamondDimensionChangeListener());
-        newDiamond.addChangeListener(new DiamondPositionChangeListener());
-        newDiamond.addChangeListener(new StyleChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newDiamond);
         drawer.svgArea = this;
@@ -205,14 +265,6 @@ export default class SVGArea {
         // Create a new text and set its id.
         let newText = new Text(x, y, "", undefined, fontStylingAttributes);
         newText.id = this.generateId();
-
-        //*****************************
-        // Add change listeners.
-        newText.addChangeListener(new TextDimensionChangeListener());
-        newText.addChangeListener(new TextPositionChangeListener());
-        newText.addChangeListener(new TextChangeListener());
-        newText.addChangeListener(new FontChangeListener());
-        newText.addChangeListener(new StyleChangeListener());
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newText);
@@ -235,12 +287,6 @@ export default class SVGArea {
         let newImage = new Image(x, y, width, height, image);
         newImage.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        newImage.addChangeListener(new ImageDimensionChangeListener());
-        newImage.addChangeListener(new ImagePositionChangeListener());
-        newImage.addChangeListener(new StyleChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newImage);
         drawer.svgArea = this;
@@ -259,10 +305,6 @@ export default class SVGArea {
         // Create a new vertical group and set its id.
         let newVGroup = new VerticalGroup(x, y, undefined, groupStyling);
         newVGroup.id = this.generateId();
-
-        //*****************************
-        // Add change listeners.
-        newVGroup.addChangeListener(new VGroupTransformationChangeListener());
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newVGroup);
@@ -283,10 +325,6 @@ export default class SVGArea {
         let newLinearGroup = new LinearGroup(x1, y1, x2, y2, undefined, new GroupStylingAttributes(0, 0));
         newLinearGroup.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        newLinearGroup.addChangeListener(new LinearGroupTransformationChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newLinearGroup);
         drawer.svgArea = this;
@@ -305,12 +343,6 @@ export default class SVGArea {
         // Create a new line and set its id.
         let newLine = new Line(x1, y1, x2, y2, stylingAttributes);
         newLine.id = this.generateId();
-
-        //*****************************
-        // Add change listeners.
-        newLine.addChangeListener(new LineDimensionChangeListener());
-        newLine.addChangeListener(new LinePositionChangeListener());
-        newLine.addChangeListener(new StyleChangeListener());
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newLine);
@@ -332,12 +364,6 @@ export default class SVGArea {
         let newPolyline = new PolyLine(stylingAttributes, coordinates);
         newPolyline.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        newPolyline.addChangeListener(new PolyLineDimensionChangeListener());
-        newPolyline.addChangeListener(new PolyLinePositionChangeListener());
-        newPolyline.addChangeListener(new StyleChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newPolyline);
         drawer.svgArea = this;
@@ -351,7 +377,7 @@ export default class SVGArea {
         return this.addElement(newPolyline);
     }
 
-    boxverticesdecorator(decorated) {
+    boxVerticesDecorator(decorated) {
         //*****************************
         // Create a new box vertices decorator and set its id.
         let newBoxVerticesDecorator = new BoxVerticesDecorator(decorated);
@@ -368,8 +394,6 @@ export default class SVGArea {
         this.svg.appendChild(drawnVGroup);
 
         newBoxVerticesDecorator.drawn = drawnVGroup;
-
-        // this.registerEvents(newBoxVerticesDecorator, drawnVGroup);
 
         return this.addElement(newBoxVerticesDecorator);
     }
