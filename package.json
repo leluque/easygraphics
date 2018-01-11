@@ -1,6 +1,6 @@
 {
   "name": "easygraphics",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A client-side Javascript library to work with vectorial graphics.",
   "main": "index.js",
   "repository": {

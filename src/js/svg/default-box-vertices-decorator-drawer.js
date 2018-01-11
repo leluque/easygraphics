@@ -36,7 +36,7 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
             newGroup.appendChild(element.decorated.drawn);
         }
 
-      /*  let vertexSize = element.vertexSize;
+        let vertexSize = element.vertexSize;
         let halfSize = (vertexSize - 1) / 2;
 
         let lookAndFeel = new LookAndFeel();
@@ -81,7 +81,7 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
             vertexBR.drawn = drawnChildBR;
             newGroup.appendChild(drawnChildBR);
             this.registerEvents(vertexBR, drawnChildBR, element);
-        }*/
+        }
 
         return newGroup;
     }
