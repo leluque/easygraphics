@@ -264,4 +264,31 @@ export default class GraphicalElementDecorator extends GraphicalElement {
         this._decorated.fireOnMouseUp(event);
     }
 
+    get tag() {
+        return this._decorated.tag;
+    }
+
+    set tag(value) {
+        this._decorated.tag = value;
+    }
+
+    addTag(key, value) {
+        this._decorated.addTag(key, value);
+    }
+
+    countTags() {
+        return this._decorated.countTags();
+    }
+
+    getTag(key) {
+        return this._decorated.getTag(key);
+    }
+
+    getTagsKeys() {
+        return this._decorated.getTagsKeys();
+    }
+
+    removeTag(key) {
+        this._decorated.removeTag(key);
+    }
 }

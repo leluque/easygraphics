@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultDiamondDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newDiamond = document.createElementNS(this.svgArea.namespace, "path");
         newDiamond.setAttribute("id", element.id);

@@ -2275,6 +2275,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var BoxVerticesDecorator = function (_GraphicalElementDeco) {
     _inherits(BoxVerticesDecorator, _GraphicalElementDeco);
 
+    _createClass(BoxVerticesDecorator, null, [{
+        key: 'BOX_VERTICES_TAG',
+        get: function get() {
+            return "isBoxVertices";
+        }
+    }]);
+
     function BoxVerticesDecorator(decorated) {
         var topLeft = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var topRight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
@@ -2286,7 +2293,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
 
         var _this = _possibleConstructorReturn(this, (BoxVerticesDecorator.__proto__ || Object.getPrototypeOf(BoxVerticesDecorator)).call(this, decorated));
 
-        _this._decorated = decorated;
+        decorated.addTag(BoxVerticesDecorator.BOX_VERTICES_TAG, _this);
         _this._topLeft = topLeft;
         _this._topRight = topRight;
         _this._bottomLeft = bottomLeft;
@@ -4195,6 +4202,31 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
             this._decorated.fireOnMouseUp(event);
         }
     }, {
+        key: "addTag",
+        value: function addTag(key, value) {
+            this._decorated.addTag(key, value);
+        }
+    }, {
+        key: "countTags",
+        value: function countTags() {
+            return this._decorated.countTags();
+        }
+    }, {
+        key: "getTag",
+        value: function getTag(key) {
+            return this._decorated.getTag(key);
+        }
+    }, {
+        key: "getTagsKeys",
+        value: function getTagsKeys() {
+            return this._decorated.getTagsKeys();
+        }
+    }, {
+        key: "removeTag",
+        value: function removeTag(key) {
+            this._decorated.removeTag(key);
+        }
+    }, {
         key: "decorated",
         get: function get() {
             return this._decorated;
@@ -4374,6 +4406,14 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
         },
         set: function set(value) {
             this._decorated.onMouseUp = value;
+        }
+    }, {
+        key: "tag",
+        get: function get() {
+            return this._decorated.tag;
+        },
+        set: function set(value) {
+            this._decorated.tag = value;
         }
     }]);
 
@@ -5719,10 +5759,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultCircleDrawer = function (_DefaultDrawer) {
     _inherits(DefaultCircleDrawer, _DefaultDrawer);
 
-    function DefaultCircleDrawer() {
+    function DefaultCircleDrawer(svgArea) {
         _classCallCheck(this, DefaultCircleDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultCircleDrawer.__proto__ || Object.getPrototypeOf(DefaultCircleDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultCircleDrawer.__proto__ || Object.getPrototypeOf(DefaultCircleDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultCircleDrawer, [{
@@ -5799,10 +5839,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultEllipseDrawer = function (_DefaultDrawer) {
     _inherits(DefaultEllipseDrawer, _DefaultDrawer);
 
-    function DefaultEllipseDrawer() {
+    function DefaultEllipseDrawer(svgArea) {
         _classCallCheck(this, DefaultEllipseDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultEllipseDrawer.__proto__ || Object.getPrototypeOf(DefaultEllipseDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultEllipseDrawer.__proto__ || Object.getPrototypeOf(DefaultEllipseDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultEllipseDrawer, [{
@@ -5880,10 +5920,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultRectangleDrawer = function (_DefaultDrawer) {
     _inherits(DefaultRectangleDrawer, _DefaultDrawer);
 
-    function DefaultRectangleDrawer() {
+    function DefaultRectangleDrawer(svgArea) {
         _classCallCheck(this, DefaultRectangleDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultRectangleDrawer.__proto__ || Object.getPrototypeOf(DefaultRectangleDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultRectangleDrawer.__proto__ || Object.getPrototypeOf(DefaultRectangleDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultRectangleDrawer, [{
@@ -5961,10 +6001,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultDiamondDrawer = function (_DefaultDrawer) {
     _inherits(DefaultDiamondDrawer, _DefaultDrawer);
 
-    function DefaultDiamondDrawer() {
+    function DefaultDiamondDrawer(svgArea) {
         _classCallCheck(this, DefaultDiamondDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultDiamondDrawer.__proto__ || Object.getPrototypeOf(DefaultDiamondDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultDiamondDrawer.__proto__ || Object.getPrototypeOf(DefaultDiamondDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultDiamondDrawer, [{
@@ -6058,10 +6098,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultTextDrawer = function (_DefaultDrawer) {
         _inherits(DefaultTextDrawer, _DefaultDrawer);
 
-        function DefaultTextDrawer() {
+        function DefaultTextDrawer(svgArea) {
                 _classCallCheck(this, DefaultTextDrawer);
 
-                return _possibleConstructorReturn(this, (DefaultTextDrawer.__proto__ || Object.getPrototypeOf(DefaultTextDrawer)).apply(this, arguments));
+                return _possibleConstructorReturn(this, (DefaultTextDrawer.__proto__ || Object.getPrototypeOf(DefaultTextDrawer)).call(this, svgArea));
         }
 
         _createClass(DefaultTextDrawer, [{
@@ -6125,7 +6165,7 @@ exports.default = DefaultTextDrawer;
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -6151,52 +6191,52 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var DefaultVerticalGroupDrawer = function (_DefaultDrawer) {
-        _inherits(DefaultVerticalGroupDrawer, _DefaultDrawer);
+    _inherits(DefaultVerticalGroupDrawer, _DefaultDrawer);
 
-        function DefaultVerticalGroupDrawer() {
-                _classCallCheck(this, DefaultVerticalGroupDrawer);
+    function DefaultVerticalGroupDrawer(svgArea) {
+        _classCallCheck(this, DefaultVerticalGroupDrawer);
 
-                return _possibleConstructorReturn(this, (DefaultVerticalGroupDrawer.__proto__ || Object.getPrototypeOf(DefaultVerticalGroupDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultVerticalGroupDrawer.__proto__ || Object.getPrototypeOf(DefaultVerticalGroupDrawer)).call(this, svgArea));
+    }
+
+    _createClass(DefaultVerticalGroupDrawer, [{
+        key: 'draw',
+        value: function draw(element) {
+            var newGroup = document.createElementNS(this.svgArea.namespace, "g");
+            newGroup.setAttribute("id", element.id);
+            newGroup.setAttribute('shape-rendering', 'inherit');
+            newGroup.setAttribute('pointer-events', 'all');
+
+            var lookAndFeel = new _lookAndFeel2.default();
+
+            if (element.frame !== null) {
+                var drawer = lookAndFeel.getDrawerFor(element.frame);
+                drawer.svgArea = this.svgArea;
+                var drawnFrame = drawer.draw(element.frame);
+                element.frame.drawn = drawnFrame;
+                newGroup.appendChild(drawnFrame);
+            }
+
+            var i = 0;
+            for (i = 0; i < element.countChildren(); i++) {
+                var child = element.getChildAt(i);
+                //let drawer = lookAndFeel.getDrawerFor(child);
+                //drawer.svgArea = this.svgArea;
+                //var drawnChild = drawer.draw(child);
+                //child.drawn = drawnChild;
+                //newGroup.appendChild(drawnChild);
+                newGroup.appendChild(child.drawn);
+            }
+
+            //*****************************
+            // Add change listeners.
+            element.addChangeListener(new _vgroupTransformationChangeListener2.default());
+
+            return newGroup;
         }
+    }]);
 
-        _createClass(DefaultVerticalGroupDrawer, [{
-                key: 'draw',
-                value: function draw(element) {
-                        var newGroup = document.createElementNS(this.svgArea.namespace, "g");
-                        newGroup.setAttribute("id", element.id);
-                        newGroup.setAttribute('shape-rendering', 'inherit');
-                        newGroup.setAttribute('pointer-events', 'all');
-
-                        var lookAndFeel = new _lookAndFeel2.default();
-
-                        if (element.frame !== null) {
-                                var drawer = lookAndFeel.getDrawerFor(element.frame);
-                                drawer.svgArea = this.svgArea;
-                                var drawnFrame = drawer.draw(element.frame);
-                                element.frame.drawn = drawnFrame;
-                                newGroup.appendChild(drawnFrame);
-                        }
-
-                        var i = 0;
-                        for (i = 0; i < element.countChildren(); i++) {
-                                var child = element.getChildAt(i);
-                                //let drawer = lookAndFeel.getDrawerFor(child);
-                                //drawer.svgArea = this.svgArea;
-                                //var drawnChild = drawer.draw(child);
-                                //child.drawn = drawnChild;
-                                //newGroup.appendChild(drawnChild);
-                                newGroup.appendChild(child.drawn);
-                        }
-
-                        //*****************************
-                        // Add change listeners.
-                        element.addChangeListener(new _vgroupTransformationChangeListener2.default());
-
-                        return newGroup;
-                }
-        }]);
-
-        return DefaultVerticalGroupDrawer;
+    return DefaultVerticalGroupDrawer;
 }(_defaultDrawer2.default);
 
 exports.default = DefaultVerticalGroupDrawer;
@@ -6217,7 +6257,7 @@ exports.default = DefaultVerticalGroupDrawer;
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -6243,54 +6283,54 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
-        _inherits(DefaultLinearGroupDrawer, _DefaultDrawer);
+    _inherits(DefaultLinearGroupDrawer, _DefaultDrawer);
 
-        function DefaultLinearGroupDrawer() {
-                _classCallCheck(this, DefaultLinearGroupDrawer);
+    function DefaultLinearGroupDrawer(svgArea) {
+        _classCallCheck(this, DefaultLinearGroupDrawer);
 
-                return _possibleConstructorReturn(this, (DefaultLinearGroupDrawer.__proto__ || Object.getPrototypeOf(DefaultLinearGroupDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultLinearGroupDrawer.__proto__ || Object.getPrototypeOf(DefaultLinearGroupDrawer)).call(this, svgArea));
+    }
+
+    _createClass(DefaultLinearGroupDrawer, [{
+        key: 'draw',
+        value: function draw(element) {
+            var newGroup = document.createElementNS(this.svgArea.namespace, "g");
+            newGroup.setAttribute("id", element.id);
+            newGroup.setAttribute('shape-rendering', 'inherit');
+            newGroup.setAttribute('pointer-events', 'all');
+
+            var lookAndFeel = new _lookAndFeel2.default();
+
+            if (element.verticalGroup.frame !== null) {
+                var drawer = lookAndFeel.getDrawerFor(element.verticalGroup.frame);
+                drawer.svgArea = this.svgArea;
+                var drawnFrame = drawer.draw(element.verticalGroup.frame);
+                element.verticalGroup.frame.drawn = drawnFrame;
+                newGroup.appendChild(drawnFrame);
+            }
+
+            var i = 0;
+            for (i = 0; i < element.verticalGroup.countChildren(); i++) {
+                var child = element.verticalGroup.getChildAt(i);
+                /*
+                            let drawer = lookAndFeel.getDrawerFor(child);
+                            drawer.svgArea = this.svgArea;
+                            var drawnChild = drawer.draw(child);
+                            child.drawn = drawnChild;
+                            newGroup.appendChild(drawnChild);
+                */
+                newGroup.appendChild(child.drawn);
+            }
+
+            //*****************************
+            // Add change listeners.
+            element.addChangeListener(new _linearGroupTransformationChangeListener2.default());
+
+            return newGroup;
         }
+    }]);
 
-        _createClass(DefaultLinearGroupDrawer, [{
-                key: 'draw',
-                value: function draw(element) {
-                        var newGroup = document.createElementNS(this.svgArea.namespace, "g");
-                        newGroup.setAttribute("id", element.id);
-                        newGroup.setAttribute('shape-rendering', 'inherit');
-                        newGroup.setAttribute('pointer-events', 'all');
-
-                        var lookAndFeel = new _lookAndFeel2.default();
-
-                        if (element.verticalGroup.frame !== null) {
-                                var drawer = lookAndFeel.getDrawerFor(element.verticalGroup.frame);
-                                drawer.svgArea = this.svgArea;
-                                var drawnFrame = drawer.draw(element.verticalGroup.frame);
-                                element.verticalGroup.frame.drawn = drawnFrame;
-                                newGroup.appendChild(drawnFrame);
-                        }
-
-                        var i = 0;
-                        for (i = 0; i < element.verticalGroup.countChildren(); i++) {
-                                var child = element.verticalGroup.getChildAt(i);
-                                /*
-                                            let drawer = lookAndFeel.getDrawerFor(child);
-                                            drawer.svgArea = this.svgArea;
-                                            var drawnChild = drawer.draw(child);
-                                            child.drawn = drawnChild;
-                                            newGroup.appendChild(drawnChild);
-                                */
-                                newGroup.appendChild(child.drawn);
-                        }
-
-                        //*****************************
-                        // Add change listeners.
-                        element.addChangeListener(new _linearGroupTransformationChangeListener2.default());
-
-                        return newGroup;
-                }
-        }]);
-
-        return DefaultLinearGroupDrawer;
+    return DefaultLinearGroupDrawer;
 }(_defaultDrawer2.default);
 
 exports.default = DefaultLinearGroupDrawer;
@@ -6343,10 +6383,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultLineDrawer = function (_DefaultDrawer) {
     _inherits(DefaultLineDrawer, _DefaultDrawer);
 
-    function DefaultLineDrawer() {
+    function DefaultLineDrawer(svgArea) {
         _classCallCheck(this, DefaultLineDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultLineDrawer.__proto__ || Object.getPrototypeOf(DefaultLineDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultLineDrawer.__proto__ || Object.getPrototypeOf(DefaultLineDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultLineDrawer, [{
@@ -6426,10 +6466,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultImageDrawer = function (_DefaultDrawer) {
     _inherits(DefaultImageDrawer, _DefaultDrawer);
 
-    function DefaultImageDrawer() {
+    function DefaultImageDrawer(svgArea) {
         _classCallCheck(this, DefaultImageDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultImageDrawer.__proto__ || Object.getPrototypeOf(DefaultImageDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultImageDrawer.__proto__ || Object.getPrototypeOf(DefaultImageDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultImageDrawer, [{
@@ -6508,10 +6548,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultPolyLineDrawer = function (_DefaultDrawer) {
     _inherits(DefaultPolyLineDrawer, _DefaultDrawer);
 
-    function DefaultPolyLineDrawer() {
+    function DefaultPolyLineDrawer(svgArea) {
         _classCallCheck(this, DefaultPolyLineDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultPolyLineDrawer.__proto__ || Object.getPrototypeOf(DefaultPolyLineDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultPolyLineDrawer.__proto__ || Object.getPrototypeOf(DefaultPolyLineDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultPolyLineDrawer, [{
@@ -6603,10 +6643,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
     _inherits(DefaultBoxVerticesDecoratorDrawer, _DefaultDrawer);
 
-    function DefaultBoxVerticesDecoratorDrawer() {
+    function DefaultBoxVerticesDecoratorDrawer(svgArea) {
         _classCallCheck(this, DefaultBoxVerticesDecoratorDrawer);
 
-        return _possibleConstructorReturn(this, (DefaultBoxVerticesDecoratorDrawer.__proto__ || Object.getPrototypeOf(DefaultBoxVerticesDecoratorDrawer)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (DefaultBoxVerticesDecoratorDrawer.__proto__ || Object.getPrototypeOf(DefaultBoxVerticesDecoratorDrawer)).call(this, svgArea));
     }
 
     _createClass(DefaultBoxVerticesDecoratorDrawer, [{
@@ -6616,8 +6656,6 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
             newGroup.setAttribute("id", element.id);
             newGroup.setAttribute('shape-rendering', 'inherit');
             newGroup.setAttribute('pointer-events', 'all');
-
-            var lookAndFeel = new _lookAndFeel2.default();
 
             if (element.decorated !== null) {
                 //let drawer = lookAndFeel.getDrawerFor(element.decorated);
@@ -6629,51 +6667,51 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                 newGroup.appendChild(element.decorated.drawn);
             }
 
-            var vertexSize = element.vertexSize;
-            var halfSize = (vertexSize - 1) / 2;
-
-            var stylingAttributes = new _stylingAttributes2.default(0, "black", "black");
-            // Draw the box vertices.
-            if (element.topLeft) {
-                var vertexTL = new _rectangle2.default(element.x - halfSize, element.y - halfSize, element.x + halfSize, element.y + halfSize, stylingAttributes);
-                vertexTL.tag = _boxVerticesDecorator2.default.TOP_LEFT;
-                var drawerTL = lookAndFeel.getDrawerFor(vertexTL);
-                drawerTL.svgArea = this.svgArea;
-                var drawnChildTL = drawerTL.draw(vertexTL);
-                vertexTL.drawn = drawnChildTL;
-                newGroup.appendChild(drawnChildTL);
-                this.registerEvents(vertexTL, drawnChildTL, element);
-            }
-            if (element.topRight) {
-                var vertexTR = new _rectangle2.default(element.x2 - halfSize, element.y - halfSize, element.x2 + halfSize, element.y + halfSize, stylingAttributes);
-                vertexTR.tag = _boxVerticesDecorator2.default.TOP_RIGHT;
-                var drawerTR = lookAndFeel.getDrawerFor(vertexTR);
-                drawerTR.svgArea = this.svgArea;
-                var drawnChildTR = drawerTR.draw(vertexTR);
-                vertexTR.drawn = drawnChildTR;
-                newGroup.appendChild(drawnChildTR);
-                this.registerEvents(vertexTR, drawnChildTR, element);
-            }
-            if (element.bottomLeft) {
-                var vertexBL = new _rectangle2.default(element.x - halfSize, element.y2 - halfSize, element.x + halfSize, element.y2 + halfSize, stylingAttributes);
-                vertexBL.tag = _boxVerticesDecorator2.default.BOTTOM_LEFT;
-                var drawerBL = lookAndFeel.getDrawerFor(vertexBL);
-                drawerBL.svgArea = this.svgArea;
-                var drawnChildBL = drawerBL.draw(vertexBL);
-                vertexBL.drawn = drawnChildBL;
-                newGroup.appendChild(drawnChildBL);
-                this.registerEvents(vertexBL, drawnChildBL, element);
-            }
-            if (element.bottomRight) {
-                var vertexBR = new _rectangle2.default(element.x2 - halfSize, element.y2 - halfSize, element.x2 + halfSize, element.y2 + halfSize, stylingAttributes);
-                vertexBR.tag = _boxVerticesDecorator2.default.BOTTOM_RIGHT;
-                var drawerBR = lookAndFeel.getDrawerFor(vertexBR);
-                drawerBR.svgArea = this.svgArea;
-                var drawnChildBR = drawerBR.draw(vertexBR);
-                vertexBR.drawn = drawnChildBR;
-                newGroup.appendChild(drawnChildBR);
-                this.registerEvents(vertexBR, drawnChildBR, element);
-            }
+            /*  let vertexSize = element.vertexSize;
+              let halfSize = (vertexSize - 1) / 2;
+                let lookAndFeel = new LookAndFeel();
+              let stylingAttributes = new StylingAttributes(0, "black", "black");
+              // Draw the box vertices.
+              if (element.topLeft) {
+                  let vertexTL = new Rectangle(element.x - halfSize, element.y - halfSize, element.x + halfSize, element.y + halfSize, stylingAttributes);
+                  vertexTL.tag = BoxVerticesDecorator.TOP_LEFT;
+                  let drawerTL = lookAndFeel.getDrawerFor(vertexTL);
+                  drawerTL.svgArea = this.svgArea;
+                  var drawnChildTL = drawerTL.draw(vertexTL);
+                  vertexTL.drawn = drawnChildTL;
+                  newGroup.appendChild(drawnChildTL);
+                  this.registerEvents(vertexTL, drawnChildTL, element);
+              }
+              if (element.topRight) {
+                  let vertexTR = new Rectangle(element.x2 - halfSize, element.y - halfSize, element.x2 + halfSize, element.y + halfSize, stylingAttributes);
+                  vertexTR.tag = BoxVerticesDecorator.TOP_RIGHT;
+                  let drawerTR = lookAndFeel.getDrawerFor(vertexTR);
+                  drawerTR.svgArea = this.svgArea;
+                  var drawnChildTR = drawerTR.draw(vertexTR);
+                  vertexTR.drawn = drawnChildTR;
+                  newGroup.appendChild(drawnChildTR);
+                  this.registerEvents(vertexTR, drawnChildTR, element);
+              }
+              if (element.bottomLeft) {
+                  let vertexBL = new Rectangle(element.x - halfSize, element.y2 - halfSize, element.x + halfSize, element.y2 + halfSize, stylingAttributes);
+                  vertexBL.tag = BoxVerticesDecorator.BOTTOM_LEFT;
+                  let drawerBL = lookAndFeel.getDrawerFor(vertexBL);
+                  drawerBL.svgArea = this.svgArea;
+                  var drawnChildBL = drawerBL.draw(vertexBL);
+                  vertexBL.drawn = drawnChildBL;
+                  newGroup.appendChild(drawnChildBL);
+                  this.registerEvents(vertexBL, drawnChildBL, element);
+              }
+              if (element.bottomRight) {
+                  let vertexBR = new Rectangle(element.x2 - halfSize, element.y2 - halfSize, element.x2 + halfSize, element.y2 + halfSize, stylingAttributes);
+                  vertexBR.tag = BoxVerticesDecorator.BOTTOM_RIGHT;
+                  let drawerBR = lookAndFeel.getDrawerFor(vertexBR);
+                  drawerBR.svgArea = this.svgArea;
+                  var drawnChildBR = drawerBR.draw(vertexBR);
+                  vertexBR.drawn = drawnChildBR;
+                  newGroup.appendChild(drawnChildBR);
+                  this.registerEvents(vertexBR, drawnChildBR, element);
+              }*/
 
             return newGroup;
         }
@@ -7161,15 +7199,15 @@ var SVGArea = function () {
             //*****************************
             // Create a new box vertices decorator and set its id.
             var newBoxVerticesDecorator = new _boxVerticesDecorator2.default(decorated);
-            newBoxVerticesDecorator.id = this.generateId();
+            newBoxVerticesDecorator.id = decorated.id;
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
             drawer.svgArea = this;
-            var drawnVGroup = drawer.draw(newBoxVerticesDecorator);
-            this.svg.appendChild(drawnVGroup);
+            var drawnBoxVerticesDecorator = drawer.draw(newBoxVerticesDecorator);
+            this.svg.appendChild(drawnBoxVerticesDecorator);
 
-            newBoxVerticesDecorator.drawn = drawnVGroup;
+            newBoxVerticesDecorator.drawn = drawnBoxVerticesDecorator;
 
             return this.addElement(newBoxVerticesDecorator);
         }

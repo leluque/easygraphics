@@ -15,6 +15,10 @@ import ImageDimensionChangeListener from "./image-dimension-change-listener";
 
 export default class DefaultImageDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newImage = document.createElementNS(this.svgArea.namespace, "image");
         newImage.setAttribute("id", element.id);

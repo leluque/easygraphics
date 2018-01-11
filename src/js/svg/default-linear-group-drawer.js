@@ -14,6 +14,10 @@ import LinearGroupTransformationChangeListener from "./linear-group-transformati
 
 export default class DefaultLinearGroupDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         var newGroup = document.createElementNS(this.svgArea.namespace, "g");
         newGroup.setAttribute("id", element.id);

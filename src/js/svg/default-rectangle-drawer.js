@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultRectangleDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newRectangle = document.createElementNS(this.svgArea.namespace, "rect");
         newRectangle.setAttribute("id", element.id);

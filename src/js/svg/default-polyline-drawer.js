@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultPolyLineDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     static generatePath(polyLine) {
         let path = "M";
         for (let i = 0; i < polyLine.countPoints(); i++) {

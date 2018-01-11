@@ -14,6 +14,10 @@ import VGroupTransformationChangeListener from "./vgroup-transformation-change-l
 
 export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         var newGroup = document.createElementNS(this.svgArea.namespace, "g");
         newGroup.setAttribute("id", element.id);

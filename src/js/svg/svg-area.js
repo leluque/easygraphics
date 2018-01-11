@@ -383,15 +383,15 @@ export default class SVGArea {
         //*****************************
         // Create a new box vertices decorator and set its id.
         let newBoxVerticesDecorator = new BoxVerticesDecorator(decorated);
-        newBoxVerticesDecorator.id = this.generateId();
+        newBoxVerticesDecorator.id = decorated.id;
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
         drawer.svgArea = this;
-        var drawnVGroup = drawer.draw(newBoxVerticesDecorator);
-        this.svg.appendChild(drawnVGroup);
+        var drawnBoxVerticesDecorator = drawer.draw(newBoxVerticesDecorator);
+        this.svg.appendChild(drawnBoxVerticesDecorator);
 
-        newBoxVerticesDecorator.drawn = drawnVGroup;
+        newBoxVerticesDecorator.drawn = drawnBoxVerticesDecorator;
 
         return this.addElement(newBoxVerticesDecorator);
     }

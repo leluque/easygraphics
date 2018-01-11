@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultLineDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newLine = document.createElementNS(this.svgArea.namespace, "line");
         newLine.setAttribute("id", element.id);

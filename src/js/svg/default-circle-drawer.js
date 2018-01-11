@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultCircleDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newCircle = document.createElementNS(this.svgArea.namespace, "circle");
         newCircle.setAttribute("id", element.id);

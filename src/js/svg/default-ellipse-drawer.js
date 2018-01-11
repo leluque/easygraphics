@@ -15,6 +15,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultEllipseDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newEllipse = document.createElementNS(this.svgArea.namespace, "ellipse");
         newEllipse.setAttribute("id", element.id);

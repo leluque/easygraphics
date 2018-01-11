@@ -12,9 +12,13 @@ import GraphicalElementDecorator from './graphical-element-decorator.js';
 
 export default class BoxVerticesDecorator extends GraphicalElementDecorator {
 
+    static get BOX_VERTICES_TAG() {
+        return "isBoxVertices";
+    }
+
     constructor(decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 5) {
         super(decorated);
-        this._decorated = decorated;
+        decorated.addTag(BoxVerticesDecorator.BOX_VERTICES_TAG, this);
         this._topLeft = topLeft;
         this._topRight = topRight;
         this._bottomLeft = bottomLeft;

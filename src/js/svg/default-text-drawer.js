@@ -17,6 +17,10 @@ import StyleChangeListener from "./style-change-listener";
 
 export default class DefaultTextDrawer extends DefaultDrawer {
 
+    constructor(svgArea) {
+        super(svgArea);
+    }
+
     draw(element) {
         let newText = document.createElementNS(this.svgArea.namespace, "text");
         newText.setAttribute("id", element.id);
