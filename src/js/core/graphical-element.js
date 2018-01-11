@@ -16,7 +16,7 @@ import StylingAttributes from './styling-attributes.js';
  */
 export default class GraphicalElement {
 
-    constructor(x = 0, y = 0, width = 0, height = 0, stylingAttributes = new StylingAttributes(), id = -1) {
+    constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1) {
         this._x = x;
         this._y = y;
         this._minWidth = 1;
@@ -26,19 +26,22 @@ export default class GraphicalElement {
         this._stylingAttributes = stylingAttributes;
         this._stylingAttributes.target = this; // Bidirectional navigation.
         this._id = id;
-        this._drawn = null; // A reference to the shape drawn on a drawing area.
+        this._drawn = null; // A reference to the shape drawn on a drawing area (in case of svg, for example).
         this._changeListeners = []; // A graphical element may have many change listeners.
-        //this._changeNotificationsEnabled = true; // Must listeners be notified about changes?
         this._changeNotificationsEnabled = 0; // Must listeners be notified about changes?
                                               // 0 means yes.
                                               // Any value greater than 0 means a recursive call to
                                               // disable change notifications.
         this._rotation = 0; // Rotation angle in degrees.
-        this._rotationCenterX = x + width / 2; // The rotation point x coordinate.
-        this._rotationCenterY = y + height / 2; // The rotation point y coordinate.
-        this._tag = null;
+        this._rotationCenterX = x + width / 2; // The rotation point x-coordinate.
+        this._rotationCenterY = y + height / 2; // The rotation point y-coordinate.
+        this._tag = null; // Additional information about the graphical element.
+        // Define a new object to store additional information.
+        // It works like a map, but with complexity on search of O(1).
+        // The key works as the tag name.
+        this._tags = {};
 
-        // Events.
+        // Events' callback functions.
         this._onClick = null;
         this._onDblClick = null;
         this._onMouseDown = null;
@@ -46,17 +49,15 @@ export default class GraphicalElement {
         this._onMouseUp = null;
     }
 
-    get changeNotificationsEnabled() {
-        return this._changeNotificationsEnabled === 0;
-    }
-
     get x() {
         return this._x;
     }
 
     set x(value) {
+        let delta = value - this._x;
         this._x = value;
-        this.rotationCenterX = this.x + this.width / 2;
+        // Adjust the rotation center based on its current value and the variation of x.
+        this.rotationCenterX += delta;
         this.notifyListeners();
     }
 
@@ -65,8 +66,10 @@ export default class GraphicalElement {
     }
 
     set y(value) {
+        let delta = value - this._y;
         this._y = value;
-        this.rotationCenterY = this.y + this.height / 2;
+        // Adjust the rotation center based on its current value and the variation of y.
+        this.rotationCenterY += delta;
         this.notifyListeners();
     }
 
@@ -76,9 +79,11 @@ export default class GraphicalElement {
 
     set width(value) {
         if (value >= this.minWidth) {
+            let delta = value - this._width;
             this._width = value;
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
-            this.rotationCenterX = this.x + this.width / 2;
+            // Adjust the rotation center based on its current value and the variation of width.
+            this.rotationCenterX += delta;
             this.enableChangeNotifications();
             this.notifyListeners();
         }
@@ -101,8 +106,11 @@ export default class GraphicalElement {
 
     set height(value) {
         if (value >= this.minHeight) {
+            let delta = value - this._height;
             this._height = value;
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
+            // Adjust the rotation center based on its current value and the variation of height.
+            this.rotationCenterX += delta;
             this.rotationCenterY = this.y + this.height / 2;
             this.enableChangeNotifications();
             this.notifyListeners();
@@ -267,6 +275,35 @@ export default class GraphicalElement {
 
     set tag(value) {
         this._tag = value;
+    }
+
+    get changeNotificationsEnabled() {
+        return this._changeNotificationsEnabled === 0;
+    }
+
+    addTag(key, value) {
+        // If does not exist a tag with the same key, add it.
+        if (key in this._tags) {
+            this._tags[key].push(value)
+        }
+        this._tags[key] = value;
+        return true;
+    }
+
+    countTags() {
+        return Object.keys(this._tags).length;
+    }
+
+    getTag(key) {
+        return this._tags[key];
+    }
+
+    getTagsKeys() {
+        return Object.keys(this._tags);
+    }
+
+    removeTag(key) {
+        delete this._tags[key];
     }
 
     disableChangeNotifications() {
