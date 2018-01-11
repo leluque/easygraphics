@@ -33,11 +33,14 @@ export default class DefaultLinearGroupDrawer extends DefaultDrawer {
         let i = 0;
         for (i = 0; i < element.verticalGroup.countChildren(); i++) {
             let child = element.verticalGroup.getChildAt(i);
+/*
             let drawer = lookAndFeel.getDrawerFor(child);
             drawer.svgArea = this.svgArea;
             var drawnChild = drawer.draw(child);
             child.drawn = drawnChild;
             newGroup.appendChild(drawnChild);
+*/
+            newGroup.appendChild(child.drawn);
         }
 
         //*****************************

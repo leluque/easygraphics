@@ -6232,11 +6232,14 @@ var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
                         var i = 0;
                         for (i = 0; i < element.verticalGroup.countChildren(); i++) {
                                 var child = element.verticalGroup.getChildAt(i);
-                                var _drawer = lookAndFeel.getDrawerFor(child);
-                                _drawer.svgArea = this.svgArea;
-                                var drawnChild = _drawer.draw(child);
-                                child.drawn = drawnChild;
-                                newGroup.appendChild(drawnChild);
+                                /*
+                                            let drawer = lookAndFeel.getDrawerFor(child);
+                                            drawer.svgArea = this.svgArea;
+                                            var drawnChild = drawer.draw(child);
+                                            child.drawn = drawnChild;
+                                            newGroup.appendChild(drawnChild);
+                                */
+                                newGroup.appendChild(child.drawn);
                         }
 
                         //*****************************
