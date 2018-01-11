@@ -6667,51 +6667,52 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                 newGroup.appendChild(element.decorated.drawn);
             }
 
-            /*  let vertexSize = element.vertexSize;
-              let halfSize = (vertexSize - 1) / 2;
-                let lookAndFeel = new LookAndFeel();
-              let stylingAttributes = new StylingAttributes(0, "black", "black");
-              // Draw the box vertices.
-              if (element.topLeft) {
-                  let vertexTL = new Rectangle(element.x - halfSize, element.y - halfSize, element.x + halfSize, element.y + halfSize, stylingAttributes);
-                  vertexTL.tag = BoxVerticesDecorator.TOP_LEFT;
-                  let drawerTL = lookAndFeel.getDrawerFor(vertexTL);
-                  drawerTL.svgArea = this.svgArea;
-                  var drawnChildTL = drawerTL.draw(vertexTL);
-                  vertexTL.drawn = drawnChildTL;
-                  newGroup.appendChild(drawnChildTL);
-                  this.registerEvents(vertexTL, drawnChildTL, element);
-              }
-              if (element.topRight) {
-                  let vertexTR = new Rectangle(element.x2 - halfSize, element.y - halfSize, element.x2 + halfSize, element.y + halfSize, stylingAttributes);
-                  vertexTR.tag = BoxVerticesDecorator.TOP_RIGHT;
-                  let drawerTR = lookAndFeel.getDrawerFor(vertexTR);
-                  drawerTR.svgArea = this.svgArea;
-                  var drawnChildTR = drawerTR.draw(vertexTR);
-                  vertexTR.drawn = drawnChildTR;
-                  newGroup.appendChild(drawnChildTR);
-                  this.registerEvents(vertexTR, drawnChildTR, element);
-              }
-              if (element.bottomLeft) {
-                  let vertexBL = new Rectangle(element.x - halfSize, element.y2 - halfSize, element.x + halfSize, element.y2 + halfSize, stylingAttributes);
-                  vertexBL.tag = BoxVerticesDecorator.BOTTOM_LEFT;
-                  let drawerBL = lookAndFeel.getDrawerFor(vertexBL);
-                  drawerBL.svgArea = this.svgArea;
-                  var drawnChildBL = drawerBL.draw(vertexBL);
-                  vertexBL.drawn = drawnChildBL;
-                  newGroup.appendChild(drawnChildBL);
-                  this.registerEvents(vertexBL, drawnChildBL, element);
-              }
-              if (element.bottomRight) {
-                  let vertexBR = new Rectangle(element.x2 - halfSize, element.y2 - halfSize, element.x2 + halfSize, element.y2 + halfSize, stylingAttributes);
-                  vertexBR.tag = BoxVerticesDecorator.BOTTOM_RIGHT;
-                  let drawerBR = lookAndFeel.getDrawerFor(vertexBR);
-                  drawerBR.svgArea = this.svgArea;
-                  var drawnChildBR = drawerBR.draw(vertexBR);
-                  vertexBR.drawn = drawnChildBR;
-                  newGroup.appendChild(drawnChildBR);
-                  this.registerEvents(vertexBR, drawnChildBR, element);
-              }*/
+            var vertexSize = element.vertexSize;
+            var halfSize = (vertexSize - 1) / 2;
+
+            var lookAndFeel = new _lookAndFeel2.default();
+            var stylingAttributes = new _stylingAttributes2.default(0, "black", "black");
+            // Draw the box vertices.
+            if (element.topLeft) {
+                var vertexTL = new _rectangle2.default(element.x - halfSize, element.y - halfSize, element.x + halfSize, element.y + halfSize, stylingAttributes);
+                vertexTL.tag = _boxVerticesDecorator2.default.TOP_LEFT;
+                var drawerTL = lookAndFeel.getDrawerFor(vertexTL);
+                drawerTL.svgArea = this.svgArea;
+                var drawnChildTL = drawerTL.draw(vertexTL);
+                vertexTL.drawn = drawnChildTL;
+                newGroup.appendChild(drawnChildTL);
+                this.registerEvents(vertexTL, drawnChildTL, element);
+            }
+            if (element.topRight) {
+                var vertexTR = new _rectangle2.default(element.x2 - halfSize, element.y - halfSize, element.x2 + halfSize, element.y + halfSize, stylingAttributes);
+                vertexTR.tag = _boxVerticesDecorator2.default.TOP_RIGHT;
+                var drawerTR = lookAndFeel.getDrawerFor(vertexTR);
+                drawerTR.svgArea = this.svgArea;
+                var drawnChildTR = drawerTR.draw(vertexTR);
+                vertexTR.drawn = drawnChildTR;
+                newGroup.appendChild(drawnChildTR);
+                this.registerEvents(vertexTR, drawnChildTR, element);
+            }
+            if (element.bottomLeft) {
+                var vertexBL = new _rectangle2.default(element.x - halfSize, element.y2 - halfSize, element.x + halfSize, element.y2 + halfSize, stylingAttributes);
+                vertexBL.tag = _boxVerticesDecorator2.default.BOTTOM_LEFT;
+                var drawerBL = lookAndFeel.getDrawerFor(vertexBL);
+                drawerBL.svgArea = this.svgArea;
+                var drawnChildBL = drawerBL.draw(vertexBL);
+                vertexBL.drawn = drawnChildBL;
+                newGroup.appendChild(drawnChildBL);
+                this.registerEvents(vertexBL, drawnChildBL, element);
+            }
+            if (element.bottomRight) {
+                var vertexBR = new _rectangle2.default(element.x2 - halfSize, element.y2 - halfSize, element.x2 + halfSize, element.y2 + halfSize, stylingAttributes);
+                vertexBR.tag = _boxVerticesDecorator2.default.BOTTOM_RIGHT;
+                var drawerBR = lookAndFeel.getDrawerFor(vertexBR);
+                drawerBR.svgArea = this.svgArea;
+                var drawnChildBR = drawerBR.draw(vertexBR);
+                vertexBR.drawn = drawnChildBR;
+                newGroup.appendChild(drawnChildBR);
+                this.registerEvents(vertexBR, drawnChildBR, element);
+            }
 
             return newGroup;
         }
