@@ -6806,6 +6806,8 @@ var SVGArea = function () {
 
         this._idCount = 1;
         this._svg = document.querySelector(svgSelector);
+        Object.assign(this._svg.style, { 'cursor': 'default', '-webkit-user-select': 'none', '-moz-user-select': 'none', '-ms-user-select': 'none', 'user-select': 'none' });
+
         this._namespace = "http://www.w3.org/2000/svg";
         this._elements = [];
 
