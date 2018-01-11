@@ -11,12 +11,22 @@
 import GraphicalElementDecorator from './graphical-element-decorator.js';
 
 export default class BoxVerticesDecorator extends GraphicalElementDecorator {
-    get vertexSize() {
-        return this._vertexSize;
-    }
 
-    set vertexSize(value) {
-        this._vertexSize = value;
+    constructor(decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 5) {
+        super(decorated);
+        this._decorated = decorated;
+        this._topLeft = topLeft;
+        this._topRight = topRight;
+        this._bottomLeft = bottomLeft;
+        this._bottomRight = bottomRight;
+
+        // Events.
+        this._onVertexClick = null;
+        this._onVertexDblClick = null;
+        this._onVertexMouseDown = null;
+        this._onVertexMouseMove = null;
+        this._onVertexMouseUp = null;
+        this._vertexSize = vertexSize;
     }
 
     static get TOP_LEFT() {
@@ -37,21 +47,12 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
         return 3;
     }
 
-    constructor(decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 5) {
-        super(decorated);
-        this._decorated = decorated;
-        this._topLeft = topLeft;
-        this._topRight = topRight;
-        this._bottomLeft = bottomLeft;
-        this._bottomRight = bottomRight;
+    get vertexSize() {
+        return this._vertexSize;
+    }
 
-        // Events.
-        this._onVertexClick = null;
-        this._onVertexDblClick = null;
-        this._onVertexMouseDown = null;
-        this._onVertexMouseMove = null;
-        this._onVertexMouseUp = null;
-        this._vertexSize = vertexSize;
+    set vertexSize(value) {
+        this._vertexSize = value;
     }
 
     get topLeft() {

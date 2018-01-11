@@ -92,6 +92,7 @@
 		}
 		function move(x, y, element) {
 			if(selectedElement !== null) {
+				console.log("moving");
 				selectedElement.x = x - relativeXPosition;
 				selectedElement.y = y - relativeYPosition;
 			}
@@ -207,6 +208,11 @@
 		
 		ellipse = svgArea.ellipse(500, 100, 50, 25);
 		let decorator = svgArea.boxVerticesDecorator(ellipse);
+		
+		decorator.onMouseDown = select;
+		decorator.onMouseMove = move;
+		decorator.onMouseUp = unselect;
+
 /*		let draggingDecorator = false
 		let initialX = 0;
 		let initialY = 0;

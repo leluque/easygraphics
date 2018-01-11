@@ -2275,42 +2275,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var BoxVerticesDecorator = function (_GraphicalElementDeco) {
     _inherits(BoxVerticesDecorator, _GraphicalElementDeco);
 
-    _createClass(BoxVerticesDecorator, [{
-        key: 'vertexSize',
-        get: function get() {
-            return this._vertexSize;
-        },
-        set: function set(value) {
-            this._vertexSize = value;
-        }
-    }], [{
-        key: 'TOP_LEFT',
-        get: function get() {
-            return 0;
-        }
-
-        // It does not use horizontal margins for elements.
-
-    }, {
-        key: 'TOP_RIGHT',
-        get: function get() {
-            return 1;
-        }
-
-        // It uses horizontal margins for elements.
-
-    }, {
-        key: 'BOTTOM_LEFT',
-        get: function get() {
-            return 2;
-        }
-    }, {
-        key: 'BOTTOM_RIGHT',
-        get: function get() {
-            return 3;
-        }
-    }]);
-
     function BoxVerticesDecorator(decorated) {
         var topLeft = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var topRight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
@@ -2397,6 +2361,14 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             }
         }
     }, {
+        key: 'vertexSize',
+        get: function get() {
+            return this._vertexSize;
+        },
+        set: function set(value) {
+            this._vertexSize = value;
+        }
+    }, {
         key: 'topLeft',
         get: function get() {
             return this._topLeft;
@@ -2467,6 +2439,32 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
         },
         set: function set(value) {
             this._onVertexMouseUp = value;
+        }
+    }], [{
+        key: 'TOP_LEFT',
+        get: function get() {
+            return 0;
+        }
+
+        // It does not use horizontal margins for elements.
+
+    }, {
+        key: 'TOP_RIGHT',
+        get: function get() {
+            return 1;
+        }
+
+        // It uses horizontal margins for elements.
+
+    }, {
+        key: 'BOTTOM_LEFT',
+        get: function get() {
+            return 2;
+        }
+    }, {
+        key: 'BOTTOM_RIGHT',
+        get: function get() {
+            return 3;
         }
     }]);
 
@@ -7164,10 +7162,6 @@ var SVGArea = function () {
             // Create a new box vertices decorator and set its id.
             var newBoxVerticesDecorator = new _boxVerticesDecorator2.default(decorated);
             newBoxVerticesDecorator.id = this.generateId();
-
-            //*****************************
-            // Add change listeners.
-            //newBoxVerticesDecorator.addChangeListener(new BoxVerticesDecoratorDimensionChangeListener());
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);

@@ -385,10 +385,6 @@ export default class SVGArea {
         let newBoxVerticesDecorator = new BoxVerticesDecorator(decorated);
         newBoxVerticesDecorator.id = this.generateId();
 
-        //*****************************
-        // Add change listeners.
-        //newBoxVerticesDecorator.addChangeListener(new BoxVerticesDecoratorDimensionChangeListener());
-
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
         drawer.svgArea = this;
