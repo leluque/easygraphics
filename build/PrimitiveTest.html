@@ -45,6 +45,67 @@
 	
     (function () {
         let svgArea = new easygraphics.Area.init("#svg");
+
+		function defaultTextEditor(x, y, element) {
+		
+			var box = document.createElement('input'); // creates the element
+
+			box.style.position = 'absolute';  // position it
+			box.style.left = element.x + 'px';
+			box.style.top = element.y + 'px';  
+			box.value = element.text;
+			
+			document.body.appendChild(box); // add it as last child of body elemnt
+			box.focus();
+			box.onkeypress = function(e){
+				if (!e) e = window.event;
+				var keyCode = e.keyCode || e.which;
+				if (keyCode == '13'){
+				  box.blur();
+				  return false;
+				}
+			  }
+
+			box.onblur = function() {
+				element.text = box.value;
+				document.body.removeChild(box);
+			}
+			
+		}
+		
+		
+		
+		let selectedElement = null;
+		let relativeXPosition = -1;
+		let relativeYPosition = -1;
+		function select(x, y, element, event) { 
+			if(element instanceof easygraphics.GraphicalElement) {
+				selectedElement = element;
+				console.log("selected graphical element");
+				relativeXPosition = x - element.x;
+				relativeYPosition = y - element.y;
+				event.stopPropagation();
+			} else {
+				console.log("did not select graphical element");
+				selectedElement = null;
+			}
+		}
+		function move(x, y, element) {
+			if(selectedElement !== null) {
+				selectedElement.x = x - relativeXPosition;
+				selectedElement.y = y - relativeYPosition;
+			}
+		}
+		function unselect(x, y, element) { 
+			selectedElement = null;
+			relativeXPosition = -1;
+			relativeYPosition = -1;
+		}
+		svgArea.onMouseDown = select;
+		svgArea.onMouseMove = move;
+		svgArea.onMouseUp = unselect;
+
+
 		/*svgArea.onClick = function() {
 			console.log('Clicked on the area');
 		}*/
@@ -81,7 +142,14 @@
         umlClass.addChild(stereotype, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlClass.addChild(svgArea.text(undefined, undefined, "Customer"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlClass.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
-        umlClass.addChild(svgArea.text(undefined, undefined, "- registry: String"));
+		let attribute = svgArea.text(undefined, undefined, "- registry: String");
+        umlClass.addChild(attribute);
+		
+		attribute.onDblClick = function(x, y, element, event) {
+			defaultTextEditor(x, y, element);
+			event.stopPropagation();
+		}
+		
         umlClass.addChild(svgArea.text(undefined, undefined, "- name: String"));
         umlClass.addChild(svgArea.text(undefined, undefined, "- birthDate: Date"));
         umlClass.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
@@ -89,6 +157,12 @@
         umlClass.addChild(svgArea.text(undefined, undefined, "+ update(): void"));
         text = svgArea.text(undefined, undefined, "+ findByRegistry(registry: String): List<Customer>");
         umlClass.addChild(text);
+		
+		// Drag and drop.
+		umlClass.onMouseDown = select;
+		umlClass.onMouseMove = move;
+		umlClass.onMouseUp = unselect;
+		
         //****************************
 
         //****************************
@@ -121,38 +195,9 @@
 		circle1 = svgArea.circle(100, 500, 100);
 		ellipse1 = svgArea.ellipse(20, 600, 100, 50);
 		
-		let selectedElement = null;
-		let relativeXPosition = -1;
-		let relativeYPosition = -1;
-		function select(x, y, element, event) { 
-			if(element instanceof easygraphics.GraphicalElement) {
-				selectedElement = element;
-				console.log("selected graphical element");
-				relativeXPosition = x - element.x;
-				relativeYPosition = y - element.y;
-				event.stopPropagation();
-			} else {
-				console.log("did not select graphical element");
-				selectedElement = null;
-			}
-		}
-		function move(x, y, element) {
-			if(selectedElement !== null) {
-				selectedElement.x = x - relativeXPosition;
-				selectedElement.y = y - relativeYPosition;
-			}
-		}
-		function unselect(x, y, element) { 
-			selectedElement = null;
-			relativeXPosition = -1;
-			relativeYPosition = -1;
-		}
 		circle1.onMouseDown = select;
 		circle1.onMouseMove = move;
 		circle1.onMouseUp = unselect;
-		svgArea.onMouseDown = select;
-		svgArea.onMouseMove = move;
-		svgArea.onMouseUp = unselect;
 		
 		//console.log(circle1.id);
 		//alert(circle1.onClickCallback);
