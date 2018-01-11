@@ -112,8 +112,8 @@ var GraphicalElement = function () {
     function GraphicalElement() {
         var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
+        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 7;
         var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
         var id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : -1;
 
@@ -128,19 +128,22 @@ var GraphicalElement = function () {
         this._stylingAttributes = stylingAttributes;
         this._stylingAttributes.target = this; // Bidirectional navigation.
         this._id = id;
-        this._drawn = null; // A reference to the shape drawn on a drawing area.
+        this._drawn = null; // A reference to the shape drawn on a drawing area (in case of svg, for example).
         this._changeListeners = []; // A graphical element may have many change listeners.
-        //this._changeNotificationsEnabled = true; // Must listeners be notified about changes?
         this._changeNotificationsEnabled = 0; // Must listeners be notified about changes?
         // 0 means yes.
         // Any value greater than 0 means a recursive call to
         // disable change notifications.
         this._rotation = 0; // Rotation angle in degrees.
-        this._rotationCenterX = x + width / 2; // The rotation point x coordinate.
-        this._rotationCenterY = y + height / 2; // The rotation point y coordinate.
-        this._tag = null;
+        this._rotationCenterX = x + width / 2; // The rotation point x-coordinate.
+        this._rotationCenterY = y + height / 2; // The rotation point y-coordinate.
+        this._tag = null; // Additional information about the graphical element.
+        // Define a new object to store additional information.
+        // It works like a map, but with complexity on search of O(1).
+        // The key works as the tag name.
+        this._tags = {};
 
-        // Events.
+        // Events' callback functions.
         this._onClick = null;
         this._onDblClick = null;
         this._onMouseDown = null;
@@ -149,6 +152,36 @@ var GraphicalElement = function () {
     }
 
     _createClass(GraphicalElement, [{
+        key: 'addTag',
+        value: function addTag(key, value) {
+            // If does not exist a tag with the same key, add it.
+            if (key in this._tags) {
+                this._tags[key].push(value);
+            }
+            this._tags[key] = value;
+            return true;
+        }
+    }, {
+        key: 'countTags',
+        value: function countTags() {
+            return Object.keys(this._tags).length;
+        }
+    }, {
+        key: 'getTag',
+        value: function getTag(key) {
+            return this._tags[key];
+        }
+    }, {
+        key: 'getTagsKeys',
+        value: function getTagsKeys() {
+            return Object.keys(this._tags);
+        }
+    }, {
+        key: 'removeTag',
+        value: function removeTag(key) {
+            delete this._tags[key];
+        }
+    }, {
         key: 'disableChangeNotifications',
         value: function disableChangeNotifications() {
             //this.changeNotificationsEnabled = false;
@@ -285,7 +318,7 @@ var GraphicalElement = function () {
         value: function fireOnClick(event) {
             if (this._onClick !== null && this._onClick) {
                 if (typeof this._onClick === "function") {
-                    this._onClick(event.clientX, event.clientY, this);
+                    this._onClick(event.clientX, event.clientY, this, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onClick);
                 }
@@ -296,7 +329,7 @@ var GraphicalElement = function () {
         value: function fireOnDblClick(event) {
             if (this._onDblClick !== null && this._onDblClick) {
                 if (typeof this._onDblClick === "function") {
-                    this._onDblClick(event.clientX, event.clientY, this);
+                    this._onDblClick(event.clientX, event.clientY, this, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onDblClick);
                 }
@@ -307,7 +340,7 @@ var GraphicalElement = function () {
         value: function fireOnMouseDown(event) {
             if (this._onMouseDown !== null && this._onMouseDown) {
                 if (typeof this._onMouseDown === "function") {
-                    this._onMouseDown(event.clientX, event.clientY, this);
+                    this._onMouseDown(event.clientX, event.clientY, this, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onMouseDown);
                 }
@@ -318,7 +351,7 @@ var GraphicalElement = function () {
         value: function fireOnMouseMove(event) {
             if (this._onMouseMove !== null && this._onMouseMove) {
                 if (typeof this._onMouseMove === "function") {
-                    this._onMouseMove(event.clientX, event.clientY, this);
+                    this._onMouseMove(event.clientX, event.clientY, this, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onMouseMove);
                 }
@@ -329,16 +362,11 @@ var GraphicalElement = function () {
         value: function fireOnMouseUp(event) {
             if (this._onMouseUp !== null && this._onMouseUp) {
                 if (typeof this._onMouseUp === "function") {
-                    this._onMouseUp(event.clientX, event.clientY, this);
+                    this._onMouseUp(event.clientX, event.clientY, this, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onMouseUp);
                 }
             }
-        }
-    }, {
-        key: 'changeNotificationsEnabled',
-        get: function get() {
-            return this._changeNotificationsEnabled === 0;
         }
     }, {
         key: 'x',
@@ -346,8 +374,10 @@ var GraphicalElement = function () {
             return this._x;
         },
         set: function set(value) {
+            var delta = value - this._x;
             this._x = value;
-            this.rotationCenterX = this.x + this.width / 2;
+            // Adjust the rotation center based on its current value and the variation of x.
+            this.rotationCenterX += delta;
             this.notifyListeners();
         }
     }, {
@@ -356,8 +386,10 @@ var GraphicalElement = function () {
             return this._y;
         },
         set: function set(value) {
+            var delta = value - this._y;
             this._y = value;
-            this.rotationCenterY = this.y + this.height / 2;
+            // Adjust the rotation center based on its current value and the variation of y.
+            this.rotationCenterY += delta;
             this.notifyListeners();
         }
     }, {
@@ -367,9 +399,11 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             if (value >= this.minWidth) {
+                var delta = value - this._width;
                 this._width = value;
                 this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
-                this.rotationCenterX = this.x + this.width / 2;
+                // Adjust the rotation center based on its current value and the variation of width.
+                this.rotationCenterX += delta;
                 this.enableChangeNotifications();
                 this.notifyListeners();
             }
@@ -392,8 +426,11 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             if (value >= this.minHeight) {
+                var delta = value - this._height;
                 this._height = value;
                 this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
+                // Adjust the rotation center based on its current value and the variation of height.
+                this.rotationCenterX += delta;
                 this.rotationCenterY = this.y + this.height / 2;
                 this.enableChangeNotifications();
                 this.notifyListeners();
@@ -559,6 +596,11 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             this._tag = value;
+        }
+    }, {
+        key: 'changeNotificationsEnabled',
+        get: function get() {
+            return this._changeNotificationsEnabled === 0;
         }
     }]);
 
@@ -7233,7 +7275,7 @@ exports.default = SVGArea;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BoxVerticesDecorator = exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
+exports.GraphicalElement = exports.BoxVerticesDecorator = exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
 
 var _util = __webpack_require__(13);
 
@@ -7492,6 +7534,7 @@ exports.SVGArea = _svgArea2.default;
 exports.Area = _area2.default;
 exports.Ellipse = _ellipse2.default;
 exports.BoxVerticesDecorator = _boxVerticesDecorator2.default;
+exports.GraphicalElement = _graphicalElement2.default;
 // export { A, B, C, D, E, ... }
 
 
