@@ -284,7 +284,7 @@ export default class GraphicalElement {
     addTag(key, value) {
         // If does not exist a tag with the same key, add it.
         if (key in this._tags) {
-            this._tags[key].push(value)
+            this._tags[key].push(value);
         }
         this._tags[key] = value;
         return true;

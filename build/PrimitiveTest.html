@@ -120,8 +120,15 @@
 		circle1 = svgArea.circle(100, 500, 100);
 		ellipse1 = svgArea.ellipse(20, 600, 100, 50);
 		
-		function teste() { alert('Clicou no círculo.'); }
-		circle1.onClick = teste;
+		alert(ellipse1 instanceof easygraphics.GraphicalElement);
+		
+		let selectedElement = null;
+/*		function selectCircle() { 
+			selectedElement = circle1;
+		}
+		function moveCircle() {
+		circle1.onMouseDown = selectCircle;
+		circle1.onMouseMove = moveCircle;*/
 		//console.log(circle1.id);
 		//alert(circle1.onClickCallback);
 		//circle1.onClickCallback();
