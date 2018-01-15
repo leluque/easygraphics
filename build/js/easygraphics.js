@@ -7000,10 +7000,17 @@ var SVGArea = function () {
 
         this._idCount = 1;
         this._svg = document.querySelector(svgSelector);
-        Object.assign(this._svg.style, { 'cursor': 'default', '-webkit-user-select': 'none', '-moz-user-select': 'none', '-ms-user-select': 'none', 'user-select': 'none' });
-
         this._namespace = "http://www.w3.org/2000/svg";
         this._elements = [];
+
+        // Avoid text selection when dragging and dropping on the area.
+        Object.assign(this._svg.style, {
+            'cursor': 'default',
+            '-webkit-user-select': 'none',
+            '-moz-user-select': 'none',
+            '-ms-user-select': 'none',
+            'user-select': 'none'
+        });
 
         // Events.
         this._onClick = null;
@@ -7088,13 +7095,17 @@ var SVGArea = function () {
             this._elements.push(element);
             return element;
         }
-
-        // TODO: in all methods below, register listener events for all
-        // relevant events and register Circle (or the appropriate class)
-        // EVENThappened method as a callback function. This function
-
-        // just inform the event listeners that the event happened.
-
+    }, {
+        key: 'remove',
+        value: function remove(element) {
+            for (var i = 0; i < this._elements.length; i++) {
+                if (this._elements[i] === element) {
+                    this._elements.splice(i, 1);
+                    break;
+                }
+            }
+            this.svg.removeChild(element.drawn);
+        }
     }, {
         key: 'circle',
         value: function circle() {

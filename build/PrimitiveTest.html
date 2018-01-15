@@ -40,9 +40,19 @@
 		let selectedElement = null;
 		let relativeXPosition = -1;
 		let relativeYPosition = -1;
+		let originalXPosition = -1;
+		let originalYPosition = -1;
+		let originalWidth = -1;
+		let originalHeight = -1;
 		function select(x, y, element, event) { 
 			if(element instanceof easygraphics.GraphicalElement) {
 				selectedElement = element;
+				if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
+					originalXPosition = element.x;
+					originalYPosition = element.y;
+					originalWidth = element.width;
+					originalHeight = element.height;
+				}
 				relativeXPosition = x - element.x;
 				relativeYPosition = y - element.y;
 				event.stopPropagation();
@@ -52,8 +62,19 @@
 		}
 		function move(x, y, element) {
 			if(selectedElement !== null) {
-				selectedElement.x = x - relativeXPosition;
-				selectedElement.y = y - relativeYPosition;
+				if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
+					if(selectedElement.tag == easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
+						selectedElement.tag == easygraphics.BoxVerticesDecorator.TOP_RIGHT) {
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth + x - relativeXPosition;
+					}
+					if(selectedElement.tag == easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
+						selectedElement.tag == easygraphics.BoxVerticesDecorator.BOTTOM_LEFT) {
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height = originalHeight + y - relativeYPosition;
+					}
+				} else {
+					selectedElement.x = x - relativeXPosition;
+					selectedElement.y = y - relativeYPosition;
+				}
 				/*if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.BOX_VERTICES_TAG)) {
 					console.log(selectedElement.getTag(easygraphics.BoxVerticesDecorator.BOX_VERTICES_TAG).x);
 				}*/
@@ -71,7 +92,7 @@
 		
         //****************************
         // UML Entity Class.
-    /*    rect = svgArea.rect()
+        rect = svgArea.rect()
         umlClass = svgArea.vgroup(10, 10);
         umlClass.frame = rect;
         let stereotype = svgArea.text(undefined, undefined, "<<Entity>>");
@@ -99,16 +120,19 @@
 		// Drag and drop.
 		umlClass.onMouseDown = select;
 		umlClass.onMouseMove = move;
-		umlClass.onMouseUp = unselect;		*/
+		umlClass.onMouseUp = unselect;
         //****************************
-/*
+
         //****************************
         // UML Actor.
         let umlActor = svgArea.vgroup(10, 300);
         umlActor.addChild(svgArea.image(undefined, undefined, 25, 50, "images/uml_actor.svg"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlActor.addChild(svgArea.text(undefined, undefined, "Actor"));
+		umlActor.onDblClick = function(x, y, element, event) {
+			svgArea.remove(element);
+		};
         //****************************
-
+/*
         //****************************
         // UML Use Case.
         umlUseCase = svgArea.vgroup(160, 320);
@@ -152,7 +176,6 @@
 		decorator.onMouseMove = move;
 		decorator.onMouseUp = unselect;
 		decorator.onVertexMouseDown = select;
-		decorator.width += 200;
 		
 		//decorator.x += 50;
 		
