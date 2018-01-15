@@ -9,6 +9,7 @@
 'use strict';
 
 import StylingAttributes from './styling-attributes.js';
+import ChangeListener from "./change-listener";
 
 /**
  * This class implements the default behaviour of graphical elements.
@@ -49,6 +50,10 @@ export default class GraphicalElement {
         this._onMouseUp = null;
     }
 
+    static get PARENT() {
+        return "parent";
+    }
+
     get x() {
         return this._x;
     }
@@ -58,7 +63,7 @@ export default class GraphicalElement {
         this._x = value;
         // Adjust the rotation center based on its current value and the variation of x.
         this.rotationCenterX += delta;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.POSITION);
     }
 
     get y() {
@@ -70,7 +75,7 @@ export default class GraphicalElement {
         this._y = value;
         // Adjust the rotation center based on its current value and the variation of y.
         this.rotationCenterY += delta;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.POSITION);
     }
 
     get width() {
@@ -85,7 +90,7 @@ export default class GraphicalElement {
             // Adjust the rotation center based on its current value and the variation of width.
             this.rotationCenterX += delta;
             this.enableChangeNotifications();
-            this.notifyListeners();
+            this.notifyListeners(ChangeListener.DIMENSION);
         }
     }
 
@@ -113,7 +118,7 @@ export default class GraphicalElement {
             this.rotationCenterX += delta;
             this.rotationCenterY = this.y + this.height / 2;
             this.enableChangeNotifications();
-            this.notifyListeners();
+            this.notifyListeners(ChangeListener.DIMENSION);
         }
     }
 
@@ -134,7 +139,7 @@ export default class GraphicalElement {
 
     set rotation(value) {
         this._rotation = value;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.ROTATION);
     }
 
     get rotationCenterX() {
@@ -143,7 +148,7 @@ export default class GraphicalElement {
 
     set rotationCenterX(value) {
         this._rotationCenterX = value;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.ROTATION);
     }
 
     get rotationCenterY() {
@@ -152,7 +157,7 @@ export default class GraphicalElement {
 
     set rotationCenterY(value) {
         this._rotationCenterY = value;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.ROTATION);
     }
 
     get x2() {
@@ -196,7 +201,7 @@ export default class GraphicalElement {
     set stylingAttributes(value) {
         this._stylingAttributes = value;
         value.target = this;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.STYLING);
     }
 
     get borderSize() {
@@ -350,7 +355,7 @@ export default class GraphicalElement {
 
     appearance(json) {
         this.stylingAttributes.fromJSON(json);
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.STYLING);
     }
 
     /**
@@ -383,12 +388,25 @@ export default class GraphicalElement {
         this._changeListeners.push(value);
     }
 
+    removeChangeListenerByType() {
+        if (this._changeListeners) {
+            for (let i = 0; i < this._changeListeners.length; i++) {
+                if (this._changeListeners[i].hasAnyType(...arguments)) {
+                    this._changeListeners.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
+
     notifyListeners() {
         if (!this.changeNotificationsEnabled) {
             return;
         }
         for (let listener of this.changeListeners) {
-            listener.update(this);
+            if (listener.hasAnyType(...arguments)) {
+                listener.update(this);
+            }
         }
     }
 

@@ -10,7 +10,7 @@
 
 import DefaultDrawer from './default-drawer.js';
 import LookAndFeel from "./look-and-feel";
-import LinearGroupTransformationChangeListener from "./linear-group-transformation-change-listener";
+import LinearGroupRotationChangeListener from "./linear-group-rotation-change-listener";
 
 export default class DefaultLinearGroupDrawer extends DefaultDrawer {
 
@@ -49,7 +49,7 @@ export default class DefaultLinearGroupDrawer extends DefaultDrawer {
 
         //*****************************
         // Add change listeners.
-        element.addChangeListener(new LinearGroupTransformationChangeListener());
+        element.addChangeListener(new LinearGroupRotationChangeListener());
 
         return newGroup;
     }

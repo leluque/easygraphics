@@ -13,10 +13,12 @@ import GeneralDimensionChangeListener from './general-dimension-change-listener.
 export default class EllipseDimensionChangeListener extends GeneralDimensionChangeListener {
 
     changeWidth(target) {
+        target.drawn.setAttribute("cx", target.centerX);
         target.drawn.setAttribute("rx", target.radiusX);
     }
 
     changeHeight(target) {
+        target.drawn.setAttribute("cy", target.centerY);
         target.drawn.setAttribute("ry", target.radiusY);
     }
 

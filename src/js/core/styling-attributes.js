@@ -9,6 +9,7 @@
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
+import ChangeListener from "./change-listener";
 
 export default class StylingAttributes {
 
@@ -85,7 +86,7 @@ export default class StylingAttributes {
 
     notifyTarget() {
         if (this.target !== null) {
-            this.target.notifyListeners();
+            this.target.notifyListeners(ChangeListener.STYLING);
         }
     }
 

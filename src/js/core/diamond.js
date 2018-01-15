@@ -11,6 +11,7 @@
 import GraphicalElement from './graphical-element.js';
 import BoundingBox from './bounding-box.js';
 import StylingAttributes from "./styling-attributes";
+import ChangeListener from "./change-listener";
 
 /**
  * This class implements diamonds.
@@ -34,7 +35,7 @@ export default class Diamond extends GraphicalElement {
             super.height = value;
         }
         this.enableChangeNotifications();
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.DIMENSION);
     }
 
     get height() {
@@ -48,7 +49,7 @@ export default class Diamond extends GraphicalElement {
             super.width = value;
         }
         this.enableChangeNotifications();
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.DIMENSION);
     }
 
     get preserveAspectRatio() {

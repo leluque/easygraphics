@@ -11,6 +11,11 @@
 import ChangeListener from '../core/change-listener.js';
 
 export default class StyleChangeListener extends ChangeListener {
+
+    constructor() {
+        super(ChangeListener.STYLING);
+    }
+
     update(target) {
         Object.assign(target.drawn.style, target.stylingAttributes.toJSON());
     }

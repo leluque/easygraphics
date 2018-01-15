@@ -10,7 +10,7 @@
 
 import DefaultDrawer from './default-drawer.js';
 import LookAndFeel from './look-and-feel.js';
-import VGroupTransformationChangeListener from "./vgroup-transformation-change-listener";
+import VGroupRotationChangeListener from "./vgroup-rotation-change-listener";
 
 export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
@@ -47,7 +47,7 @@ export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
         //*****************************
         // Add change listeners.
-        element.addChangeListener(new VGroupTransformationChangeListener());
+        element.addChangeListener(new VGroupRotationChangeListener());
 
         return newGroup;
     }

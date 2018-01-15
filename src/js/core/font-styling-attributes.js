@@ -9,6 +9,7 @@
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
+import ChangeListener from "./change-listener";
 
 export default class FontStylingAttributes {
     constructor(family = "'Roboto', sans-serif", size = 13, weight = "100", style = "normal", target = null) {
@@ -33,7 +34,7 @@ export default class FontStylingAttributes {
 
     set family(value) {
         this._family = value;
-        this.target.notifyListeners();
+        this.target.notifyListeners(ChangeListener.STYLING);
     }
 
     get size() {
@@ -42,7 +43,7 @@ export default class FontStylingAttributes {
 
     set size(value) {
         this._size = value;
-        this.target.notifyListeners();
+        this.target.notifyListeners(ChangeListener.STYLING);
     }
 
     get weight() {
@@ -51,7 +52,7 @@ export default class FontStylingAttributes {
 
     set weight(value) {
         this._weight = value;
-        this.target.notifyListeners();
+        this.target.notifyListeners(ChangeListener.STYLING);
     }
 
     get target() {
@@ -60,6 +61,6 @@ export default class FontStylingAttributes {
 
     set target(value) {
         this._target = value;
-        this.target.notifyListeners();
+        this.target.notifyListeners(ChangeListener.STYLING);
     }
 }

@@ -21,6 +21,9 @@ import GroupStylingAttributes from "./src/js/core/group-styling-attributes.js";
 import FontStylingAttributes from "./src/js/core/font-styling-attributes.js";
 import GraphicalElementDecorator from "./src/js/core/graphical-element-decorator.js";
 import BoxVerticesDecorator from "./src/js/core/box-vertices-decorator.js";
+import BoxVerticesDecoratorDecoratedPositionChangeListener from "./src/js/core/box-vertices-decorator-decorated-position-change-listener.js";
+import BoxVerticesDecoratorDecoratedRotationChangeListener from "./src/js/core/box-vertices-decorator-decorated-rotation-change-listener.js";
+import BoxVerticesDecoratorDecoratedDimensionChangeListener from "./src/js/core/box-vertices-decorator-decorated-dimension-change-listener.js";
 // SVG implementation.
 import GeneralPositionChangeListener from "./src/js/svg/general-position-change-listener.js";
 import RectanglePositionChangeListener from "./src/js/svg/rectangle-position-change-listener.js";
@@ -40,9 +43,9 @@ import TextDimensionChangeListener from "./src/js/svg/text-dimension-change-list
 import CircleDimensionChangeListener from "./src/js/svg/circle-dimension-change-listener.js";
 import LineDimensionChangeListener from "./src/js/svg/line-dimension-change-listener.js";
 import PolyLineDimensionChangeListener from "./src/js/svg/polyline-dimension-change-listener.js";
-import GeneralTransformationChangeListener from "./src/js/svg/general-transformation-change-listener.js";
-import VGroupTransformationChangeListener from "./src/js/svg/vgroup-transformation-change-listener.js";
-import LinearGroupTransformationChangeListener from "./src/js/svg/linear-group-transformation-change-listener.js";
+import GeneralRotationChangeListener from "./src/js/svg/general-rotation-change-listener.js";
+import VGroupRotationChangeListener from "./src/js/svg/vgroup-rotation-change-listener.js";
+import LinearGroupRotationChangeListener from "./src/js/svg/linear-group-rotation-change-listener.js";
 import TextChangeListener from "./src/js/svg/text-change-listener.js";
 import FontChangeListener from "./src/js/svg/font-change-listener.js";
 import StyleChangeListener from "./src/js/svg/style-change-listener.js";
@@ -60,6 +63,7 @@ import DefaultImageDrawer from "./src/js/svg/default-image-drawer.js";
 import DefaultVerticalGroupDrawer from "./src/js/svg/default-vertical-group-drawer.js";
 import DefaultLinearGroupDrawer from "./src/js/svg/default-linear-group-drawer.js";
 import DefaultBoxVerticesDecoratorDrawer from "./src/js/svg/default-box-vertices-decorator-drawer.js";
+import BoxVerticesDecoratorChangeListener from "./src/js/svg/box-vertices-decorator-change-listener.js";
 import SVGArea from './src/js/svg/svg-area.js';
 
 // General.

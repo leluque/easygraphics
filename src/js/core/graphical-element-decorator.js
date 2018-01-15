@@ -3,14 +3,13 @@
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 08/06/2017.
+ * Created by Leandro Luque on 15/01/2018.
  */
 
 'use strict';
 
 import GraphicalElement from "./graphical-element";
 
-// TODO: change to mixin in the future.
 export default class GraphicalElementDecorator extends GraphicalElement {
 
     constructor(decorated) {
@@ -140,13 +139,13 @@ export default class GraphicalElementDecorator extends GraphicalElement {
         this._decorated.id = value;
     }
 
-    get drawn() {
+/*    get drawn() {
         return this._decorated.drawn;
     }
 
     set drawn(value) {
         this._decorated.drawn = value;
-    }
+    }*/
 
     get changeListeners() {
         return this._decorated.changeListeners;
@@ -196,6 +195,14 @@ export default class GraphicalElementDecorator extends GraphicalElement {
         this._decorated.onMouseUp = value;
     }
 
+    get tag() {
+        return this._decorated.tag;
+    }
+
+    set tag(value) {
+        this._decorated.tag = value;
+    }
+
     disableChangeNotifications() {
         this._decorated.disableChangeNotifications();
     }
@@ -225,7 +232,7 @@ export default class GraphicalElementDecorator extends GraphicalElement {
     }
 
     contentBox(width, height) {
-        this._decorated.contentBox(width, height);
+        return this._decorated.contentBox(width, height);
     }
 
     widthToFit(boundingBox) {
@@ -262,14 +269,6 @@ export default class GraphicalElementDecorator extends GraphicalElement {
 
     fireOnMouseUp(event) {
         this._decorated.fireOnMouseUp(event);
-    }
-
-    get tag() {
-        return this._decorated.tag;
-    }
-
-    set tag(value) {
-        this._decorated.tag = value;
     }
 
     addTag(key, value) {

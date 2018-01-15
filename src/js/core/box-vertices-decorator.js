@@ -3,26 +3,34 @@
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 08/06/2017.
+ * Created by Leandro Luque on 15/01/2018.
  */
 
 'use strict';
 
-import GraphicalElementDecorator from './graphical-element-decorator.js';
+import GraphicalElement from "./graphical-element";
 
-export default class BoxVerticesDecorator extends GraphicalElementDecorator {
+export default class BoxVerticesDecorator extends GraphicalElement {
 
-    static get BOX_VERTICES_TAG() {
-        return "isBoxVertices";
+    static get VERTEX() {
+        return "vertex";
     }
 
     constructor(decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 5) {
-        super(decorated);
+        super();
         decorated.addTag(BoxVerticesDecorator.BOX_VERTICES_TAG, this);
+        this._decorated = decorated;
+
         this._topLeft = topLeft;
         this._topRight = topRight;
         this._bottomLeft = bottomLeft;
         this._bottomRight = bottomRight;
+
+        // Vertices drawn.
+        this._topLeftVertex = null;
+        this._topRightVertex = null;
+        this._bottomLeftVertex = null;
+        this._bottomRightVertex = null;
 
         // Events.
         this._onVertexClick = null;
@@ -31,6 +39,10 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
         this._onVertexMouseMove = null;
         this._onVertexMouseUp = null;
         this._vertexSize = vertexSize;
+    }
+
+    static get BOX_VERTICES_TAG() {
+        return "isBoxVertices";
     }
 
     static get TOP_LEFT() {
@@ -131,11 +143,78 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
         this._onVertexMouseUp = value;
     }
 
-    // Events.
+    get decorated() {
+        return this._decorated;
+    }
+
+    set decorated(value) {
+        this._decorated = value;
+    }
+
+    get width() {
+        return this.decorated.width;
+    }
+
+    set width(value) {
+        //this.disableChangeNotifications();
+        //this.decorated.disableChangeNotifications();
+        this.decorated.width = value;
+        //this.decorated.enableChangeNotifications();
+        //this.decorated.notifyListeners(ChangeListener.DIMENSION);
+        //this.enableChangeNotifications();
+    }
+
+    get height() {
+        return this.decorated.height;
+    }
+
+    set height(value) {
+        //this.disableChangeNotifications();
+        //this.decorated.disableChangeNotifications();
+        this.decorated.height = value;
+        //this.decorated.enableChangeNotifications();
+        //this.decorated.notifyListeners(ChangeListener.DIMENSION);
+        //this.enableChangeNotifications();
+    }
+
+
+    get topLeftVertex() {
+        return this._topLeftVertex;
+    }
+
+    set topLeftVertex(value) {
+        this._topLeftVertex = value;
+    }
+
+    get topRightVertex() {
+        return this._topRightVertex;
+    }
+
+    set topRightVertex(value) {
+        this._topRightVertex = value;
+    }
+
+    get bottomLeftVertex() {
+        return this._bottomLeftVertex;
+    }
+
+    set bottomLeftVertex(value) {
+        this._bottomLeftVertex = value;
+    }
+
+    get bottomRightVertex() {
+        return this._bottomRightVertex;
+    }
+
+    set bottomRightVertex(value) {
+        this._bottomRightVertex = value;
+    }
+
+// Events.
     fireOnVertexClick(x, y, where) {
         if (this._onVertexClick !== null && this._onVertexClick) {
             if (typeof(this._onVertexClick) === "function") {
-                this._onVertexClick(event.clientX, event.clientY, where);
+                this._onVertexClick(event.clientX, event.clientY, where, event);
             } else {
                 throw "Callback is not a function: " + typeof(this._onVertexClick);
             }
@@ -145,7 +224,7 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
     fireOnVertexDblClick(x, y, where) {
         if (this._onVertexDblClick !== null && this._onVertexDblClick) {
             if (typeof(this._onVertexDblClick) === "function") {
-                this._onVertexDblClick(event.clientX, event.clientY, where);
+                this._onVertexDblClick(event.clientX, event.clientY, where, event);
             } else {
                 throw "Callback is not a function: " + typeof(this._onVertexDblClick);
             }
@@ -155,7 +234,7 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
     fireOnVertexMouseDown(x, y, where) {
         if (this._onVertexMouseDown !== null && this._onVertexMouseDown) {
             if (typeof(this._onVertexMouseDown) === "function") {
-                this._onVertexMouseDown(event.clientX, event.clientY, where);
+                this._onVertexMouseDown(event.clientX, event.clientY, where, event);
             } else {
                 throw "Callback is not a function: " + typeof(this._onVertexMouseDown);
             }
@@ -165,7 +244,7 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
     fireOnVertexMouseMove(x, y, where) {
         if (this._onVertexMouseMove !== null && this._onVertexMouseMove) {
             if (typeof(this._onVertexMouseMove) === "function") {
-                this._onVertexMouseMove(event.clientX, event.clientY, where);
+                this._onVertexMouseMove(event.clientX, event.clientY, where, event);
             } else {
                 throw "Callback is not a function: " + typeof(this._onVertexMouseMove);
             }
@@ -175,11 +254,10 @@ export default class BoxVerticesDecorator extends GraphicalElementDecorator {
     fireOnVertexMouseUp(x, y, where) {
         if (this._onVertexMouseUp !== null && this._onVertexMouseUp) {
             if (typeof(this._onVertexMouseUp) === "function") {
-                this._onVertexMouseUp(event.clientX, event.clientY, where);
+                this._onVertexMouseUp(event.clientX, event.clientY, where, event);
             } else {
                 throw "Callback is not a function: " + typeof(this._onVertexMouseUp);
             }
         }
     }
-
 }

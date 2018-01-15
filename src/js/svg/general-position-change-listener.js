@@ -12,6 +12,10 @@ import ChangeListener from '../core/change-listener.js';
 
 export default class GeneralPositionChangeListener extends ChangeListener {
 
+    constructor() {
+        super(ChangeListener.POSITION);
+    }
+
     update(target) {
         this.changeX(target);
         this.changeY(target);

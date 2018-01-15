@@ -10,7 +10,11 @@
 
 import ChangeListener from '../core/change-listener.js';
 
-export default class GeneralTransformationChangeListener extends ChangeListener {
+export default class GeneralRotationChangeListener extends ChangeListener {
+
+    constructor() {
+        super(ChangeListener.ROTATION);
+    }
 
     update(target) {
         target.drawn.setAttribute("transform", "rotate(" + target.rotation + " " + target.rotationCenterX + " " + target.rotationCenterY + ")");

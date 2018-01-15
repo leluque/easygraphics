@@ -37,27 +37,27 @@ import DefaultBoxVerticesDecoratorDrawer from "./default-box-vertices-decorator-
 export default class DefaultLookAndFeelFactory {
 
     getDrawerFor(element) {
-        if (element instanceof Circle) {
+        if (Object.getPrototypeOf(element) === Circle.prototype) {
             return new DefaultCircleDrawer();
-        } else if (element instanceof Ellipse) {
+        } else if (Object.getPrototypeOf(element) === Ellipse.prototype) {
             return new DefaultEllipseDrawer();
-        } else if (element instanceof Rectangle) {
+        } else if (Object.getPrototypeOf(element) === Rectangle.prototype) {
             return new DefaultRectangleDrawer();
-        } else if (element instanceof Diamond) {
+        } else if (Object.getPrototypeOf(element) === Diamond.prototype) {
             return new DefaultDiamondDrawer();
-        } else if (element instanceof Text) {
+        } else if (Object.getPrototypeOf(element) === Text.prototype) {
             return new DefaultTextDrawer();
-        } else if (element instanceof VerticalGroup) {
+        } else if (Object.getPrototypeOf(element) === VerticalGroup.prototype) {
             return new DefaultVerticalGroupDrawer();
-        } else if (element instanceof LinearGroup) {
+        } else if (Object.getPrototypeOf(element) === LinearGroup.prototype) {
             return new DefaultLinearGroupDrawer();
-        } else if (element instanceof Line) {
+        } else if (Object.getPrototypeOf(element) === Line.prototype) {
             return new DefaultLineDrawer();
-        } else if (element instanceof PolyLine) {
+        } else if (Object.getPrototypeOf(element) === PolyLine.prototype) {
             return new DefaultPolyLineDrawer();
-        } else if (element instanceof Image) {
+        } else if (Object.getPrototypeOf(element) === Image.prototype) {
             return new DefaultImageDrawer();
-        } else if (element instanceof BoxVerticesDecorator) {
+        } else if (Object.getPrototypeOf(element) === BoxVerticesDecorator.prototype) {
             return new DefaultBoxVerticesDecoratorDrawer();
         }
     }

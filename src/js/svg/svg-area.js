@@ -23,6 +23,7 @@ import FontStylingAttributes from '../core/font-styling-attributes.js';
 import StylingAttributes from '../core/styling-attributes.js';
 import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
+import ChangeListener from "../core/change-listener";
 
 export default class SVGArea {
 
@@ -392,6 +393,9 @@ export default class SVGArea {
         this.svg.appendChild(drawnBoxVerticesDecorator);
 
         newBoxVerticesDecorator.drawn = drawnBoxVerticesDecorator;
+        newBoxVerticesDecorator.notifyListeners(ChangeListener.POSITION, ChangeListener.DIMENSION);
+
+        this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
 
         return this.addElement(newBoxVerticesDecorator);
     }

@@ -12,6 +12,10 @@ import ChangeListener from '../core/change-listener.js';
 
 export default class GeneralDimensionChangeListener extends ChangeListener {
 
+    constructor() {
+        super(ChangeListener.DIMENSION);
+    }
+
     update(target) {
         this.changeWidth(target);
         this.changeHeight(target);

@@ -71,7 +71,7 @@
 		
         //****************************
         // UML Entity Class.
-        rect = svgArea.rect()
+    /*    rect = svgArea.rect()
         umlClass = svgArea.vgroup(10, 10);
         umlClass.frame = rect;
         let stereotype = svgArea.text(undefined, undefined, "<<Entity>>");
@@ -99,9 +99,9 @@
 		// Drag and drop.
 		umlClass.onMouseDown = select;
 		umlClass.onMouseMove = move;
-		umlClass.onMouseUp = unselect;		
+		umlClass.onMouseUp = unselect;		*/
         //****************************
-
+/*
         //****************************
         // UML Actor.
         let umlActor = svgArea.vgroup(10, 300);
@@ -137,8 +137,10 @@
         //****************************
 		
 		svgArea.polyLine(new easygraphics.StylingAttributes(1, "#00F", "none"), 50, 560, 100, 550, 200, 600);
+	*/
+	
+		ellipse = svgArea.ellipse(200, 100, 50, 25);
 		
-		ellipse = svgArea.ellipse(500, 100, 50, 25);
 		// This works.
 		/*ellipse.onMouseDown = select;
 		ellipse.onMouseMove = move;
@@ -149,13 +151,17 @@
 		decorator.onMouseDown = select;
 		decorator.onMouseMove = move;
 		decorator.onMouseUp = unselect;
+		decorator.onVertexMouseDown = select;
+		decorator.width += 200;
+		
+		//decorator.x += 50;
 		
         //****************************
         // Graph node.
-        node = svgArea.vgroup(340, 50);
+/*        node = svgArea.vgroup(340, 50);
         node.frame = svgArea.circle();
         let text1 = svgArea.text(undefined, undefined, "Graph Node");
-        node.addChild(text1, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        node.addChild(text1, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);*/
         /*
          node.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
          node.addChild(svgArea.text(undefined, undefined, "2nd row"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
@@ -165,7 +171,7 @@
 
         //****************************
         // UML decision node.
-        let decisionNode = svgArea.vgroup(450, 450);
+        /*let decisionNode = svgArea.vgroup(450, 450);
         decisionNode.frame = svgArea.diamond(undefined, undefined, undefined, undefined, true);
         decisionNode.addChild(svgArea.text(undefined, undefined, "Condition"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         //****************************
@@ -177,7 +183,7 @@
         vgroupWeight.addChild(svgArea.diamond(undefined, undefined, 20, 20), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 0, -2);
         vgroupWeight.rotation = 45;
         //****************************
-
+*/
         //console.log(angleBetween2Lines(50, 0, 50, 100, 0, 100, 100, 0));
         //console.log(angleBetween2Lines(50, 0, 50, 100, 0, 0, 100, 100));*/
 		

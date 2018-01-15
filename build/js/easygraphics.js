@@ -70,11 +70,107 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 63);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+/**
+ * This class implements a listener for changes in graphical elements.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ChangeListener = function () {
+    function ChangeListener() {
+        _classCallCheck(this, ChangeListener);
+
+        this._types = arguments;
+    }
+
+    _createClass(ChangeListener, [{
+        key: "update",
+        value: function update(target) {
+            // Update.
+        }
+    }, {
+        key: "hasType",
+        value: function hasType(targetType) {
+            return this._types.indexOf(targetType) >= 0;
+        }
+    }, {
+        key: "hasAnyType",
+        value: function hasAnyType() {
+            for (var i = 0; i < this._types.length; i++) {
+                for (var j = 0; j < arguments.length; j++) {
+                    if (this._types[i] === arguments[j]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }, {
+        key: "types",
+        get: function get() {
+            return this._types;
+        },
+        set: function set(value) {
+            this._types = arguments;
+        }
+    }], [{
+        key: "DIMENSION",
+        get: function get() {
+            return "dimension";
+        }
+    }, {
+        key: "POSITION",
+        get: function get() {
+            return "position";
+        }
+    }, {
+        key: "ROTATION",
+        get: function get() {
+            return "rotation";
+        }
+    }, {
+        key: "STYLING",
+        get: function get() {
+            return "styling";
+        }
+    }, {
+        key: "OTHER",
+        get: function get() {
+            return "other";
+        }
+    }]);
+
+    return ChangeListener;
+}();
+
+exports.default = ChangeListener;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -96,9 +192,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -237,7 +337,7 @@ var GraphicalElement = function () {
         key: 'appearance',
         value: function appearance(json) {
             this.stylingAttributes.fromJSON(json);
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.STYLING);
         }
 
         /**
@@ -280,6 +380,20 @@ var GraphicalElement = function () {
             this._changeListeners.push(value);
         }
     }, {
+        key: 'removeChangeListenerByType',
+        value: function removeChangeListenerByType() {
+            if (this._changeListeners) {
+                for (var i = 0; i < this._changeListeners.length; i++) {
+                    var _changeListeners$i;
+
+                    if ((_changeListeners$i = this._changeListeners[i]).hasAnyType.apply(_changeListeners$i, arguments)) {
+                        this._changeListeners.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+        }
+    }, {
         key: 'notifyListeners',
         value: function notifyListeners() {
             if (!this.changeNotificationsEnabled) {
@@ -293,7 +407,9 @@ var GraphicalElement = function () {
                 for (var _iterator = this.changeListeners[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                     var listener = _step.value;
 
-                    listener.update(this);
+                    if (listener.hasAnyType.apply(listener, arguments)) {
+                        listener.update(this);
+                    }
                 }
             } catch (err) {
                 _didIteratorError = true;
@@ -378,7 +494,7 @@ var GraphicalElement = function () {
             this._x = value;
             // Adjust the rotation center based on its current value and the variation of x.
             this.rotationCenterX += delta;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.POSITION);
         }
     }, {
         key: 'y',
@@ -390,7 +506,7 @@ var GraphicalElement = function () {
             this._y = value;
             // Adjust the rotation center based on its current value and the variation of y.
             this.rotationCenterY += delta;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.POSITION);
         }
     }, {
         key: 'width',
@@ -405,7 +521,7 @@ var GraphicalElement = function () {
                 // Adjust the rotation center based on its current value and the variation of width.
                 this.rotationCenterX += delta;
                 this.enableChangeNotifications();
-                this.notifyListeners();
+                this.notifyListeners(_changeListener2.default.DIMENSION);
             }
         }
     }, {
@@ -433,7 +549,7 @@ var GraphicalElement = function () {
                 this.rotationCenterX += delta;
                 this.rotationCenterY = this.y + this.height / 2;
                 this.enableChangeNotifications();
-                this.notifyListeners();
+                this.notifyListeners(_changeListener2.default.DIMENSION);
             }
         }
     }, {
@@ -454,7 +570,7 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             this._rotation = value;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.ROTATION);
         }
     }, {
         key: 'rotationCenterX',
@@ -463,7 +579,7 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             this._rotationCenterX = value;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.ROTATION);
         }
     }, {
         key: 'rotationCenterY',
@@ -472,7 +588,7 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             this._rotationCenterY = value;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.ROTATION);
         }
     }, {
         key: 'x2',
@@ -516,7 +632,7 @@ var GraphicalElement = function () {
         set: function set(value) {
             this._stylingAttributes = value;
             value.target = this;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.STYLING);
         }
     }, {
         key: 'borderSize',
@@ -602,6 +718,11 @@ var GraphicalElement = function () {
         get: function get() {
             return this._changeNotificationsEnabled === 0;
         }
+    }], [{
+        key: 'PARENT',
+        get: function get() {
+            return "parent";
+        }
     }]);
 
     return GraphicalElement;
@@ -610,7 +731,7 @@ var GraphicalElement = function () {
 exports.default = GraphicalElement;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -630,9 +751,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -681,7 +806,7 @@ var StylingAttributes = function () {
         key: 'notifyTarget',
         value: function notifyTarget() {
             if (this.target !== null) {
-                this.target.notifyListeners();
+                this.target.notifyListeners(_changeListener2.default.STYLING);
             }
         }
     }, {
@@ -735,7 +860,7 @@ var StylingAttributes = function () {
 exports.default = StylingAttributes;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -780,7 +905,7 @@ var DefaultDrawer = function () {
 exports.default = DefaultDrawer;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -871,7 +996,7 @@ var BoundingBox = function () {
 exports.default = BoundingBox;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -891,7 +1016,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -909,7 +1034,7 @@ var GeneralPositionChangeListener = function (_ChangeListener) {
     function GeneralPositionChangeListener() {
         _classCallCheck(this, GeneralPositionChangeListener);
 
-        return _possibleConstructorReturn(this, (GeneralPositionChangeListener.__proto__ || Object.getPrototypeOf(GeneralPositionChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (GeneralPositionChangeListener.__proto__ || Object.getPrototypeOf(GeneralPositionChangeListener)).call(this, _changeListener2.default.POSITION));
     }
 
     _createClass(GeneralPositionChangeListener, [{
@@ -936,7 +1061,7 @@ var GeneralPositionChangeListener = function (_ChangeListener) {
 exports.default = GeneralPositionChangeListener;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -956,7 +1081,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -974,7 +1099,7 @@ var GeneralDimensionChangeListener = function (_ChangeListener) {
     function GeneralDimensionChangeListener() {
         _classCallCheck(this, GeneralDimensionChangeListener);
 
-        return _possibleConstructorReturn(this, (GeneralDimensionChangeListener.__proto__ || Object.getPrototypeOf(GeneralDimensionChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (GeneralDimensionChangeListener.__proto__ || Object.getPrototypeOf(GeneralDimensionChangeListener)).call(this, _changeListener2.default.DIMENSION));
     }
 
     _createClass(GeneralDimensionChangeListener, [{
@@ -1001,7 +1126,7 @@ var GeneralDimensionChangeListener = function (_ChangeListener) {
 exports.default = GeneralDimensionChangeListener;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1021,7 +1146,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -1039,7 +1164,7 @@ var StyleChangeListener = function (_ChangeListener) {
     function StyleChangeListener() {
         _classCallCheck(this, StyleChangeListener);
 
-        return _possibleConstructorReturn(this, (StyleChangeListener.__proto__ || Object.getPrototypeOf(StyleChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (StyleChangeListener.__proto__ || Object.getPrototypeOf(StyleChangeListener)).call(this, _changeListener2.default.STYLING));
     }
 
     _createClass(StyleChangeListener, [{
@@ -1053,50 +1178,6 @@ var StyleChangeListener = function (_ChangeListener) {
 }(_changeListener2.default);
 
 exports.default = StyleChangeListener;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-/**
- * This class implements a listener for changes in graphical elements.
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ChangeListener = function () {
-  function ChangeListener() {
-    _classCallCheck(this, ChangeListener);
-  }
-
-  _createClass(ChangeListener, [{
-    key: 'update',
-    value: function update(target) {
-      // Update.
-    }
-  }]);
-
-  return ChangeListener;
-}();
-
-exports.default = ChangeListener;
 
 /***/ }),
 /* 8 */
@@ -1119,7 +1200,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultLookAndFeelFactory = __webpack_require__(47);
+var _defaultLookAndFeelFactory = __webpack_require__(49);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
@@ -1190,15 +1271,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -1282,11 +1363,11 @@ var _set = function set(object, property, value, receiver) { var desc = Object.g
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -1298,9 +1379,13 @@ var _groupStylingAttributes = __webpack_require__(11);
 
 var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1492,7 +1577,7 @@ var VerticalGroup = function (_GraphicalElement) {
 
                 //this.children[i].changeNotificationsEnabled = oldChangeNotificationsStatus;
                 this.children[i].enableChangeNotifications();
-                this.children[i].notifyListeners();
+                this.children[i].notifyListeners(_changeListener2.default.POSITION, _changeListener2.default.DIMENSION);
             }
         }
 
@@ -2027,8 +2112,8 @@ var VerticalGroup = function (_GraphicalElement) {
             this.adjustChildrenPositionAndDimension();
             this.enableChangeNotifications();
 
-            this.frame.notifyListeners();
-            this.notifyListeners();
+            this.frame.notifyListeners(_changeListener2.default.POSITION, _changeListener2.default.DIMENSION);
+            this.notifyListeners(_changeListener2.default.POSITION, _changeListener2.default.DIMENSION);
         }
     }, {
         key: 'dimensionReadjustmentEnabled',
@@ -2057,7 +2142,7 @@ var VerticalGroup = function (_GraphicalElement) {
         },
         set: function set(value) {
             this._groupStylingAttributes = value;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.STYLING);
         }
 
         /**
@@ -2195,7 +2280,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
@@ -2247,7 +2332,7 @@ exports.default = GroupStylingAttributes;
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 08/06/2017.
+ * Created by Leandro Luque on 15/01/2018.
  */
 
 
@@ -2260,9 +2345,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElementDecorator = __webpack_require__(26);
+var _graphicalElement = __webpack_require__(1);
 
-var _graphicalElementDecorator2 = _interopRequireDefault(_graphicalElementDecorator);
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2272,13 +2357,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BoxVerticesDecorator = function (_GraphicalElementDeco) {
-    _inherits(BoxVerticesDecorator, _GraphicalElementDeco);
+var BoxVerticesDecorator = function (_GraphicalElement) {
+    _inherits(BoxVerticesDecorator, _GraphicalElement);
 
     _createClass(BoxVerticesDecorator, null, [{
-        key: 'BOX_VERTICES_TAG',
+        key: "VERTEX",
         get: function get() {
-            return "isBoxVertices";
+            return "vertex";
         }
     }]);
 
@@ -2291,13 +2376,21 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
 
         _classCallCheck(this, BoxVerticesDecorator);
 
-        var _this = _possibleConstructorReturn(this, (BoxVerticesDecorator.__proto__ || Object.getPrototypeOf(BoxVerticesDecorator)).call(this, decorated));
+        var _this = _possibleConstructorReturn(this, (BoxVerticesDecorator.__proto__ || Object.getPrototypeOf(BoxVerticesDecorator)).call(this));
 
         decorated.addTag(BoxVerticesDecorator.BOX_VERTICES_TAG, _this);
+        _this._decorated = decorated;
+
         _this._topLeft = topLeft;
         _this._topRight = topRight;
         _this._bottomLeft = bottomLeft;
         _this._bottomRight = bottomRight;
+
+        // Vertices drawn.
+        _this._topLeftVertex = null;
+        _this._topRightVertex = null;
+        _this._bottomLeftVertex = null;
+        _this._bottomRightVertex = null;
 
         // Events.
         _this._onVertexClick = null;
@@ -2310,65 +2403,65 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
     }
 
     _createClass(BoxVerticesDecorator, [{
-        key: 'fireOnVertexClick',
+        key: "fireOnVertexClick",
 
 
         // Events.
         value: function fireOnVertexClick(x, y, where) {
             if (this._onVertexClick !== null && this._onVertexClick) {
                 if (typeof this._onVertexClick === "function") {
-                    this._onVertexClick(event.clientX, event.clientY, where);
+                    this._onVertexClick(event.clientX, event.clientY, where, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onVertexClick);
                 }
             }
         }
     }, {
-        key: 'fireOnVertexDblClick',
+        key: "fireOnVertexDblClick",
         value: function fireOnVertexDblClick(x, y, where) {
             if (this._onVertexDblClick !== null && this._onVertexDblClick) {
                 if (typeof this._onVertexDblClick === "function") {
-                    this._onVertexDblClick(event.clientX, event.clientY, where);
+                    this._onVertexDblClick(event.clientX, event.clientY, where, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onVertexDblClick);
                 }
             }
         }
     }, {
-        key: 'fireOnVertexMouseDown',
+        key: "fireOnVertexMouseDown",
         value: function fireOnVertexMouseDown(x, y, where) {
             if (this._onVertexMouseDown !== null && this._onVertexMouseDown) {
                 if (typeof this._onVertexMouseDown === "function") {
-                    this._onVertexMouseDown(event.clientX, event.clientY, where);
+                    this._onVertexMouseDown(event.clientX, event.clientY, where, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onVertexMouseDown);
                 }
             }
         }
     }, {
-        key: 'fireOnVertexMouseMove',
+        key: "fireOnVertexMouseMove",
         value: function fireOnVertexMouseMove(x, y, where) {
             if (this._onVertexMouseMove !== null && this._onVertexMouseMove) {
                 if (typeof this._onVertexMouseMove === "function") {
-                    this._onVertexMouseMove(event.clientX, event.clientY, where);
+                    this._onVertexMouseMove(event.clientX, event.clientY, where, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onVertexMouseMove);
                 }
             }
         }
     }, {
-        key: 'fireOnVertexMouseUp',
+        key: "fireOnVertexMouseUp",
         value: function fireOnVertexMouseUp(x, y, where) {
             if (this._onVertexMouseUp !== null && this._onVertexMouseUp) {
                 if (typeof this._onVertexMouseUp === "function") {
-                    this._onVertexMouseUp(event.clientX, event.clientY, where);
+                    this._onVertexMouseUp(event.clientX, event.clientY, where, event);
                 } else {
                     throw "Callback is not a function: " + _typeof(this._onVertexMouseUp);
                 }
             }
         }
     }, {
-        key: 'vertexSize',
+        key: "vertexSize",
         get: function get() {
             return this._vertexSize;
         },
@@ -2376,7 +2469,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._vertexSize = value;
         }
     }, {
-        key: 'topLeft',
+        key: "topLeft",
         get: function get() {
             return this._topLeft;
         },
@@ -2384,7 +2477,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._topLeft = value;
         }
     }, {
-        key: 'topRight',
+        key: "topRight",
         get: function get() {
             return this._topRight;
         },
@@ -2392,7 +2485,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._topRight = value;
         }
     }, {
-        key: 'bottomLeft',
+        key: "bottomLeft",
         get: function get() {
             return this._bottomLeft;
         },
@@ -2400,7 +2493,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._bottomLeft = value;
         }
     }, {
-        key: 'bottomRight',
+        key: "bottomRight",
         get: function get() {
             return this._bottomRight;
         },
@@ -2408,7 +2501,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._bottomRight = value;
         }
     }, {
-        key: 'onVertexClick',
+        key: "onVertexClick",
         get: function get() {
             return this._onVertexClick;
         },
@@ -2416,7 +2509,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._onVertexClick = value;
         }
     }, {
-        key: 'onVertexDblClick',
+        key: "onVertexDblClick",
         get: function get() {
             return this._onVertexDblClick;
         },
@@ -2424,7 +2517,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._onVertexDblClick = value;
         }
     }, {
-        key: 'onVertexMouseDown',
+        key: "onVertexMouseDown",
         get: function get() {
             return this._onVertexMouseDown;
         },
@@ -2432,7 +2525,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._onVertexMouseDown = value;
         }
     }, {
-        key: 'onVertexMouseMove',
+        key: "onVertexMouseMove",
         get: function get() {
             return this._onVertexMouseMove;
         },
@@ -2440,15 +2533,86 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
             this._onVertexMouseMove = value;
         }
     }, {
-        key: 'onVertexMouseUp',
+        key: "onVertexMouseUp",
         get: function get() {
             return this._onVertexMouseUp;
         },
         set: function set(value) {
             this._onVertexMouseUp = value;
         }
+    }, {
+        key: "decorated",
+        get: function get() {
+            return this._decorated;
+        },
+        set: function set(value) {
+            this._decorated = value;
+        }
+    }, {
+        key: "width",
+        get: function get() {
+            return this.decorated.width;
+        },
+        set: function set(value) {
+            //this.disableChangeNotifications();
+            //this.decorated.disableChangeNotifications();
+            this.decorated.width = value;
+            //this.decorated.enableChangeNotifications();
+            //this.decorated.notifyListeners(ChangeListener.DIMENSION);
+            //this.enableChangeNotifications();
+        }
+    }, {
+        key: "height",
+        get: function get() {
+            return this.decorated.height;
+        },
+        set: function set(value) {
+            //this.disableChangeNotifications();
+            //this.decorated.disableChangeNotifications();
+            this.decorated.height = value;
+            //this.decorated.enableChangeNotifications();
+            //this.decorated.notifyListeners(ChangeListener.DIMENSION);
+            //this.enableChangeNotifications();
+        }
+    }, {
+        key: "topLeftVertex",
+        get: function get() {
+            return this._topLeftVertex;
+        },
+        set: function set(value) {
+            this._topLeftVertex = value;
+        }
+    }, {
+        key: "topRightVertex",
+        get: function get() {
+            return this._topRightVertex;
+        },
+        set: function set(value) {
+            this._topRightVertex = value;
+        }
+    }, {
+        key: "bottomLeftVertex",
+        get: function get() {
+            return this._bottomLeftVertex;
+        },
+        set: function set(value) {
+            this._bottomLeftVertex = value;
+        }
+    }, {
+        key: "bottomRightVertex",
+        get: function get() {
+            return this._bottomRightVertex;
+        },
+        set: function set(value) {
+            this._bottomRightVertex = value;
+        }
     }], [{
-        key: 'TOP_LEFT',
+        key: "BOX_VERTICES_TAG",
+        get: function get() {
+            return "isBoxVertices";
+        }
+    }, {
+        key: "TOP_LEFT",
         get: function get() {
             return 0;
         }
@@ -2456,7 +2620,7 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
         // It does not use horizontal margins for elements.
 
     }, {
-        key: 'TOP_RIGHT',
+        key: "TOP_RIGHT",
         get: function get() {
             return 1;
         }
@@ -2464,19 +2628,19 @@ var BoxVerticesDecorator = function (_GraphicalElementDeco) {
         // It uses horizontal margins for elements.
 
     }, {
-        key: 'BOTTOM_LEFT',
+        key: "BOTTOM_LEFT",
         get: function get() {
             return 2;
         }
     }, {
-        key: 'BOTTOM_RIGHT',
+        key: "BOTTOM_RIGHT",
         get: function get() {
             return 3;
         }
     }]);
 
     return BoxVerticesDecorator;
-}(_graphicalElementDecorator2.default);
+}(_graphicalElement2.default);
 
 exports.default = BoxVerticesDecorator;
 
@@ -2586,15 +2750,15 @@ var _set = function set(object, property, value, receiver) { var desc = Object.g
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -2758,17 +2922,21 @@ var _set = function set(object, property, value, receiver) { var desc = Object.g
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2891,7 +3059,8 @@ var Ellipse = function (_GraphicalElement) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'width', value, this);
             this.enableChangeNotifications();
-            _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'height', value / 2, this); // Keep the proportion.
+            //  super.height = value / 2; // Keep the proportion.
+            this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
         key: 'height',
@@ -2902,7 +3071,8 @@ var Ellipse = function (_GraphicalElement) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'height', value, this);
             this.enableChangeNotifications();
-            _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'width', value * 2, this); // Keep the proportion.
+            //        super.width = value * 2; // Keep the proportion.
+            this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
         key: 'centerX',
@@ -2968,17 +3138,21 @@ var _set = function set(object, property, value, receiver) { var desc = Object.g
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3085,7 +3259,7 @@ var Diamond = function (_GraphicalElement) {
                 _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'height', value, this);
             }
             this.enableChangeNotifications();
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
         key: 'height',
@@ -3099,7 +3273,7 @@ var Diamond = function (_GraphicalElement) {
                 _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'width', value, this);
             }
             this.enableChangeNotifications();
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
         key: 'preserveAspectRatio',
@@ -3137,21 +3311,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
 var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3200,7 +3378,7 @@ var Text = function (_GraphicalElement) {
         },
         set: function set(value) {
             this._text = value;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.OTHER);
             //this.calculateDimensions();
         }
     }, {
@@ -3211,7 +3389,7 @@ var Text = function (_GraphicalElement) {
         set: function set(value) {
             this._fontStylingAttributes = value;
             this.fontStylingAttributes.target = this;
-            this.notifyListeners();
+            this.notifyListeners(_changeListener2.default.STYLING);
         }
 
         /*  calculateDimensions() {
@@ -3251,9 +3429,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3291,7 +3473,7 @@ var FontStylingAttributes = function () {
         },
         set: function set(value) {
             this._family = value;
-            this.target.notifyListeners();
+            this.target.notifyListeners(_changeListener2.default.STYLING);
         }
     }, {
         key: 'size',
@@ -3300,7 +3482,7 @@ var FontStylingAttributes = function () {
         },
         set: function set(value) {
             this._size = value;
-            this.target.notifyListeners();
+            this.target.notifyListeners(_changeListener2.default.STYLING);
         }
     }, {
         key: 'weight',
@@ -3309,7 +3491,7 @@ var FontStylingAttributes = function () {
         },
         set: function set(value) {
             this._weight = value;
-            this.target.notifyListeners();
+            this.target.notifyListeners(_changeListener2.default.STYLING);
         }
     }, {
         key: 'target',
@@ -3318,7 +3500,7 @@ var FontStylingAttributes = function () {
         },
         set: function set(value) {
             this._target = value;
-            this.target.notifyListeners();
+            this.target.notifyListeners(_changeListener2.default.STYLING);
         }
     }]);
 
@@ -3348,15 +3530,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -3444,15 +3626,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -3639,15 +3821,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -3771,15 +3953,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -3879,7 +4061,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -3891,26 +4073,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var GeneralTransformationChangeListener = function (_ChangeListener) {
-    _inherits(GeneralTransformationChangeListener, _ChangeListener);
+var GeneralRotationChangeListener = function (_ChangeListener) {
+    _inherits(GeneralRotationChangeListener, _ChangeListener);
 
-    function GeneralTransformationChangeListener() {
-        _classCallCheck(this, GeneralTransformationChangeListener);
+    function GeneralRotationChangeListener() {
+        _classCallCheck(this, GeneralRotationChangeListener);
 
-        return _possibleConstructorReturn(this, (GeneralTransformationChangeListener.__proto__ || Object.getPrototypeOf(GeneralTransformationChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (GeneralRotationChangeListener.__proto__ || Object.getPrototypeOf(GeneralRotationChangeListener)).call(this, _changeListener2.default.ROTATION));
     }
 
-    _createClass(GeneralTransformationChangeListener, [{
+    _createClass(GeneralRotationChangeListener, [{
         key: 'update',
         value: function update(target) {
             target.drawn.setAttribute("transform", "rotate(" + target.rotation + " " + target.rotationCenterX + " " + target.rotationCenterY + ")");
         }
     }]);
 
-    return GeneralTransformationChangeListener;
+    return GeneralRotationChangeListener;
 }(_changeListener2.default);
 
-exports.default = GeneralTransformationChangeListener;
+exports.default = GeneralRotationChangeListener;
 
 /***/ }),
 /* 24 */
@@ -4026,7 +4208,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -4080,7 +4262,7 @@ exports.default = VerticalGroupChildChangeListener;
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 08/06/2017.
+ * Created by Leandro Luque on 15/01/2017.
  */
 
 
@@ -4091,9 +4273,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(0);
+var _changeListener = __webpack_require__(0);
 
-var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4103,327 +4285,188 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// TODO: change to mixin in the future.
-var GraphicalElementDecorator = function (_GraphicalElement) {
-    _inherits(GraphicalElementDecorator, _GraphicalElement);
+var BoxVerticesDecoratorDecoratedPositionChangeListener = function (_ChangeListener) {
+    _inherits(BoxVerticesDecoratorDecoratedPositionChangeListener, _ChangeListener);
 
-    function GraphicalElementDecorator(decorated) {
-        _classCallCheck(this, GraphicalElementDecorator);
+    function BoxVerticesDecoratorDecoratedPositionChangeListener(decorator) {
+        _classCallCheck(this, BoxVerticesDecoratorDecoratedPositionChangeListener);
 
-        var _this = _possibleConstructorReturn(this, (GraphicalElementDecorator.__proto__ || Object.getPrototypeOf(GraphicalElementDecorator)).call(this, decorated.x, decorated.y, decorated.width, decorated.height));
+        var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedPositionChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedPositionChangeListener)).call(this, _changeListener2.default.POSITION));
 
-        _this._decorated = decorated;
+        _this._decorator = decorator;
         return _this;
     }
 
-    _createClass(GraphicalElementDecorator, [{
-        key: "disableChangeNotifications",
-        value: function disableChangeNotifications() {
-            this._decorated.disableChangeNotifications();
+    _createClass(BoxVerticesDecoratorDecoratedPositionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            this.decorator.disableChangeNotifications();
+            this.decorator.x = this.decorator.decorated.x;
+            this.decorator.y = this.decorator.decorated.y;
+            this.decorator.rotation = this.decorator.decorated.rotation;
+            this.decorator.rotationCenterX = this.decorator.decorated.rotationCenterX;
+            this.decorator.rotationCenterY = this.decorator.decorated.rotationCenterY;
+            this.decorator.enableChangeNotifications();
+            this.decorator.notifyListeners(_changeListener2.default.POSITION);
         }
     }, {
-        key: "enableChangeNotifications",
-        value: function enableChangeNotifications() {
-            this._decorated.enableChangeNotifications();
-        }
-    }, {
-        key: "boundaryX1For",
-        value: function boundaryX1For(givenY) {
-            return this._decorated.boundaryX1For(givenY);
-        }
-    }, {
-        key: "boundaryX2For",
-        value: function boundaryX2For(givenY) {
-            return this._decorated.boundaryX2For(givenY);
-        }
-    }, {
-        key: "moveTo",
-        value: function moveTo(newX, newY) {
-            this._decorated.moveTo(newX, newY);
-        }
-    }, {
-        key: "resize",
-        value: function resize(newWidth, newHeight) {
-            this._decorated.resize(newWidth, newHeight);
-        }
-    }, {
-        key: "appearance",
-        value: function appearance(json) {
-            this._decorated.appearance(json);
-        }
-    }, {
-        key: "contentBox",
-        value: function contentBox(width, height) {
-            this._decorated.contentBox(width, height);
-        }
-    }, {
-        key: "widthToFit",
-        value: function widthToFit(boundingBox) {
-            return this._decorated.widthToFit(boundingBox);
-        }
-    }, {
-        key: "heightToFit",
-        value: function heightToFit(boundingBox) {
-            return this._decorated.heightToFit(boundingBox);
-        }
-    }, {
-        key: "addChangeListener",
-        value: function addChangeListener(value) {
-            this._decorated.addChangeListener(value);
-        }
-    }, {
-        key: "notifyListeners",
-        value: function notifyListeners() {
-            this._decorated.notifyListeners();
-        }
-    }, {
-        key: "fireOnClick",
-        value: function fireOnClick(event) {
-            this._decorated.fireOnClick(event);
-        }
-    }, {
-        key: "fireOnDblClick",
-        value: function fireOnDblClick(event) {
-            this._decorated.fireOnDblClick(event);
-        }
-    }, {
-        key: "fireOnMouseDown",
-        value: function fireOnMouseDown(event) {
-            this._decorated.fireOnMouseDown(event);
-        }
-    }, {
-        key: "fireOnMouseMove",
-        value: function fireOnMouseMove(event) {
-            this._decorated.fireOnMouseMove(event);
-        }
-    }, {
-        key: "fireOnMouseUp",
-        value: function fireOnMouseUp(event) {
-            this._decorated.fireOnMouseUp(event);
-        }
-    }, {
-        key: "addTag",
-        value: function addTag(key, value) {
-            this._decorated.addTag(key, value);
-        }
-    }, {
-        key: "countTags",
-        value: function countTags() {
-            return this._decorated.countTags();
-        }
-    }, {
-        key: "getTag",
-        value: function getTag(key) {
-            return this._decorated.getTag(key);
-        }
-    }, {
-        key: "getTagsKeys",
-        value: function getTagsKeys() {
-            return this._decorated.getTagsKeys();
-        }
-    }, {
-        key: "removeTag",
-        value: function removeTag(key) {
-            this._decorated.removeTag(key);
-        }
-    }, {
-        key: "decorated",
+        key: 'decorator',
         get: function get() {
-            return this._decorated;
+            return this._decorator;
         },
         set: function set(value) {
-            this._decorated = value;
-        }
-
-        // Delegate.
-
-    }, {
-        key: "changeNotificationsEnabled",
-        get: function get() {
-            return this._decorated.changeNotificationsEnabled;
-        }
-    }, {
-        key: "x",
-        get: function get() {
-            return this._decorated.x;
-        },
-        set: function set(value) {
-            this._decorated.x = value;
-        }
-    }, {
-        key: "y",
-        get: function get() {
-            return this._decorated.y;
-        },
-        set: function set(value) {
-            this._decorated.y = value;
-        }
-    }, {
-        key: "width",
-        get: function get() {
-            return this._decorated.width;
-        },
-        set: function set(value) {
-            this._decorated.width = value;
-        }
-    }, {
-        key: "minWidth",
-        get: function get() {
-            return this._decorated.minWidth;
-        },
-        set: function set(value) {
-            this._decorated.minWidth = value;
-        }
-    }, {
-        key: "height",
-        get: function get() {
-            return this._decorated.height;
-        },
-        set: function set(value) {
-            this._decorated.height = value;
-        }
-    }, {
-        key: "minHeight",
-        get: function get() {
-            return this._decorated.minHeight;
-        },
-        set: function set(value) {
-            this._decorated.minHeight = value;
-        }
-    }, {
-        key: "rotation",
-        get: function get() {
-            return this._decorated.rotation;
-        },
-        set: function set(value) {
-            this._decorated.rotation = value;
-        }
-    }, {
-        key: "rotationCenterX",
-        get: function get() {
-            return this._decorated.rotationCenterX;
-        },
-        set: function set(value) {
-            this._decorated.rotationCenterX = value;
-        }
-    }, {
-        key: "rotationCenterY",
-        get: function get() {
-            return this._decorated.rotationCenterY;
-        },
-        set: function set(value) {
-            this._decorated.rotationCenterY = value;
-        }
-    }, {
-        key: "x2",
-        get: function get() {
-            return this._decorated.x2;
-        },
-        set: function set(value) {
-            this._decorated.x2 = value;
-        }
-    }, {
-        key: "y2",
-        get: function get() {
-            return this._decorated.y2;
-        },
-        set: function set(value) {
-            this._decorated.y2 = value;
-        }
-    }, {
-        key: "stylingAttributes",
-        get: function get() {
-            return this._decorated.stylingAttributes;
-        },
-        set: function set(value) {
-            this._decorated.stylingAttributes = value;
-        }
-    }, {
-        key: "borderSize",
-        get: function get() {
-            return this._decorated.borderSize;
-        }
-    }, {
-        key: "id",
-        get: function get() {
-            return this._decorated.id;
-        },
-        set: function set(value) {
-            this._decorated.id = value;
-        }
-    }, {
-        key: "drawn",
-        get: function get() {
-            return this._decorated.drawn;
-        },
-        set: function set(value) {
-            this._decorated.drawn = value;
-        }
-    }, {
-        key: "changeListeners",
-        get: function get() {
-            return this._decorated.changeListeners;
-        },
-        set: function set(value) {
-            this._decorated.changeListeners = value;
-        }
-    }, {
-        key: "onClick",
-        get: function get() {
-            return this._decorated.onClick;
-        },
-        set: function set(value) {
-            this._decorated.onClick = value;
-        }
-    }, {
-        key: "onDblClick",
-        get: function get() {
-            return this._decorated.onDblClick;
-        },
-        set: function set(value) {
-            this._decorated.onDblClick = value;
-        }
-    }, {
-        key: "onMouseDown",
-        get: function get() {
-            return this._decorated.onMouseDown;
-        },
-        set: function set(value) {
-            this._decorated.onMouseDown = value;
-        }
-    }, {
-        key: "onMouseMove",
-        get: function get() {
-            return this._decorated.onMouseMove;
-        },
-        set: function set(value) {
-            this._decorated.onMouseMove = value;
-        }
-    }, {
-        key: "onMouseUp",
-        get: function get() {
-            return this._decorated.onMouseUp;
-        },
-        set: function set(value) {
-            this._decorated.onMouseUp = value;
-        }
-    }, {
-        key: "tag",
-        get: function get() {
-            return this._decorated.tag;
-        },
-        set: function set(value) {
-            this._decorated.tag = value;
+            this._decorator = value;
         }
     }]);
 
-    return GraphicalElementDecorator;
-}(_graphicalElement2.default);
+    return BoxVerticesDecoratorDecoratedPositionChangeListener;
+}(_changeListener2.default);
 
-exports.default = GraphicalElementDecorator;
+exports.default = BoxVerticesDecoratorDecoratedPositionChangeListener;
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 15/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BoxVerticesDecoratorDecoratedRotationChangeListener = function (_ChangeListener) {
+    _inherits(BoxVerticesDecoratorDecoratedRotationChangeListener, _ChangeListener);
+
+    function BoxVerticesDecoratorDecoratedRotationChangeListener(decorator) {
+        _classCallCheck(this, BoxVerticesDecoratorDecoratedRotationChangeListener);
+
+        var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedRotationChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedRotationChangeListener)).call(this, _changeListener2.default.ROTATION));
+
+        _this._decorator = decorator;
+        return _this;
+    }
+
+    _createClass(BoxVerticesDecoratorDecoratedRotationChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            this.decorator.disableChangeNotifications();
+            this.decorator.rotation = this.decorator.decorated.rotation;
+            this.decorator.rotationCenterX = this.decorator.decorated.rotationCenterX;
+            this.decorator.rotationCenterY = this.decorator.decorated.rotationCenterY;
+            this.decorator.enableChangeNotifications();
+            this.decorator.notifyListeners(_changeListener2.default.ROTATION);
+        }
+    }, {
+        key: 'decorator',
+        get: function get() {
+            return this._decorator;
+        },
+        set: function set(value) {
+            this._decorator = value;
+        }
+    }]);
+
+    return BoxVerticesDecoratorDecoratedRotationChangeListener;
+}(_changeListener2.default);
+
+exports.default = BoxVerticesDecoratorDecoratedRotationChangeListener;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 15/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BoxVerticesDecoratorDecoratedDimensionChangeListener = function (_ChangeListener) {
+    _inherits(BoxVerticesDecoratorDecoratedDimensionChangeListener, _ChangeListener);
+
+    function BoxVerticesDecoratorDecoratedDimensionChangeListener(decorator) {
+        _classCallCheck(this, BoxVerticesDecoratorDecoratedDimensionChangeListener);
+
+        var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedDimensionChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedDimensionChangeListener)).call(this, _changeListener2.default.DIMENSION));
+
+        _this._decorator = decorator;
+        return _this;
+    }
+
+    _createClass(BoxVerticesDecoratorDecoratedDimensionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            var vertexSize = this.decorator.vertexSize;
+            var halfSize = (vertexSize - 1) / 2;
+
+            this.decorator.topRightVertex.x = this.decorator.width - halfSize;
+            this.decorator.bottomLeftVertex.y = this.decorator.height - halfSize;
+            this.decorator.bottomRightVertex.x = this.decorator.width - halfSize;
+            this.decorator.bottomRightVertex.y = this.decorator.height - halfSize;
+        }
+    }, {
+        key: 'decorator',
+        get: function get() {
+            return this._decorator;
+        },
+        set: function set(value) {
+            this._decorator = value;
+        }
+    }]);
+
+    return BoxVerticesDecoratorDecoratedDimensionChangeListener;
+}(_changeListener2.default);
+
+exports.default = BoxVerticesDecoratorDecoratedDimensionChangeListener;
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4441,7 +4484,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4468,7 +4511,7 @@ var RectanglePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = RectanglePositionChangeListener;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4488,7 +4531,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4543,7 +4586,7 @@ var DiamondPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = DiamondPositionChangeListener;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4563,7 +4606,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4602,7 +4645,7 @@ var EllipsePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = EllipsePositionChangeListener;
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4620,7 +4663,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4647,7 +4690,7 @@ var ImagePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = ImagePositionChangeListener;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4667,7 +4710,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4707,7 +4750,7 @@ var TextPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = TextPositionChangeListener;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4727,7 +4770,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4766,7 +4809,7 @@ var LinePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = LinePositionChangeListener;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4786,7 +4829,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4827,7 +4870,7 @@ var PolyLinePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = PolyLinePositionChangeListener;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4847,7 +4890,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -4886,7 +4929,7 @@ var CirclePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = CirclePositionChangeListener;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4904,7 +4947,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -4931,7 +4974,7 @@ var RectangleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = RectangleDimensionChangeListener;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4951,7 +4994,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5006,7 +5049,7 @@ var DiamondDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = DiamondDimensionChangeListener;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5026,7 +5069,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5050,11 +5093,13 @@ var EllipseDimensionChangeListener = function (_GeneralDimensionChan) {
     _createClass(EllipseDimensionChangeListener, [{
         key: 'changeWidth',
         value: function changeWidth(target) {
+            target.drawn.setAttribute("cx", target.centerX);
             target.drawn.setAttribute("rx", target.radiusX);
         }
     }, {
         key: 'changeHeight',
         value: function changeHeight(target) {
+            target.drawn.setAttribute("cy", target.centerY);
             target.drawn.setAttribute("ry", target.radiusY);
         }
     }]);
@@ -5065,7 +5110,7 @@ var EllipseDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = EllipseDimensionChangeListener;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5083,7 +5128,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5110,7 +5155,7 @@ var ImageDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = ImageDimensionChangeListener;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5128,7 +5173,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5155,7 +5200,7 @@ var TextDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = TextDimensionChangeListener;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5175,7 +5220,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5214,7 +5259,7 @@ var CircleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = CircleDimensionChangeListener;
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5234,7 +5279,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5277,7 +5322,7 @@ var LineDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = LineDimensionChangeListener;
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5297,7 +5342,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5348,97 +5393,97 @@ var PolyLineDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = PolyLineDimensionChangeListener;
 
 /***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _generalTransformationChangeListener = __webpack_require__(23);
-
-var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var VGroupTransformationChangeListener = function (_GeneralTransformatio) {
-  _inherits(VGroupTransformationChangeListener, _GeneralTransformatio);
-
-  function VGroupTransformationChangeListener() {
-    _classCallCheck(this, VGroupTransformationChangeListener);
-
-    return _possibleConstructorReturn(this, (VGroupTransformationChangeListener.__proto__ || Object.getPrototypeOf(VGroupTransformationChangeListener)).apply(this, arguments));
-  }
-
-  return VGroupTransformationChangeListener;
-}(_generalTransformationChangeListener2.default);
-
-exports.default = VGroupTransformationChangeListener;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _generalTransformationChangeListener = __webpack_require__(23);
-
-var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LinearGroupTransformationChangeListener = function (_GeneralTransformatio) {
-  _inherits(LinearGroupTransformationChangeListener, _GeneralTransformatio);
-
-  function LinearGroupTransformationChangeListener() {
-    _classCallCheck(this, LinearGroupTransformationChangeListener);
-
-    return _possibleConstructorReturn(this, (LinearGroupTransformationChangeListener.__proto__ || Object.getPrototypeOf(LinearGroupTransformationChangeListener)).apply(this, arguments));
-  }
-
-  return LinearGroupTransformationChangeListener;
-}(_generalTransformationChangeListener2.default);
-
-exports.default = LinearGroupTransformationChangeListener;
-
-/***/ }),
 /* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _generalRotationChangeListener = __webpack_require__(23);
+
+var _generalRotationChangeListener2 = _interopRequireDefault(_generalRotationChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var VGroupRotationChangeListener = function (_GeneralRotationChang) {
+  _inherits(VGroupRotationChangeListener, _GeneralRotationChang);
+
+  function VGroupRotationChangeListener() {
+    _classCallCheck(this, VGroupRotationChangeListener);
+
+    return _possibleConstructorReturn(this, (VGroupRotationChangeListener.__proto__ || Object.getPrototypeOf(VGroupRotationChangeListener)).apply(this, arguments));
+  }
+
+  return VGroupRotationChangeListener;
+}(_generalRotationChangeListener2.default);
+
+exports.default = VGroupRotationChangeListener;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _generalRotationChangeListener = __webpack_require__(23);
+
+var _generalRotationChangeListener2 = _interopRequireDefault(_generalRotationChangeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LinearGroupRotationChangeListener = function (_GeneralRotationChang) {
+  _inherits(LinearGroupRotationChangeListener, _GeneralRotationChang);
+
+  function LinearGroupRotationChangeListener() {
+    _classCallCheck(this, LinearGroupRotationChangeListener);
+
+    return _possibleConstructorReturn(this, (LinearGroupRotationChangeListener.__proto__ || Object.getPrototypeOf(LinearGroupRotationChangeListener)).apply(this, arguments));
+  }
+
+  return LinearGroupRotationChangeListener;
+}(_generalRotationChangeListener2.default);
+
+exports.default = LinearGroupRotationChangeListener;
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5458,7 +5503,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -5476,7 +5521,7 @@ var TextChangeListener = function (_ChangeListener) {
     function TextChangeListener() {
         _classCallCheck(this, TextChangeListener);
 
-        return _possibleConstructorReturn(this, (TextChangeListener.__proto__ || Object.getPrototypeOf(TextChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (TextChangeListener.__proto__ || Object.getPrototypeOf(TextChangeListener)).call(this, _changeListener2.default.OTHER));
     }
 
     _createClass(TextChangeListener, [{
@@ -5500,7 +5545,7 @@ var TextChangeListener = function (_ChangeListener) {
 exports.default = TextChangeListener;
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5520,7 +5565,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -5538,7 +5583,7 @@ var FontChangeListener = function (_ChangeListener) {
     function FontChangeListener() {
         _classCallCheck(this, FontChangeListener);
 
-        return _possibleConstructorReturn(this, (FontChangeListener.__proto__ || Object.getPrototypeOf(FontChangeListener)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (FontChangeListener.__proto__ || Object.getPrototypeOf(FontChangeListener)).call(this, _changeListener2.default.STYLING));
     }
 
     _createClass(FontChangeListener, [{
@@ -5557,7 +5602,7 @@ var FontChangeListener = function (_ChangeListener) {
 exports.default = FontChangeListener;
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5581,7 +5626,7 @@ var _circle = __webpack_require__(14);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _defaultCircleDrawer = __webpack_require__(48);
+var _defaultCircleDrawer = __webpack_require__(50);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
@@ -5589,7 +5634,7 @@ var _ellipse = __webpack_require__(15);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _defaultEllipseDrawer = __webpack_require__(49);
+var _defaultEllipseDrawer = __webpack_require__(51);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
@@ -5597,7 +5642,7 @@ var _rectangle = __webpack_require__(9);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _defaultRectangleDrawer = __webpack_require__(50);
+var _defaultRectangleDrawer = __webpack_require__(52);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
@@ -5605,7 +5650,7 @@ var _diamond = __webpack_require__(16);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _defaultDiamondDrawer = __webpack_require__(51);
+var _defaultDiamondDrawer = __webpack_require__(53);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
@@ -5613,7 +5658,7 @@ var _text = __webpack_require__(17);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _defaultTextDrawer = __webpack_require__(52);
+var _defaultTextDrawer = __webpack_require__(54);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
@@ -5621,7 +5666,7 @@ var _verticalGroup = __webpack_require__(10);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(53);
+var _defaultVerticalGroupDrawer = __webpack_require__(55);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
@@ -5629,7 +5674,7 @@ var _linearGroup = __webpack_require__(22);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
-var _defaultLinearGroupDrawer = __webpack_require__(54);
+var _defaultLinearGroupDrawer = __webpack_require__(56);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
@@ -5637,7 +5682,7 @@ var _line = __webpack_require__(19);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _defaultLineDrawer = __webpack_require__(55);
+var _defaultLineDrawer = __webpack_require__(57);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
@@ -5645,11 +5690,11 @@ var _image = __webpack_require__(21);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _defaultImageDrawer = __webpack_require__(56);
+var _defaultImageDrawer = __webpack_require__(58);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
-var _defaultPolylineDrawer = __webpack_require__(57);
+var _defaultPolylineDrawer = __webpack_require__(59);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
@@ -5661,7 +5706,7 @@ var _boxVerticesDecorator = __webpack_require__(12);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
-var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(58);
+var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(60);
 
 var _defaultBoxVerticesDecoratorDrawer2 = _interopRequireDefault(_defaultBoxVerticesDecoratorDrawer);
 
@@ -5680,27 +5725,27 @@ var DefaultLookAndFeelFactory = function () {
     _createClass(DefaultLookAndFeelFactory, [{
         key: 'getDrawerFor',
         value: function getDrawerFor(element) {
-            if (element instanceof _circle2.default) {
+            if (Object.getPrototypeOf(element) === _circle2.default.prototype) {
                 return new _defaultCircleDrawer2.default();
-            } else if (element instanceof _ellipse2.default) {
+            } else if (Object.getPrototypeOf(element) === _ellipse2.default.prototype) {
                 return new _defaultEllipseDrawer2.default();
-            } else if (element instanceof _rectangle2.default) {
+            } else if (Object.getPrototypeOf(element) === _rectangle2.default.prototype) {
                 return new _defaultRectangleDrawer2.default();
-            } else if (element instanceof _diamond2.default) {
+            } else if (Object.getPrototypeOf(element) === _diamond2.default.prototype) {
                 return new _defaultDiamondDrawer2.default();
-            } else if (element instanceof _text2.default) {
+            } else if (Object.getPrototypeOf(element) === _text2.default.prototype) {
                 return new _defaultTextDrawer2.default();
-            } else if (element instanceof _verticalGroup2.default) {
+            } else if (Object.getPrototypeOf(element) === _verticalGroup2.default.prototype) {
                 return new _defaultVerticalGroupDrawer2.default();
-            } else if (element instanceof _linearGroup2.default) {
+            } else if (Object.getPrototypeOf(element) === _linearGroup2.default.prototype) {
                 return new _defaultLinearGroupDrawer2.default();
-            } else if (element instanceof _line2.default) {
+            } else if (Object.getPrototypeOf(element) === _line2.default.prototype) {
                 return new _defaultLineDrawer2.default();
-            } else if (element instanceof _polyline2.default) {
+            } else if (Object.getPrototypeOf(element) === _polyline2.default.prototype) {
                 return new _defaultPolylineDrawer2.default();
-            } else if (element instanceof _image2.default) {
+            } else if (Object.getPrototypeOf(element) === _image2.default.prototype) {
                 return new _defaultImageDrawer2.default();
-            } else if (element instanceof _boxVerticesDecorator2.default) {
+            } else if (Object.getPrototypeOf(element) === _boxVerticesDecorator2.default.prototype) {
                 return new _defaultBoxVerticesDecoratorDrawer2.default();
             }
         }
@@ -5712,7 +5757,7 @@ var DefaultLookAndFeelFactory = function () {
 exports.default = DefaultLookAndFeelFactory;
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5732,19 +5777,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _circleDimensionChangeListener = __webpack_require__(40);
+var _circleDimensionChangeListener = __webpack_require__(42);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(34);
+var _circlePositionChangeListener = __webpack_require__(36);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -5792,7 +5837,7 @@ var DefaultCircleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultCircleDrawer;
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5812,19 +5857,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _ellipseDimensionChangeListener = __webpack_require__(37);
+var _ellipseDimensionChangeListener = __webpack_require__(39);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(29);
+var _ellipsePositionChangeListener = __webpack_require__(31);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -5873,7 +5918,7 @@ var DefaultEllipseDrawer = function (_DefaultDrawer) {
 exports.default = DefaultEllipseDrawer;
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5893,19 +5938,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _rectangleDimensionChangeListener = __webpack_require__(35);
+var _rectangleDimensionChangeListener = __webpack_require__(37);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(27);
+var _rectanglePositionChangeListener = __webpack_require__(29);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -5954,7 +5999,7 @@ var DefaultRectangleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultRectangleDrawer;
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5974,19 +6019,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _diamondDimensionChangeListener = __webpack_require__(36);
+var _diamondDimensionChangeListener = __webpack_require__(38);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(28);
+var _diamondPositionChangeListener = __webpack_require__(30);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6043,7 +6088,7 @@ var DefaultDiamondDrawer = function (_DefaultDrawer) {
 exports.default = DefaultDiamondDrawer;
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6063,27 +6108,27 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _textDimensionChangeListener = __webpack_require__(39);
+var _textDimensionChangeListener = __webpack_require__(41);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(31);
+var _textPositionChangeListener = __webpack_require__(33);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _textChangeListener = __webpack_require__(45);
+var _textChangeListener = __webpack_require__(47);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(46);
+var _fontChangeListener = __webpack_require__(48);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6150,7 +6195,7 @@ var DefaultTextDrawer = function (_DefaultDrawer) {
 exports.default = DefaultTextDrawer;
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6170,7 +6215,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
@@ -6178,9 +6223,9 @@ var _lookAndFeel = __webpack_require__(8);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _vgroupTransformationChangeListener = __webpack_require__(43);
+var _vgroupRotationChangeListener = __webpack_require__(45);
 
-var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
+var _vgroupRotationChangeListener2 = _interopRequireDefault(_vgroupRotationChangeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6230,7 +6275,7 @@ var DefaultVerticalGroupDrawer = function (_DefaultDrawer) {
 
             //*****************************
             // Add change listeners.
-            element.addChangeListener(new _vgroupTransformationChangeListener2.default());
+            element.addChangeListener(new _vgroupRotationChangeListener2.default());
 
             return newGroup;
         }
@@ -6242,7 +6287,7 @@ var DefaultVerticalGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultVerticalGroupDrawer;
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6262,7 +6307,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
@@ -6270,9 +6315,9 @@ var _lookAndFeel = __webpack_require__(8);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _linearGroupTransformationChangeListener = __webpack_require__(44);
+var _linearGroupRotationChangeListener = __webpack_require__(46);
 
-var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
+var _linearGroupRotationChangeListener2 = _interopRequireDefault(_linearGroupRotationChangeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6324,7 +6369,7 @@ var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
 
             //*****************************
             // Add change listeners.
-            element.addChangeListener(new _linearGroupTransformationChangeListener2.default());
+            element.addChangeListener(new _linearGroupRotationChangeListener2.default());
 
             return newGroup;
         }
@@ -6336,7 +6381,7 @@ var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLinearGroupDrawer;
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6356,19 +6401,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lineDimensionChangeListener = __webpack_require__(41);
+var _lineDimensionChangeListener = __webpack_require__(43);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(32);
+var _linePositionChangeListener = __webpack_require__(34);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6419,7 +6464,7 @@ var DefaultLineDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLineDrawer;
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6439,19 +6484,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(30);
+var _imagePositionChangeListener = __webpack_require__(32);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
-var _imageDimensionChangeListener = __webpack_require__(38);
+var _imageDimensionChangeListener = __webpack_require__(40);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
@@ -6501,7 +6546,7 @@ var DefaultImageDrawer = function (_DefaultDrawer) {
 exports.default = DefaultImageDrawer;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6521,19 +6566,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _polylineDimensionChangeListener = __webpack_require__(42);
+var _polylineDimensionChangeListener = __webpack_require__(44);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(33);
+var _polylinePositionChangeListener = __webpack_require__(35);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6592,7 +6637,7 @@ var DefaultPolyLineDrawer = function (_DefaultDrawer) {
 exports.default = DefaultPolyLineDrawer;
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6612,7 +6657,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
@@ -6624,13 +6669,37 @@ var _rectangle = __webpack_require__(9);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
 var _boxVerticesDecorator = __webpack_require__(12);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+var _boxVerticesDecoratorChangeListener = __webpack_require__(61);
+
+var _boxVerticesDecoratorChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorChangeListener);
+
+var _boxVerticesDecoratorDecoratedRotationChangeListener = __webpack_require__(27);
+
+var _boxVerticesDecoratorDecoratedRotationChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedRotationChangeListener);
+
+var _boxVerticesDecoratorDecoratedPositionChangeListener = __webpack_require__(26);
+
+var _boxVerticesDecoratorDecoratedPositionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedPositionChangeListener);
+
+var _boxVerticesDecoratorDecoratedDimensionChangeListener = __webpack_require__(28);
+
+var _boxVerticesDecoratorDecoratedDimensionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedDimensionChangeListener);
+
+var _graphicalElement = __webpack_require__(1);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6658,60 +6727,90 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
             newGroup.setAttribute('pointer-events', 'all');
 
             if (element.decorated !== null) {
-                //let drawer = lookAndFeel.getDrawerFor(element.decorated);
-                //drawer.svgArea = this.svgArea;
-                //var drawnDecorated = drawer.draw(element.decorated);
-                //element.decorated.drawn = drawnDecorated;
-                //newGroup.appendChild(drawnDecorated);
-                //this.registerEvents(element.decorated, drawnDecorated);
                 newGroup.appendChild(element.decorated.drawn);
+
+                // Copy the decorated position before removing its listeners.
+                element.x = element.decorated.x;
+                element.y = element.decorated.y;
+                element.width = element.decorated.width;
+                element.height = element.decorated.height;
+                element.decorated.disableChangeNotifications();
+                element.decorated.x = 0;
+                element.decorated.y = 0;
+                element.decorated.enableChangeNotifications();
+                element.decorated.notifyListeners(_changeListener2.default.POSITION);
+
+                //*****************************
+                // Remove the decorated listeners related to position, dimension, and rotation.
+                // These events will be handled by the decorator group.
+                element.decorated.removeChangeListenerByType(_changeListener2.default.POSITION, _changeListener2.default.ROTATION);
+                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedPositionChangeListener2.default(element));
+                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedRotationChangeListener2.default(element));
+                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedDimensionChangeListener2.default(element));
             }
+
+            //*****************************
+            // Add group change listeners.
+            element.addChangeListener(new _boxVerticesDecoratorChangeListener2.default());
 
             var vertexSize = element.vertexSize;
             var halfSize = (vertexSize - 1) / 2;
 
             var lookAndFeel = new _lookAndFeel2.default();
             var stylingAttributes = new _stylingAttributes2.default(0, "black", "black");
+
             // Draw the box vertices.
             if (element.topLeft) {
-                var vertexTL = new _rectangle2.default(element.x - halfSize, element.y - halfSize, element.x + halfSize, element.y + halfSize, stylingAttributes);
+                var vertexTL = new _rectangle2.default(0 - halfSize, 0 - halfSize, 0 + halfSize, 0 + halfSize, stylingAttributes);
                 vertexTL.tag = _boxVerticesDecorator2.default.TOP_LEFT;
+                vertexTL.addTag(_boxVerticesDecorator2.default.VERTEX, true);
+                vertexTL.addTag(_graphicalElement2.default.PARENT, element);
                 var drawerTL = lookAndFeel.getDrawerFor(vertexTL);
                 drawerTL.svgArea = this.svgArea;
                 var drawnChildTL = drawerTL.draw(vertexTL);
                 vertexTL.drawn = drawnChildTL;
                 newGroup.appendChild(drawnChildTL);
                 this.registerEvents(vertexTL, drawnChildTL, element);
+                element.topLeftVertex = vertexTL;
             }
             if (element.topRight) {
-                var vertexTR = new _rectangle2.default(element.x2 - halfSize, element.y - halfSize, element.x2 + halfSize, element.y + halfSize, stylingAttributes);
+                var vertexTR = new _rectangle2.default(element.width - halfSize, 0 - halfSize, element.width + halfSize, 0 + halfSize, stylingAttributes);
                 vertexTR.tag = _boxVerticesDecorator2.default.TOP_RIGHT;
+                vertexTR.addTag(_boxVerticesDecorator2.default.VERTEX, true);
+                vertexTR.addTag(_graphicalElement2.default.PARENT, element);
                 var drawerTR = lookAndFeel.getDrawerFor(vertexTR);
                 drawerTR.svgArea = this.svgArea;
                 var drawnChildTR = drawerTR.draw(vertexTR);
                 vertexTR.drawn = drawnChildTR;
                 newGroup.appendChild(drawnChildTR);
                 this.registerEvents(vertexTR, drawnChildTR, element);
+                element.topRightVertex = vertexTR;
             }
             if (element.bottomLeft) {
-                var vertexBL = new _rectangle2.default(element.x - halfSize, element.y2 - halfSize, element.x + halfSize, element.y2 + halfSize, stylingAttributes);
+                var vertexBL = new _rectangle2.default(0 - halfSize, element.height - halfSize, 0 + halfSize, element.height + halfSize, stylingAttributes);
                 vertexBL.tag = _boxVerticesDecorator2.default.BOTTOM_LEFT;
+                vertexBL.addTag(_boxVerticesDecorator2.default.VERTEX, true);
+                vertexBL.addTag(_graphicalElement2.default.PARENT, element);
                 var drawerBL = lookAndFeel.getDrawerFor(vertexBL);
                 drawerBL.svgArea = this.svgArea;
                 var drawnChildBL = drawerBL.draw(vertexBL);
                 vertexBL.drawn = drawnChildBL;
                 newGroup.appendChild(drawnChildBL);
                 this.registerEvents(vertexBL, drawnChildBL, element);
+                element.bottomLeftVertex = vertexBL;
             }
             if (element.bottomRight) {
-                var vertexBR = new _rectangle2.default(element.x2 - halfSize, element.y2 - halfSize, element.x2 + halfSize, element.y2 + halfSize, stylingAttributes);
+                var vertexBR = new _rectangle2.default(element.width - halfSize, element.height - halfSize, element.width + halfSize, element.height + halfSize, stylingAttributes);
                 vertexBR.tag = _boxVerticesDecorator2.default.BOTTOM_RIGHT;
+                vertexBR.addTag(_boxVerticesDecorator2.default.VERTEX, true);
+                vertexBR.addTag(_graphicalElement2.default.PARENT, element);
                 var drawerBR = lookAndFeel.getDrawerFor(vertexBR);
                 drawerBR.svgArea = this.svgArea;
                 var drawnChildBR = drawerBR.draw(vertexBR);
                 vertexBR.drawn = drawnChildBR;
                 newGroup.appendChild(drawnChildBR);
                 this.registerEvents(vertexBR, drawnChildBR, element);
+                element.bottomRightVertex = vertexBR;
             }
 
             return newGroup;
@@ -6749,7 +6848,61 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
 exports.default = DefaultBoxVerticesDecoratorDrawer;
 
 /***/ }),
-/* 59 */
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BoxVerticesDecoratorChangeListener = function (_ChangeListener) {
+    _inherits(BoxVerticesDecoratorChangeListener, _ChangeListener);
+
+    function BoxVerticesDecoratorChangeListener() {
+        _classCallCheck(this, BoxVerticesDecoratorChangeListener);
+
+        return _possibleConstructorReturn(this, (BoxVerticesDecoratorChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorChangeListener)).call(this, _changeListener2.default.POSITION, _changeListener2.default.ROTATION));
+    }
+
+    _createClass(BoxVerticesDecoratorChangeListener, [{
+        key: "update",
+        value: function update(target) {
+            target.drawn.setAttribute("transform", "translate(" + target.x + ", " + target.y + ") rotate(" + target.rotation + " " + target.rotationCenterX + " " + target.rotationCenterY + ")");
+        }
+    }]);
+
+    return BoxVerticesDecoratorChangeListener;
+}(_changeListener2.default);
+
+exports.default = BoxVerticesDecoratorChangeListener;
+
+/***/ }),
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6819,7 +6972,7 @@ var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -6830,6 +6983,10 @@ var _polyline2 = _interopRequireDefault(_polyline);
 var _boxVerticesDecorator = __webpack_require__(12);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7209,6 +7366,9 @@ var SVGArea = function () {
             this.svg.appendChild(drawnBoxVerticesDecorator);
 
             newBoxVerticesDecorator.drawn = drawnBoxVerticesDecorator;
+            newBoxVerticesDecorator.notifyListeners(_changeListener2.default.POSITION, _changeListener2.default.DIMENSION);
+
+            this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
 
             return this.addElement(newBoxVerticesDecorator);
         }
@@ -7301,7 +7461,7 @@ var SVGArea = function () {
 exports.default = SVGArea;
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7320,11 +7480,11 @@ var _point = __webpack_require__(24);
 
 var _point2 = _interopRequireDefault(_point);
 
-var _boundingBox = __webpack_require__(3);
+var _boundingBox = __webpack_require__(4);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _graphicalElement = __webpack_require__(0);
+var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
@@ -7364,7 +7524,7 @@ var _verticalGroup = __webpack_require__(10);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _changeListener = __webpack_require__(7);
+var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
@@ -7376,7 +7536,7 @@ var _linearGroup = __webpack_require__(22);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
-var _stylingAttributes = __webpack_require__(1);
+var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
@@ -7388,7 +7548,7 @@ var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
 
-var _graphicalElementDecorator = __webpack_require__(26);
+var _graphicalElementDecorator = __webpack_require__(64);
 
 var _graphicalElementDecorator2 = _interopRequireDefault(_graphicalElementDecorator);
 
@@ -7396,103 +7556,115 @@ var _boxVerticesDecorator = __webpack_require__(12);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
-var _generalPositionChangeListener = __webpack_require__(4);
+var _boxVerticesDecoratorDecoratedPositionChangeListener = __webpack_require__(26);
+
+var _boxVerticesDecoratorDecoratedPositionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedPositionChangeListener);
+
+var _boxVerticesDecoratorDecoratedRotationChangeListener = __webpack_require__(27);
+
+var _boxVerticesDecoratorDecoratedRotationChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedRotationChangeListener);
+
+var _boxVerticesDecoratorDecoratedDimensionChangeListener = __webpack_require__(28);
+
+var _boxVerticesDecoratorDecoratedDimensionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedDimensionChangeListener);
+
+var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(27);
+var _rectanglePositionChangeListener = __webpack_require__(29);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(28);
+var _diamondPositionChangeListener = __webpack_require__(30);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(29);
+var _ellipsePositionChangeListener = __webpack_require__(31);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(30);
+var _imagePositionChangeListener = __webpack_require__(32);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(31);
+var _textPositionChangeListener = __webpack_require__(33);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(32);
+var _linePositionChangeListener = __webpack_require__(34);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(33);
+var _polylinePositionChangeListener = __webpack_require__(35);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(34);
+var _circlePositionChangeListener = __webpack_require__(36);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
-var _generalDimensionChangeListener = __webpack_require__(5);
+var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _rectangleDimensionChangeListener = __webpack_require__(35);
+var _rectangleDimensionChangeListener = __webpack_require__(37);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _diamondDimensionChangeListener = __webpack_require__(36);
+var _diamondDimensionChangeListener = __webpack_require__(38);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _ellipseDimensionChangeListener = __webpack_require__(37);
+var _ellipseDimensionChangeListener = __webpack_require__(39);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _imageDimensionChangeListener = __webpack_require__(38);
+var _imageDimensionChangeListener = __webpack_require__(40);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
-var _textDimensionChangeListener = __webpack_require__(39);
+var _textDimensionChangeListener = __webpack_require__(41);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _circleDimensionChangeListener = __webpack_require__(40);
+var _circleDimensionChangeListener = __webpack_require__(42);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _lineDimensionChangeListener = __webpack_require__(41);
+var _lineDimensionChangeListener = __webpack_require__(43);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _polylineDimensionChangeListener = __webpack_require__(42);
+var _polylineDimensionChangeListener = __webpack_require__(44);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
-var _generalTransformationChangeListener = __webpack_require__(23);
+var _generalRotationChangeListener = __webpack_require__(23);
 
-var _generalTransformationChangeListener2 = _interopRequireDefault(_generalTransformationChangeListener);
+var _generalRotationChangeListener2 = _interopRequireDefault(_generalRotationChangeListener);
 
-var _vgroupTransformationChangeListener = __webpack_require__(43);
+var _vgroupRotationChangeListener = __webpack_require__(45);
 
-var _vgroupTransformationChangeListener2 = _interopRequireDefault(_vgroupTransformationChangeListener);
+var _vgroupRotationChangeListener2 = _interopRequireDefault(_vgroupRotationChangeListener);
 
-var _linearGroupTransformationChangeListener = __webpack_require__(44);
+var _linearGroupRotationChangeListener = __webpack_require__(46);
 
-var _linearGroupTransformationChangeListener2 = _interopRequireDefault(_linearGroupTransformationChangeListener);
+var _linearGroupRotationChangeListener2 = _interopRequireDefault(_linearGroupRotationChangeListener);
 
-var _textChangeListener = __webpack_require__(45);
+var _textChangeListener = __webpack_require__(47);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(46);
+var _fontChangeListener = __webpack_require__(48);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _styleChangeListener = __webpack_require__(6);
+var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
-var _defaultDrawer = __webpack_require__(2);
+var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
@@ -7500,65 +7672,67 @@ var _lookAndFeel = __webpack_require__(8);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _defaultLookAndFeelFactory = __webpack_require__(47);
+var _defaultLookAndFeelFactory = __webpack_require__(49);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
-var _defaultCircleDrawer = __webpack_require__(48);
+var _defaultCircleDrawer = __webpack_require__(50);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
-var _defaultEllipseDrawer = __webpack_require__(49);
+var _defaultEllipseDrawer = __webpack_require__(51);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
-var _defaultRectangleDrawer = __webpack_require__(50);
+var _defaultRectangleDrawer = __webpack_require__(52);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
-var _defaultDiamondDrawer = __webpack_require__(51);
+var _defaultDiamondDrawer = __webpack_require__(53);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
-var _defaultTextDrawer = __webpack_require__(52);
+var _defaultTextDrawer = __webpack_require__(54);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
-var _defaultLineDrawer = __webpack_require__(55);
+var _defaultLineDrawer = __webpack_require__(57);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
-var _defaultPolylineDrawer = __webpack_require__(57);
+var _defaultPolylineDrawer = __webpack_require__(59);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
-var _defaultImageDrawer = __webpack_require__(56);
+var _defaultImageDrawer = __webpack_require__(58);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(53);
+var _defaultVerticalGroupDrawer = __webpack_require__(55);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _defaultLinearGroupDrawer = __webpack_require__(54);
+var _defaultLinearGroupDrawer = __webpack_require__(56);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
-var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(58);
+var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(60);
 
 var _defaultBoxVerticesDecoratorDrawer2 = _interopRequireDefault(_defaultBoxVerticesDecoratorDrawer);
 
-var _svgArea = __webpack_require__(59);
+var _boxVerticesDecoratorChangeListener = __webpack_require__(61);
+
+var _boxVerticesDecoratorChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorChangeListener);
+
+var _svgArea = __webpack_require__(62);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 
-var _area = __webpack_require__(61);
+var _area = __webpack_require__(65);
 
 var _area2 = _interopRequireDefault(_area);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// SVG implementation.
 
 // Graphical primitives.
 exports.StylingAttributes = _stylingAttributes2.default;
@@ -7574,10 +7748,364 @@ exports.GraphicalElement = _graphicalElement2.default;
 
 
 // General.
+
+// SVG implementation.
 // Util.
 
 /***/ }),
-/* 61 */
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 15/01/2018.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _graphicalElement = __webpack_require__(1);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GraphicalElementDecorator = function (_GraphicalElement) {
+    _inherits(GraphicalElementDecorator, _GraphicalElement);
+
+    function GraphicalElementDecorator(decorated) {
+        _classCallCheck(this, GraphicalElementDecorator);
+
+        var _this = _possibleConstructorReturn(this, (GraphicalElementDecorator.__proto__ || Object.getPrototypeOf(GraphicalElementDecorator)).call(this, decorated.x, decorated.y, decorated.width, decorated.height));
+
+        _this._decorated = decorated;
+        return _this;
+    }
+
+    _createClass(GraphicalElementDecorator, [{
+        key: "disableChangeNotifications",
+        value: function disableChangeNotifications() {
+            this._decorated.disableChangeNotifications();
+        }
+    }, {
+        key: "enableChangeNotifications",
+        value: function enableChangeNotifications() {
+            this._decorated.enableChangeNotifications();
+        }
+    }, {
+        key: "boundaryX1For",
+        value: function boundaryX1For(givenY) {
+            return this._decorated.boundaryX1For(givenY);
+        }
+    }, {
+        key: "boundaryX2For",
+        value: function boundaryX2For(givenY) {
+            return this._decorated.boundaryX2For(givenY);
+        }
+    }, {
+        key: "moveTo",
+        value: function moveTo(newX, newY) {
+            this._decorated.moveTo(newX, newY);
+        }
+    }, {
+        key: "resize",
+        value: function resize(newWidth, newHeight) {
+            this._decorated.resize(newWidth, newHeight);
+        }
+    }, {
+        key: "appearance",
+        value: function appearance(json) {
+            this._decorated.appearance(json);
+        }
+    }, {
+        key: "contentBox",
+        value: function contentBox(width, height) {
+            return this._decorated.contentBox(width, height);
+        }
+    }, {
+        key: "widthToFit",
+        value: function widthToFit(boundingBox) {
+            return this._decorated.widthToFit(boundingBox);
+        }
+    }, {
+        key: "heightToFit",
+        value: function heightToFit(boundingBox) {
+            return this._decorated.heightToFit(boundingBox);
+        }
+    }, {
+        key: "addChangeListener",
+        value: function addChangeListener(value) {
+            this._decorated.addChangeListener(value);
+        }
+    }, {
+        key: "notifyListeners",
+        value: function notifyListeners() {
+            this._decorated.notifyListeners();
+        }
+    }, {
+        key: "fireOnClick",
+        value: function fireOnClick(event) {
+            this._decorated.fireOnClick(event);
+        }
+    }, {
+        key: "fireOnDblClick",
+        value: function fireOnDblClick(event) {
+            this._decorated.fireOnDblClick(event);
+        }
+    }, {
+        key: "fireOnMouseDown",
+        value: function fireOnMouseDown(event) {
+            this._decorated.fireOnMouseDown(event);
+        }
+    }, {
+        key: "fireOnMouseMove",
+        value: function fireOnMouseMove(event) {
+            this._decorated.fireOnMouseMove(event);
+        }
+    }, {
+        key: "fireOnMouseUp",
+        value: function fireOnMouseUp(event) {
+            this._decorated.fireOnMouseUp(event);
+        }
+    }, {
+        key: "addTag",
+        value: function addTag(key, value) {
+            this._decorated.addTag(key, value);
+        }
+    }, {
+        key: "countTags",
+        value: function countTags() {
+            return this._decorated.countTags();
+        }
+    }, {
+        key: "getTag",
+        value: function getTag(key) {
+            return this._decorated.getTag(key);
+        }
+    }, {
+        key: "getTagsKeys",
+        value: function getTagsKeys() {
+            return this._decorated.getTagsKeys();
+        }
+    }, {
+        key: "removeTag",
+        value: function removeTag(key) {
+            this._decorated.removeTag(key);
+        }
+    }, {
+        key: "decorated",
+        get: function get() {
+            return this._decorated;
+        },
+        set: function set(value) {
+            this._decorated = value;
+        }
+
+        // Delegate.
+
+    }, {
+        key: "changeNotificationsEnabled",
+        get: function get() {
+            return this._decorated.changeNotificationsEnabled;
+        }
+    }, {
+        key: "x",
+        get: function get() {
+            return this._decorated.x;
+        },
+        set: function set(value) {
+            this._decorated.x = value;
+        }
+    }, {
+        key: "y",
+        get: function get() {
+            return this._decorated.y;
+        },
+        set: function set(value) {
+            this._decorated.y = value;
+        }
+    }, {
+        key: "width",
+        get: function get() {
+            return this._decorated.width;
+        },
+        set: function set(value) {
+            this._decorated.width = value;
+        }
+    }, {
+        key: "minWidth",
+        get: function get() {
+            return this._decorated.minWidth;
+        },
+        set: function set(value) {
+            this._decorated.minWidth = value;
+        }
+    }, {
+        key: "height",
+        get: function get() {
+            return this._decorated.height;
+        },
+        set: function set(value) {
+            this._decorated.height = value;
+        }
+    }, {
+        key: "minHeight",
+        get: function get() {
+            return this._decorated.minHeight;
+        },
+        set: function set(value) {
+            this._decorated.minHeight = value;
+        }
+    }, {
+        key: "rotation",
+        get: function get() {
+            return this._decorated.rotation;
+        },
+        set: function set(value) {
+            this._decorated.rotation = value;
+        }
+    }, {
+        key: "rotationCenterX",
+        get: function get() {
+            return this._decorated.rotationCenterX;
+        },
+        set: function set(value) {
+            this._decorated.rotationCenterX = value;
+        }
+    }, {
+        key: "rotationCenterY",
+        get: function get() {
+            return this._decorated.rotationCenterY;
+        },
+        set: function set(value) {
+            this._decorated.rotationCenterY = value;
+        }
+    }, {
+        key: "x2",
+        get: function get() {
+            return this._decorated.x2;
+        },
+        set: function set(value) {
+            this._decorated.x2 = value;
+        }
+    }, {
+        key: "y2",
+        get: function get() {
+            return this._decorated.y2;
+        },
+        set: function set(value) {
+            this._decorated.y2 = value;
+        }
+    }, {
+        key: "stylingAttributes",
+        get: function get() {
+            return this._decorated.stylingAttributes;
+        },
+        set: function set(value) {
+            this._decorated.stylingAttributes = value;
+        }
+    }, {
+        key: "borderSize",
+        get: function get() {
+            return this._decorated.borderSize;
+        }
+    }, {
+        key: "id",
+        get: function get() {
+            return this._decorated.id;
+        },
+        set: function set(value) {
+            this._decorated.id = value;
+        }
+
+        /*    get drawn() {
+                return this._decorated.drawn;
+            }
+        
+            set drawn(value) {
+                this._decorated.drawn = value;
+            }*/
+
+    }, {
+        key: "changeListeners",
+        get: function get() {
+            return this._decorated.changeListeners;
+        },
+        set: function set(value) {
+            this._decorated.changeListeners = value;
+        }
+    }, {
+        key: "onClick",
+        get: function get() {
+            return this._decorated.onClick;
+        },
+        set: function set(value) {
+            this._decorated.onClick = value;
+        }
+    }, {
+        key: "onDblClick",
+        get: function get() {
+            return this._decorated.onDblClick;
+        },
+        set: function set(value) {
+            this._decorated.onDblClick = value;
+        }
+    }, {
+        key: "onMouseDown",
+        get: function get() {
+            return this._decorated.onMouseDown;
+        },
+        set: function set(value) {
+            this._decorated.onMouseDown = value;
+        }
+    }, {
+        key: "onMouseMove",
+        get: function get() {
+            return this._decorated.onMouseMove;
+        },
+        set: function set(value) {
+            this._decorated.onMouseMove = value;
+        }
+    }, {
+        key: "onMouseUp",
+        get: function get() {
+            return this._decorated.onMouseUp;
+        },
+        set: function set(value) {
+            this._decorated.onMouseUp = value;
+        }
+    }, {
+        key: "tag",
+        get: function get() {
+            return this._decorated.tag;
+        },
+        set: function set(value) {
+            this._decorated.tag = value;
+        }
+    }]);
+
+    return GraphicalElementDecorator;
+}(_graphicalElement2.default);
+
+exports.default = GraphicalElementDecorator;
+
+/***/ }),
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7597,7 +8125,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _svgArea = __webpack_require__(59);
+var _svgArea = __webpack_require__(62);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 

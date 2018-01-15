@@ -11,6 +11,11 @@
 import ChangeListener from '../core/change-listener.js';
 
 export default class FontChangeListener extends ChangeListener {
+
+    constructor() {
+        super(ChangeListener.STYLING);
+    }
+
     update(target) {
         target.drawn.setAttribute("font-family", target.fontStylingAttributes.family);
         target.drawn.setAttribute("font-size", target.fontStylingAttributes.size);

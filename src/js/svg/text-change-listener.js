@@ -11,6 +11,11 @@
 import ChangeListener from '../core/change-listener.js';
 
 export default class TextChangeListener extends ChangeListener {
+
+    constructor() {
+        super(ChangeListener.OTHER);
+    }
+
     update(target) {
         target.drawn.textContent = target.text;
         // As the text changed, the graphical element minimum width and height must be updated.

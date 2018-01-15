@@ -12,6 +12,7 @@ import GraphicalElement from './graphical-element.js';
 import StylingAttributes from './styling-attributes.js';
 import BoundingBox from './bounding-box.js';
 import FontStylingAttributes from "./font-styling-attributes";
+import ChangeListener from "./change-listener";
 
 /**
  * This class implements texts.
@@ -43,7 +44,7 @@ export default class Text extends GraphicalElement {
 
     set text(value) {
         this._text = value;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.OTHER);
         //this.calculateDimensions();
     }
 
@@ -54,7 +55,7 @@ export default class Text extends GraphicalElement {
     set fontStylingAttributes(value) {
         this._fontStylingAttributes = value;
         this.fontStylingAttributes.target = this;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.STYLING);
     }
 
     /*  calculateDimensions() {

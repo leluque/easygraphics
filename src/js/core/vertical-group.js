@@ -13,6 +13,7 @@ import BoundingBox from './bounding-box.js';
 import VerticalGroupChildChangeListener from './vertical-group-child-change-listener.js';
 import GroupStylingAttributes from "./group-styling-attributes";
 import StylingAttributes from "./styling-attributes";
+import ChangeListener from "./change-listener";
 
 export default class VerticalGroup extends GraphicalElement {
 
@@ -331,8 +332,8 @@ export default class VerticalGroup extends GraphicalElement {
         this.adjustChildrenPositionAndDimension();
         this.enableChangeNotifications();
 
-        this.frame.notifyListeners();
-        this.notifyListeners();
+        this.frame.notifyListeners(ChangeListener.POSITION, ChangeListener.DIMENSION);
+        this.notifyListeners(ChangeListener.POSITION, ChangeListener.DIMENSION);
     }
 
     get dimensionReadjustmentEnabled() {
@@ -359,7 +360,7 @@ export default class VerticalGroup extends GraphicalElement {
 
     set groupStylingAttributes(value) {
         this._groupStylingAttributes = value;
-        this.notifyListeners();
+        this.notifyListeners(ChangeListener.STYLING);
     }
 
     /**
@@ -523,7 +524,7 @@ export default class VerticalGroup extends GraphicalElement {
 
             //this.children[i].changeNotificationsEnabled = oldChangeNotificationsStatus;
             this.children[i].enableChangeNotifications();
-            this.children[i].notifyListeners();
+            this.children[i].notifyListeners(ChangeListener.POSITION, ChangeListener.DIMENSION);
         }
     }
 

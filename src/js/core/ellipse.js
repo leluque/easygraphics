@@ -11,6 +11,7 @@
 import GraphicalElement from './graphical-element.js';
 import BoundingBox from './bounding-box.js';
 import StylingAttributes from "./styling-attributes";
+import ChangeListener from "./change-listener";
 
 /**
  * This class implements ellipses.
@@ -34,7 +35,8 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.width = value;
         this.enableChangeNotifications();
-        super.height = value / 2; // Keep the proportion.
+      //  super.height = value / 2; // Keep the proportion.
+        this.notifyListeners(ChangeListener.DIMENSION);
     }
 
     get height() {
@@ -45,7 +47,8 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
         this.enableChangeNotifications();
-        super.width = value * 2; // Keep the proportion.
+//        super.width = value * 2; // Keep the proportion.
+        this.notifyListeners(ChangeListener.DIMENSION);
     }
 
     get centerX() {
