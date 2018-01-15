@@ -14,7 +14,7 @@ export default class Area {
     static init(selector = "#area") {
         let area = document.querySelector(selector);
         let name = area.tagName;
-        if(name.toLowerCase() === "svg") {
+        if (name.toLowerCase() === "svg") {
             return new SVGArea(selector);
         } else {
             throw "Invalid area tag type: " + name;

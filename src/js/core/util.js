@@ -65,3 +65,13 @@ export function toRadians(degrees) {
 export function toDegrees(radians) {
     return radians * 180 / Math.PI;
 }
+
+export function notifyListeners(listener, target) {
+    if (listener !== null && listener) {
+        if (typeof(listener) === "function") {
+            listener(target, arguments.slice(2));
+        } else {
+            throw "Callback is not a function: " + typeof(listener);
+        }
+    }
+}

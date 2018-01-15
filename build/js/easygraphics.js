@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 63);
+/******/ 	return __webpack_require__(__webpack_require__.s = 65);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1184,6 +1184,101 @@ exports.default = StyleChangeListener;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 03/07/2017.
+ */
+
+
+
+/**
+ * This method returns the angle in degrees between two lines.
+ * @param ax1 The first line x1 coordinate.
+ * @param ay1 The first line y1 coordinate.
+ * @param ax2 The first line x2 coordinate.
+ * @param ay2 The first line y2 coordinate.
+ * @param bx1 The second line x1 coordinate.
+ * @param by1 The second line y1 coordinate.
+ * @param bx2 The second line x2 coordinate.
+ * @param by2 The second line y2 coordinate.
+ * @returns {number} The angle in degrees between the two lines.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.angleBetween2Lines = angleBetween2Lines;
+exports.angleBetween2Vectors = angleBetween2Vectors;
+exports.toRadians = toRadians;
+exports.toDegrees = toDegrees;
+exports.notifyListeners = notifyListeners;
+function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
+    var angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
+    var angle2 = Math.atan2(by1 - by2, bx1 - bx2);
+    return toDegrees(Math.abs(angle1) - Math.abs(angle2));
+}
+
+/**
+ * This method calculates the angle in degrees between two vectors with origin at (0, 0).
+ * @param ax2 The x-coordinate of the second point (1st vector).
+ * @param ay2 The y-coordinate of the second point (1st vector).
+ * @param bx2 The x-coordinate of the second point (2nd vector).
+ * @param by2 The y-coordinate of the second point (2nd vector).
+ * @returns {number} The angle between the two vectors in degrees.
+ */
+function angleBetween2Vectors(ax2, ay2, bx2, by2) {
+    // See http://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
+
+    // Convert y cartesian coordinate to y drawing coordinate.
+    ay2 *= -1;
+    by2 *= -1;
+
+    // Calculate the length of each vector.
+    var lengthV1 = Math.sqrt(ax2 * ax2 + ay2 * ay2);
+    var lengthV2 = Math.sqrt(bx2 * bx2 + by2 * by2);
+
+    // Calculate the scalar product of the two vectors.
+    var scalarProduct = ax2 * bx2 + ay2 * by2;
+
+    // Calculate the cosine of the angle between the two vectors.
+    var cosine = scalarProduct / (lengthV1 * lengthV2);
+
+    // Find the angle based on the arccosine.
+    var angle = Math.acos(cosine);
+    return toDegrees(angle);
+}
+
+// Converts from degrees to radians.
+function toRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+// Converts from radians to degrees.
+function toDegrees(radians) {
+    return radians * 180 / Math.PI;
+}
+
+function notifyListeners(listener, target) {
+    if (listener !== null && listener) {
+        if (typeof listener === "function") {
+            listener(target, arguments.slice(2));
+        } else {
+            throw "Callback is not a function: " + (typeof listener === "undefined" ? "undefined" : _typeof(listener));
+        }
+    }
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Created by Leandro Luque on 08/06/2017.
  */
@@ -1200,7 +1295,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _defaultLookAndFeelFactory = __webpack_require__(49);
+var _defaultLookAndFeelFactory = __webpack_require__(51);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
@@ -1251,7 +1346,7 @@ var LookAndFeel = function () {
 exports.default = LookAndFeel;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1339,7 +1434,7 @@ var Rectangle = function (_GraphicalElement) {
 exports.default = Rectangle;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1375,7 +1470,7 @@ var _verticalGroupChildChangeListener = __webpack_require__(25);
 
 var _verticalGroupChildChangeListener2 = _interopRequireDefault(_verticalGroupChildChangeListener);
 
-var _groupStylingAttributes = __webpack_require__(11);
+var _groupStylingAttributes = __webpack_require__(12);
 
 var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
 
@@ -2260,7 +2355,7 @@ var VerticalGroup = function (_GraphicalElement) {
 exports.default = VerticalGroup;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2323,7 +2418,7 @@ var GroupStylingAttributes = function () {
 exports.default = GroupStylingAttributes;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2643,87 +2738,6 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
 }(_graphicalElement2.default);
 
 exports.default = BoxVerticesDecorator;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 03/07/2017.
- */
-
-
-
-/**
- * This method returns the angle in degrees between two lines.
- * @param ax1 The first line x1 coordinate.
- * @param ay1 The first line y1 coordinate.
- * @param ax2 The first line x2 coordinate.
- * @param ay2 The first line y2 coordinate.
- * @param bx1 The second line x1 coordinate.
- * @param by1 The second line y1 coordinate.
- * @param bx2 The second line x2 coordinate.
- * @param by2 The second line y2 coordinate.
- * @returns {number} The angle in degrees between the two lines.
- */
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.angleBetween2Lines = angleBetween2Lines;
-exports.angleBetween2Vectors = angleBetween2Vectors;
-exports.toRadians = toRadians;
-exports.toDegrees = toDegrees;
-function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
-    var angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
-    var angle2 = Math.atan2(by1 - by2, bx1 - bx2);
-    return toDegrees(Math.abs(angle1) - Math.abs(angle2));
-}
-
-/**
- * This method calculates the angle in degrees between two vectors with origin at (0, 0).
- * @param ax2 The x-coordinate of the second point (1st vector).
- * @param ay2 The y-coordinate of the second point (1st vector).
- * @param bx2 The x-coordinate of the second point (2nd vector).
- * @param by2 The y-coordinate of the second point (2nd vector).
- * @returns {number} The angle between the two vectors in degrees.
- */
-function angleBetween2Vectors(ax2, ay2, bx2, by2) {
-    // See http://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
-
-    // Convert y cartesian coordinate to y drawing coordinate.
-    ay2 *= -1;
-    by2 *= -1;
-
-    // Calculate the length of each vector.
-    var lengthV1 = Math.sqrt(ax2 * ax2 + ay2 * ay2);
-    var lengthV2 = Math.sqrt(bx2 * bx2 + by2 * by2);
-
-    // Calculate the scalar product of the two vectors.
-    var scalarProduct = ax2 * bx2 + ay2 * by2;
-
-    // Calculate the cosine of the angle between the two vectors.
-    var cosine = scalarProduct / (lengthV1 * lengthV2);
-
-    // Find the angle based on the arccosine.
-    var angle = Math.acos(cosine);
-    return toDegrees(angle);
-}
-
-// Converts from degrees to radians.
-function toRadians(degrees) {
-    return degrees * Math.PI / 180;
-}
-
-// Converts from radians to degrees.
-function toDegrees(radians) {
-    return radians * 180 / Math.PI;
-}
 
 /***/ }),
 /* 14 */
@@ -3965,15 +3979,15 @@ var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _groupStylingAttributes = __webpack_require__(11);
+var _groupStylingAttributes = __webpack_require__(12);
 
 var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
 
-var _verticalGroup = __webpack_require__(10);
+var _verticalGroup = __webpack_require__(11);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _util = __webpack_require__(13);
+var _util = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4115,7 +4129,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(13);
+var _util = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4475,6 +4489,373 @@ exports.default = BoxVerticesDecoratorDecoratedDimensionChangeListener;
 /* jshint -W097 */
 
 /**
+ * Created by Leandro Luque on 15/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(8);
+
+var _graphicalElement = __webpack_require__(1);
+
+var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * This class implements a layer where the graphic elements can be drawn.
+ */
+var Layer = function () {
+    function Layer(id, visible) {
+        _classCallCheck(this, Layer);
+
+        this._id = id;
+        this._visible = visible ? visible : true;
+
+        // Define a new object to store graphical elements.
+        // It works like a map, but with complexity on search of O(1).
+        // The key is the element name.
+        this._elements = {};
+
+        // Event listeners.
+        // Functions that receive the layer, the old, and the new value as arguments.
+        this._onChangeId = null;
+        this._onChangeVisibility = null;
+        // Functions that receive the layer and the changed element as arguments.
+        this._onAddElement = null;
+        this._onRemoveElement = null;
+    }
+
+    _createClass(Layer, [{
+        key: "add",
+        value: function add(element) {
+            // Argument is not a graphical element.
+            if (!(element instanceof _graphicalElement2.default)) {
+                throw "Layer elements must be graphical elements";
+            }
+            // If a graphical element with the same id does not exist in the layer, add it.
+            if (!(element.id in this._elements)) {
+                this._elements[element.id] = element;
+                this.notifyElementAddition(element);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "countElements",
+        value: function countElements() {
+            return Object.keys(this._elements).length;
+        }
+    }, {
+        key: "get",
+        value: function get(id) {
+            return this._elements[id];
+        }
+    }, {
+        key: "getIds",
+        value: function getIds() {
+            return Object.keys(this._elements);
+        }
+    }, {
+        key: "remove",
+        value: function remove(element) {
+            if (element in this._elements) {
+                delete this._elements[element.id];
+                this.notifyElementRemoval(element);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "notifyVisibilityChange",
+        value: function notifyVisibilityChange(oldValue, newValue) {
+            (0, _util.notifyListeners)(this.onChangeVisibility, this, oldValue, newValue);
+        }
+    }, {
+        key: "notifyIdChange",
+        value: function notifyIdChange(oldValue, newValue) {
+            (0, _util.notifyListeners)(this.onChangeId, this, oldValue, newValue);
+        }
+    }, {
+        key: "notifyElementAddition",
+        value: function notifyElementAddition(addedElement) {
+            (0, _util.notifyListeners)(this.onAddElement, this, addedElement);
+        }
+    }, {
+        key: "notifyElementRemoval",
+        value: function notifyElementRemoval(removedElement) {
+            (0, _util.notifyListeners)(this.onRemoveElement, this, removedElement);
+        }
+    }, {
+        key: "id",
+        get: function get() {
+            return this._id;
+        },
+        set: function set(value) {
+            if (value !== this.id) {
+                var oldValue = this.id;
+                this._id = value;
+                this.notifyIdChange(oldValue, value);
+            } else {
+                this._id = value;
+            }
+        }
+    }, {
+        key: "visible",
+        get: function get() {
+            return this._visible;
+        },
+        set: function set(value) {
+            // Argument is not a boolean.
+            if ((typeof value === "undefined" ? "undefined" : _typeof(value)) !== _typeof(true)) {
+                throw "Visibility value must be a boolean";
+            }
+            if (value !== this.visible) {
+                var oldValue = this.visible;
+                this._visible = value;
+                this.notifyVisibilityChange(oldValue, value);
+            } else {
+                this._visible = value;
+            }
+        }
+    }, {
+        key: "onChangeId",
+        get: function get() {
+            return this._onChangeId;
+        },
+        set: function set(value) {
+            // Argument is not a function.
+            if (typeof value !== "function") {
+                throw "Listener must be a function";
+            }
+            this._onChangeId = value;
+        }
+    }, {
+        key: "onChangeVisibility",
+        get: function get() {
+            return this._onChangeVisibility;
+        },
+        set: function set(value) {
+            // Argument is not a function.
+            if (typeof value !== "function") {
+                throw "Listener must be a function";
+            }
+            this._onChangeVisibility = value;
+        }
+    }, {
+        key: "onAddElement",
+        get: function get() {
+            return this._onAddElement;
+        },
+        set: function set(value) {
+            // Argument is not a function.
+            if (typeof value !== "function") {
+                throw "Listener must be a function";
+            }
+            this._onAddElement = value;
+        }
+    }, {
+        key: "onRemoveElement",
+        get: function get() {
+            return this._onRemoveElement;
+        },
+        set: function set(value) {
+            // Argument is not a function.
+            if (typeof value !== "function") {
+                throw "Listener must be a function";
+            }
+            this._onRemoveElement = value;
+        }
+    }]);
+
+    return Layer;
+}();
+
+exports.default = Layer;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 09/01/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(8);
+
+var _layer = __webpack_require__(29);
+
+var _layer2 = _interopRequireDefault(_layer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AreaDefaults = function () {
+    function AreaDefaults() {
+        _classCallCheck(this, AreaDefaults);
+
+        // Define a new object to store layers.
+        // It works like a map, but with complexity on search of O(1).
+        // The key is the layer id.
+        this._layers = {};
+        // Array of layers order.
+        this._order = [];
+
+        // Id generators.
+        this._elementIdCount = 1;
+        this._layerIdCount = 1;
+
+        // Event listeners.
+        // Functions that receive the area and the changed layer as arguments.
+        this._onAddLayer = null;
+        this._onRemoveLayer = null;
+
+        // Create a default layer that will be used if the user does not create a new one.
+        this.add(new _layer2.default(this.generateLayerId()));
+    }
+
+    _createClass(AreaDefaults, [{
+        key: "add",
+        value: function add(layer) {
+            // Argument is not a layer.
+            if (!(layer instanceof _layer2.default)) {
+                throw "Area elements must be layers";
+            }
+            // If a layer with the same id does not exist in the layer, add it.
+            if (!(layer.id in this._layers)) {
+                this._layers[layer.id] = layer;
+                this._order.push(layer);
+                this.notifyLayerAddition(layer);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "countLayers",
+        value: function countLayers() {
+            return Object.keys(this._layers).length;
+        }
+    }, {
+        key: "get",
+        value: function get(id) {
+            return this._layers[id];
+        }
+    }, {
+        key: "getIds",
+        value: function getIds() {
+            return Object.keys(this._layers);
+        }
+    }, {
+        key: "remove",
+        value: function remove(layer) {
+            if (layer in this._layers) {
+                delete this._layers[layer.id];
+                this._order.splice(this._order.indexOf(layer), 1);
+                this.notifyLayerRemoval(layer);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "notifyLayerAddition",
+        value: function notifyLayerAddition(addedLayer) {
+            (0, _util.notifyListeners)(this.onAddLayer, this, addedLayer);
+        }
+    }, {
+        key: "notifyLayerRemoval",
+        value: function notifyLayerRemoval(removedLayer) {
+            (0, _util.notifyListeners)(this.onRemoveLayer, this, removedLayer);
+        }
+    }, {
+        key: "generateElementId",
+        value: function generateElementId() {
+            return "e_" + this._elementIdCount++;
+        }
+    }, {
+        key: "generateLayerId",
+        value: function generateLayerId() {
+            return "l_" + this._layerIdCount++;
+        }
+    }, {
+        key: "layers",
+        get: function get() {
+            return this._layers;
+        }
+    }, {
+        key: "onAddLayer",
+        get: function get() {
+            return this._onAddLayer;
+        },
+        set: function set(value) {
+            this._onAddLayer = value;
+        }
+    }, {
+        key: "onRemoveLayer",
+        get: function get() {
+            return this._onRemoveLayer;
+        },
+        set: function set(value) {
+            this._onRemoveLayer = value;
+        }
+    }, {
+        key: "idCount",
+        get: function get() {
+            return this._elementIdCount;
+        },
+        set: function set(value) {
+            this._elementIdCount = value;
+        }
+    }, {
+        key: "order",
+        get: function get() {
+            return this._order;
+        }
+    }, {
+        key: "defaultLayer",
+        get: function get() {
+            return this._order[this._order.length - 1];
+        }
+    }]);
+
+    return AreaDefaults;
+}();
+
+exports.default = AreaDefaults;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
  * Created by Leandro Luque on 08/06/2017.
  */
 
@@ -4511,7 +4892,7 @@ var RectanglePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = RectanglePositionChangeListener;
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4586,7 +4967,7 @@ var DiamondPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = DiamondPositionChangeListener;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4645,7 +5026,7 @@ var EllipsePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = EllipsePositionChangeListener;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4690,7 +5071,7 @@ var ImagePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = ImagePositionChangeListener;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4750,7 +5131,7 @@ var TextPositionChangeListener = function (_GeneralPositionChang) {
 exports.default = TextPositionChangeListener;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4809,7 +5190,7 @@ var LinePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = LinePositionChangeListener;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4870,7 +5251,7 @@ var PolyLinePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = PolyLinePositionChangeListener;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4929,7 +5310,7 @@ var CirclePositionChangeListener = function (_GeneralPositionChang) {
 exports.default = CirclePositionChangeListener;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4974,7 +5355,7 @@ var RectangleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = RectangleDimensionChangeListener;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5049,7 +5430,7 @@ var DiamondDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = DiamondDimensionChangeListener;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5110,7 +5491,7 @@ var EllipseDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = EllipseDimensionChangeListener;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5155,7 +5536,7 @@ var ImageDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = ImageDimensionChangeListener;
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5200,7 +5581,7 @@ var TextDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = TextDimensionChangeListener;
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5259,7 +5640,7 @@ var CircleDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = CircleDimensionChangeListener;
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5322,7 +5703,7 @@ var LineDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = LineDimensionChangeListener;
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5393,7 +5774,7 @@ var PolyLineDimensionChangeListener = function (_GeneralDimensionChan) {
 exports.default = PolyLineDimensionChangeListener;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5438,7 +5819,7 @@ var VGroupRotationChangeListener = function (_GeneralRotationChang) {
 exports.default = VGroupRotationChangeListener;
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5483,7 +5864,7 @@ var LinearGroupRotationChangeListener = function (_GeneralRotationChang) {
 exports.default = LinearGroupRotationChangeListener;
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5545,7 +5926,7 @@ var TextChangeListener = function (_ChangeListener) {
 exports.default = TextChangeListener;
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5602,7 +5983,7 @@ var FontChangeListener = function (_ChangeListener) {
 exports.default = FontChangeListener;
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5626,7 +6007,7 @@ var _circle = __webpack_require__(14);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _defaultCircleDrawer = __webpack_require__(50);
+var _defaultCircleDrawer = __webpack_require__(52);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
@@ -5634,15 +6015,15 @@ var _ellipse = __webpack_require__(15);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _defaultEllipseDrawer = __webpack_require__(51);
+var _defaultEllipseDrawer = __webpack_require__(53);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
-var _rectangle = __webpack_require__(9);
+var _rectangle = __webpack_require__(10);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _defaultRectangleDrawer = __webpack_require__(52);
+var _defaultRectangleDrawer = __webpack_require__(54);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
@@ -5650,7 +6031,7 @@ var _diamond = __webpack_require__(16);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _defaultDiamondDrawer = __webpack_require__(53);
+var _defaultDiamondDrawer = __webpack_require__(55);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
@@ -5658,15 +6039,15 @@ var _text = __webpack_require__(17);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _defaultTextDrawer = __webpack_require__(54);
+var _defaultTextDrawer = __webpack_require__(56);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
-var _verticalGroup = __webpack_require__(10);
+var _verticalGroup = __webpack_require__(11);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(55);
+var _defaultVerticalGroupDrawer = __webpack_require__(57);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
@@ -5674,7 +6055,7 @@ var _linearGroup = __webpack_require__(22);
 
 var _linearGroup2 = _interopRequireDefault(_linearGroup);
 
-var _defaultLinearGroupDrawer = __webpack_require__(56);
+var _defaultLinearGroupDrawer = __webpack_require__(58);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
@@ -5682,7 +6063,7 @@ var _line = __webpack_require__(19);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _defaultLineDrawer = __webpack_require__(57);
+var _defaultLineDrawer = __webpack_require__(59);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
@@ -5690,11 +6071,11 @@ var _image = __webpack_require__(21);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _defaultImageDrawer = __webpack_require__(58);
+var _defaultImageDrawer = __webpack_require__(60);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
-var _defaultPolylineDrawer = __webpack_require__(59);
+var _defaultPolylineDrawer = __webpack_require__(61);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
@@ -5702,11 +6083,11 @@ var _polyline = __webpack_require__(20);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
-var _boxVerticesDecorator = __webpack_require__(12);
+var _boxVerticesDecorator = __webpack_require__(13);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
-var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(60);
+var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(62);
 
 var _defaultBoxVerticesDecoratorDrawer2 = _interopRequireDefault(_defaultBoxVerticesDecoratorDrawer);
 
@@ -5757,7 +6138,7 @@ var DefaultLookAndFeelFactory = function () {
 exports.default = DefaultLookAndFeelFactory;
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5781,11 +6162,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _circleDimensionChangeListener = __webpack_require__(42);
+var _circleDimensionChangeListener = __webpack_require__(44);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(36);
+var _circlePositionChangeListener = __webpack_require__(38);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
@@ -5837,7 +6218,7 @@ var DefaultCircleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultCircleDrawer;
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5861,11 +6242,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _ellipseDimensionChangeListener = __webpack_require__(39);
+var _ellipseDimensionChangeListener = __webpack_require__(41);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(31);
+var _ellipsePositionChangeListener = __webpack_require__(33);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
@@ -5918,7 +6299,7 @@ var DefaultEllipseDrawer = function (_DefaultDrawer) {
 exports.default = DefaultEllipseDrawer;
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5942,11 +6323,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _rectangleDimensionChangeListener = __webpack_require__(37);
+var _rectangleDimensionChangeListener = __webpack_require__(39);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(29);
+var _rectanglePositionChangeListener = __webpack_require__(31);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
@@ -5999,7 +6380,7 @@ var DefaultRectangleDrawer = function (_DefaultDrawer) {
 exports.default = DefaultRectangleDrawer;
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6023,11 +6404,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _diamondDimensionChangeListener = __webpack_require__(38);
+var _diamondDimensionChangeListener = __webpack_require__(40);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(30);
+var _diamondPositionChangeListener = __webpack_require__(32);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
@@ -6088,7 +6469,7 @@ var DefaultDiamondDrawer = function (_DefaultDrawer) {
 exports.default = DefaultDiamondDrawer;
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6112,19 +6493,19 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _textDimensionChangeListener = __webpack_require__(41);
+var _textDimensionChangeListener = __webpack_require__(43);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(33);
+var _textPositionChangeListener = __webpack_require__(35);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _textChangeListener = __webpack_require__(47);
+var _textChangeListener = __webpack_require__(49);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(48);
+var _fontChangeListener = __webpack_require__(50);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
@@ -6195,7 +6576,7 @@ var DefaultTextDrawer = function (_DefaultDrawer) {
 exports.default = DefaultTextDrawer;
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6219,11 +6600,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lookAndFeel = __webpack_require__(8);
+var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _vgroupRotationChangeListener = __webpack_require__(45);
+var _vgroupRotationChangeListener = __webpack_require__(47);
 
 var _vgroupRotationChangeListener2 = _interopRequireDefault(_vgroupRotationChangeListener);
 
@@ -6287,7 +6668,7 @@ var DefaultVerticalGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultVerticalGroupDrawer;
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6311,11 +6692,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lookAndFeel = __webpack_require__(8);
+var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _linearGroupRotationChangeListener = __webpack_require__(46);
+var _linearGroupRotationChangeListener = __webpack_require__(48);
 
 var _linearGroupRotationChangeListener2 = _interopRequireDefault(_linearGroupRotationChangeListener);
 
@@ -6381,7 +6762,7 @@ var DefaultLinearGroupDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLinearGroupDrawer;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6405,11 +6786,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lineDimensionChangeListener = __webpack_require__(43);
+var _lineDimensionChangeListener = __webpack_require__(45);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(34);
+var _linePositionChangeListener = __webpack_require__(36);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
@@ -6464,7 +6845,7 @@ var DefaultLineDrawer = function (_DefaultDrawer) {
 exports.default = DefaultLineDrawer;
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6492,11 +6873,11 @@ var _styleChangeListener = __webpack_require__(7);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(32);
+var _imagePositionChangeListener = __webpack_require__(34);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
-var _imageDimensionChangeListener = __webpack_require__(40);
+var _imageDimensionChangeListener = __webpack_require__(42);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
@@ -6546,7 +6927,7 @@ var DefaultImageDrawer = function (_DefaultDrawer) {
 exports.default = DefaultImageDrawer;
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6570,11 +6951,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _polylineDimensionChangeListener = __webpack_require__(44);
+var _polylineDimensionChangeListener = __webpack_require__(46);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(35);
+var _polylinePositionChangeListener = __webpack_require__(37);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
@@ -6637,7 +7018,7 @@ var DefaultPolyLineDrawer = function (_DefaultDrawer) {
 exports.default = DefaultPolyLineDrawer;
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6661,11 +7042,11 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lookAndFeel = __webpack_require__(8);
+var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _rectangle = __webpack_require__(9);
+var _rectangle = __webpack_require__(10);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
@@ -6673,7 +7054,7 @@ var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _boxVerticesDecorator = __webpack_require__(12);
+var _boxVerticesDecorator = __webpack_require__(13);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
@@ -6681,7 +7062,7 @@ var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _boxVerticesDecoratorChangeListener = __webpack_require__(61);
+var _boxVerticesDecoratorChangeListener = __webpack_require__(63);
 
 var _boxVerticesDecoratorChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorChangeListener);
 
@@ -6848,7 +7229,7 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
 exports.default = DefaultBoxVerticesDecoratorDrawer;
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6902,7 +7283,7 @@ var BoxVerticesDecoratorChangeListener = function (_ChangeListener) {
 exports.default = BoxVerticesDecoratorChangeListener;
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6932,7 +7313,7 @@ var _ellipse = __webpack_require__(15);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _rectangle = __webpack_require__(9);
+var _rectangle = __webpack_require__(10);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
@@ -6948,7 +7329,7 @@ var _image2 = __webpack_require__(21);
 
 var _image3 = _interopRequireDefault(_image2);
 
-var _verticalGroup = __webpack_require__(10);
+var _verticalGroup = __webpack_require__(11);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
@@ -6960,11 +7341,11 @@ var _line = __webpack_require__(19);
 
 var _line2 = _interopRequireDefault(_line);
 
-var _lookAndFeel = __webpack_require__(8);
+var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _groupStylingAttributes = __webpack_require__(11);
+var _groupStylingAttributes = __webpack_require__(12);
 
 var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
 
@@ -6980,7 +7361,7 @@ var _polyline = __webpack_require__(20);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
-var _boxVerticesDecorator = __webpack_require__(12);
+var _boxVerticesDecorator = __webpack_require__(13);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
@@ -6988,23 +7369,34 @@ var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
+var _areaDefaults = __webpack_require__(30);
+
+var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var SVGArea = function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SVGArea = function (_AreaDefaults) {
+    _inherits(SVGArea, _AreaDefaults);
+
     function SVGArea() {
         var svgSelector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#svg";
 
         _classCallCheck(this, SVGArea);
 
-        this._idCount = 1;
-        this._svg = document.querySelector(svgSelector);
-        this._namespace = "http://www.w3.org/2000/svg";
-        this._elements = [];
+        var _this = _possibleConstructorReturn(this, (SVGArea.__proto__ || Object.getPrototypeOf(SVGArea)).call(this));
+
+        _this._svg = document.querySelector(svgSelector);
+        _this._namespace = "http://www.w3.org/2000/svg";
+        _this._elements = [];
 
         // Avoid text selection when dragging and dropping on the area.
-        Object.assign(this._svg.style, {
+        Object.assign(_this._svg.style, {
             'cursor': 'default',
             '-webkit-user-select': 'none',
             '-moz-user-select': 'none',
@@ -7013,17 +7405,18 @@ var SVGArea = function () {
         });
 
         // Events.
-        this._onClick = null;
-        this._onDblClick = null;
-        this._onMouseDown = null;
-        this._onMouseMove = null;
-        this._onMouseUp = null;
+        _this._onClick = null;
+        _this._onDblClick = null;
+        _this._onMouseDown = null;
+        _this._onMouseMove = null;
+        _this._onMouseUp = null;
 
-        this._svg.onclick = this.fireOnClick.bind(this);
-        this._svg.ondblclick = this.fireOnDblClick.bind(this);
-        this._svg.onmousedown = this.fireOnMouseDown.bind(this);
-        this._svg.onmousemove = this.fireOnMouseMove.bind(this);
-        this._svg.onmouseup = this.fireOnMouseUp.bind(this);
+        _this._svg.onclick = _this.fireOnClick.bind(_this);
+        _this._svg.ondblclick = _this.fireOnDblClick.bind(_this);
+        _this._svg.onmousedown = _this.fireOnMouseDown.bind(_this);
+        _this._svg.onmousemove = _this.fireOnMouseMove.bind(_this);
+        _this._svg.onmouseup = _this.fireOnMouseUp.bind(_this);
+        return _this;
     }
 
     _createClass(SVGArea, [{
@@ -7085,11 +7478,6 @@ var SVGArea = function () {
             }
         }
     }, {
-        key: 'generateId',
-        value: function generateId() {
-            return "element_" + this._idCount++;
-        }
-    }, {
         key: 'addElement',
         value: function addElement(element) {
             this._elements.push(element);
@@ -7116,7 +7504,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new circle and set its id.
             var newCircle = new _circle2.default(centerX, centerY, radius);
-            newCircle.id = this.generateId();
+            newCircle.id = this.generateElementId();
             //console.log(newCircle.id);
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7142,7 +7530,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new ellipse and set its id.
             var newEllipse = new _ellipse2.default(centerX, centerY, radiusX, radiusY);
-            newEllipse.id = this.generateId();
+            newEllipse.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newEllipse);
@@ -7167,7 +7555,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new rectangle and set its id.
             var newRectangle = new _rectangle2.default(x1, y1, x2, y2);
-            newRectangle.id = this.generateId();
+            newRectangle.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newRectangle);
@@ -7194,7 +7582,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new diamond and set its id.
             var newDiamond = new _diamond2.default(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
-            newDiamond.id = this.generateId();
+            newDiamond.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newDiamond);
@@ -7221,7 +7609,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new text and set its id.
             var newText = new _text3.default(x, y, "", undefined, fontStylingAttributes);
-            newText.id = this.generateId();
+            newText.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newText);
@@ -7250,7 +7638,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new image and set its id.
             var newImage = new _image3.default(x, y, width, height, _image);
-            newImage.id = this.generateId();
+            newImage.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newImage);
@@ -7274,7 +7662,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new vertical group and set its id.
             var newVGroup = new _verticalGroup2.default(x, y, undefined, groupStyling);
-            newVGroup.id = this.generateId();
+            newVGroup.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newVGroup);
@@ -7299,7 +7687,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new linear group and set its id.
             var newLinearGroup = new _linearGroup2.default(x1, y1, x2, y2, undefined, new _groupStylingAttributes2.default(0, 0));
-            newLinearGroup.id = this.generateId();
+            newLinearGroup.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newLinearGroup);
@@ -7325,7 +7713,7 @@ var SVGArea = function () {
             //*****************************
             // Create a new line and set its id.
             var newLine = new _line2.default(x1, y1, x2, y2, stylingAttributes);
-            newLine.id = this.generateId();
+            newLine.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newLine);
@@ -7348,7 +7736,7 @@ var SVGArea = function () {
             // Create a new line and set its id.
             var coordinates = Array.from(arguments).slice(1);
             var newPolyline = new _polyline2.default(stylingAttributes, coordinates);
-            newPolyline.id = this.generateId();
+            newPolyline.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newPolyline);
@@ -7391,14 +7779,6 @@ var SVGArea = function () {
             drawn.onmousedown = model.fireOnMouseDown.bind(model);
             drawn.onmousemove = model.fireOnMouseMove.bind(model);
             drawn.onmouseup = model.fireOnMouseUp.bind(model);
-        }
-    }, {
-        key: 'idCount',
-        get: function get() {
-            return this._idCount;
-        },
-        set: function set(value) {
-            this._idCount = value;
         }
     }, {
         key: 'svg',
@@ -7467,12 +7847,12 @@ var SVGArea = function () {
     }]);
 
     return SVGArea;
-}();
+}(_areaDefaults2.default);
 
 exports.default = SVGArea;
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7483,7 +7863,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GraphicalElement = exports.BoxVerticesDecorator = exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
 
-var _util = __webpack_require__(13);
+var _util = __webpack_require__(8);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -7507,7 +7887,7 @@ var _ellipse = __webpack_require__(15);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _rectangle = __webpack_require__(9);
+var _rectangle = __webpack_require__(10);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
@@ -7531,7 +7911,7 @@ var _image = __webpack_require__(21);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _verticalGroup = __webpack_require__(10);
+var _verticalGroup = __webpack_require__(11);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
@@ -7551,7 +7931,7 @@ var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _groupStylingAttributes = __webpack_require__(11);
+var _groupStylingAttributes = __webpack_require__(12);
 
 var _groupStylingAttributes2 = _interopRequireDefault(_groupStylingAttributes);
 
@@ -7559,11 +7939,11 @@ var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
 
-var _graphicalElementDecorator = __webpack_require__(64);
+var _graphicalElementDecorator = __webpack_require__(66);
 
 var _graphicalElementDecorator2 = _interopRequireDefault(_graphicalElementDecorator);
 
-var _boxVerticesDecorator = __webpack_require__(12);
+var _boxVerticesDecorator = __webpack_require__(13);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
@@ -7579,39 +7959,47 @@ var _boxVerticesDecoratorDecoratedDimensionChangeListener = __webpack_require__(
 
 var _boxVerticesDecoratorDecoratedDimensionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedDimensionChangeListener);
 
+var _layer = __webpack_require__(29);
+
+var _layer2 = _interopRequireDefault(_layer);
+
+var _areaDefaults = __webpack_require__(30);
+
+var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
+
 var _generalPositionChangeListener = __webpack_require__(5);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _rectanglePositionChangeListener = __webpack_require__(29);
+var _rectanglePositionChangeListener = __webpack_require__(31);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
-var _diamondPositionChangeListener = __webpack_require__(30);
+var _diamondPositionChangeListener = __webpack_require__(32);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
-var _ellipsePositionChangeListener = __webpack_require__(31);
+var _ellipsePositionChangeListener = __webpack_require__(33);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
-var _imagePositionChangeListener = __webpack_require__(32);
+var _imagePositionChangeListener = __webpack_require__(34);
 
 var _imagePositionChangeListener2 = _interopRequireDefault(_imagePositionChangeListener);
 
-var _textPositionChangeListener = __webpack_require__(33);
+var _textPositionChangeListener = __webpack_require__(35);
 
 var _textPositionChangeListener2 = _interopRequireDefault(_textPositionChangeListener);
 
-var _linePositionChangeListener = __webpack_require__(34);
+var _linePositionChangeListener = __webpack_require__(36);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _polylinePositionChangeListener = __webpack_require__(35);
+var _polylinePositionChangeListener = __webpack_require__(37);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _circlePositionChangeListener = __webpack_require__(36);
+var _circlePositionChangeListener = __webpack_require__(38);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
@@ -7619,35 +8007,35 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _rectangleDimensionChangeListener = __webpack_require__(37);
+var _rectangleDimensionChangeListener = __webpack_require__(39);
 
 var _rectangleDimensionChangeListener2 = _interopRequireDefault(_rectangleDimensionChangeListener);
 
-var _diamondDimensionChangeListener = __webpack_require__(38);
+var _diamondDimensionChangeListener = __webpack_require__(40);
 
 var _diamondDimensionChangeListener2 = _interopRequireDefault(_diamondDimensionChangeListener);
 
-var _ellipseDimensionChangeListener = __webpack_require__(39);
+var _ellipseDimensionChangeListener = __webpack_require__(41);
 
 var _ellipseDimensionChangeListener2 = _interopRequireDefault(_ellipseDimensionChangeListener);
 
-var _imageDimensionChangeListener = __webpack_require__(40);
+var _imageDimensionChangeListener = __webpack_require__(42);
 
 var _imageDimensionChangeListener2 = _interopRequireDefault(_imageDimensionChangeListener);
 
-var _textDimensionChangeListener = __webpack_require__(41);
+var _textDimensionChangeListener = __webpack_require__(43);
 
 var _textDimensionChangeListener2 = _interopRequireDefault(_textDimensionChangeListener);
 
-var _circleDimensionChangeListener = __webpack_require__(42);
+var _circleDimensionChangeListener = __webpack_require__(44);
 
 var _circleDimensionChangeListener2 = _interopRequireDefault(_circleDimensionChangeListener);
 
-var _lineDimensionChangeListener = __webpack_require__(43);
+var _lineDimensionChangeListener = __webpack_require__(45);
 
 var _lineDimensionChangeListener2 = _interopRequireDefault(_lineDimensionChangeListener);
 
-var _polylineDimensionChangeListener = __webpack_require__(44);
+var _polylineDimensionChangeListener = __webpack_require__(46);
 
 var _polylineDimensionChangeListener2 = _interopRequireDefault(_polylineDimensionChangeListener);
 
@@ -7655,19 +8043,19 @@ var _generalRotationChangeListener = __webpack_require__(23);
 
 var _generalRotationChangeListener2 = _interopRequireDefault(_generalRotationChangeListener);
 
-var _vgroupRotationChangeListener = __webpack_require__(45);
+var _vgroupRotationChangeListener = __webpack_require__(47);
 
 var _vgroupRotationChangeListener2 = _interopRequireDefault(_vgroupRotationChangeListener);
 
-var _linearGroupRotationChangeListener = __webpack_require__(46);
+var _linearGroupRotationChangeListener = __webpack_require__(48);
 
 var _linearGroupRotationChangeListener2 = _interopRequireDefault(_linearGroupRotationChangeListener);
 
-var _textChangeListener = __webpack_require__(47);
+var _textChangeListener = __webpack_require__(49);
 
 var _textChangeListener2 = _interopRequireDefault(_textChangeListener);
 
-var _fontChangeListener = __webpack_require__(48);
+var _fontChangeListener = __webpack_require__(50);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
@@ -7679,67 +8067,67 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _lookAndFeel = __webpack_require__(8);
+var _lookAndFeel = __webpack_require__(9);
 
 var _lookAndFeel2 = _interopRequireDefault(_lookAndFeel);
 
-var _defaultLookAndFeelFactory = __webpack_require__(49);
+var _defaultLookAndFeelFactory = __webpack_require__(51);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
-var _defaultCircleDrawer = __webpack_require__(50);
+var _defaultCircleDrawer = __webpack_require__(52);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
-var _defaultEllipseDrawer = __webpack_require__(51);
+var _defaultEllipseDrawer = __webpack_require__(53);
 
 var _defaultEllipseDrawer2 = _interopRequireDefault(_defaultEllipseDrawer);
 
-var _defaultRectangleDrawer = __webpack_require__(52);
+var _defaultRectangleDrawer = __webpack_require__(54);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
-var _defaultDiamondDrawer = __webpack_require__(53);
+var _defaultDiamondDrawer = __webpack_require__(55);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
-var _defaultTextDrawer = __webpack_require__(54);
+var _defaultTextDrawer = __webpack_require__(56);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
-var _defaultLineDrawer = __webpack_require__(57);
+var _defaultLineDrawer = __webpack_require__(59);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
-var _defaultPolylineDrawer = __webpack_require__(59);
+var _defaultPolylineDrawer = __webpack_require__(61);
 
 var _defaultPolylineDrawer2 = _interopRequireDefault(_defaultPolylineDrawer);
 
-var _defaultImageDrawer = __webpack_require__(58);
+var _defaultImageDrawer = __webpack_require__(60);
 
 var _defaultImageDrawer2 = _interopRequireDefault(_defaultImageDrawer);
 
-var _defaultVerticalGroupDrawer = __webpack_require__(55);
+var _defaultVerticalGroupDrawer = __webpack_require__(57);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _defaultLinearGroupDrawer = __webpack_require__(56);
+var _defaultLinearGroupDrawer = __webpack_require__(58);
 
 var _defaultLinearGroupDrawer2 = _interopRequireDefault(_defaultLinearGroupDrawer);
 
-var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(60);
+var _defaultBoxVerticesDecoratorDrawer = __webpack_require__(62);
 
 var _defaultBoxVerticesDecoratorDrawer2 = _interopRequireDefault(_defaultBoxVerticesDecoratorDrawer);
 
-var _boxVerticesDecoratorChangeListener = __webpack_require__(61);
+var _boxVerticesDecoratorChangeListener = __webpack_require__(63);
 
 var _boxVerticesDecoratorChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorChangeListener);
 
-var _svgArea = __webpack_require__(62);
+var _svgArea = __webpack_require__(64);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 
-var _area = __webpack_require__(65);
+var _area = __webpack_require__(67);
 
 var _area2 = _interopRequireDefault(_area);
 
@@ -7757,14 +8145,11 @@ exports.BoxVerticesDecorator = _boxVerticesDecorator2.default;
 exports.GraphicalElement = _graphicalElement2.default;
 // export { A, B, C, D, E, ... }
 
-
-// General.
-
 // SVG implementation.
 // Util.
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8116,7 +8501,7 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
 exports.default = GraphicalElementDecorator;
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8136,7 +8521,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _svgArea = __webpack_require__(62);
+var _svgArea = __webpack_require__(64);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 

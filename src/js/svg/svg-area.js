@@ -24,11 +24,13 @@ import StylingAttributes from '../core/styling-attributes.js';
 import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
 import ChangeListener from "../core/change-listener";
+import AreaDefaults from "../core/area-defaults";
 
-export default class SVGArea {
+export default class SVGArea extends AreaDefaults {
 
     constructor(svgSelector = "#svg") {
-        this._idCount = 1;
+        super();
+
         this._svg = document.querySelector(svgSelector);
         this._namespace = "http://www.w3.org/2000/svg";
         this._elements = [];
@@ -54,14 +56,6 @@ export default class SVGArea {
         this._svg.onmousedown = this.fireOnMouseDown.bind(this);
         this._svg.onmousemove = this.fireOnMouseMove.bind(this);
         this._svg.onmouseup = this.fireOnMouseUp.bind(this);
-    }
-
-    get idCount() {
-        return this._idCount;
-    }
-
-    set idCount(value) {
-        this._idCount = value;
     }
 
     get svg() {
@@ -179,18 +173,14 @@ export default class SVGArea {
         }
     }
 
-    generateId() {
-        return "element_" + (this._idCount++);
-    }
-
     addElement(element) {
         this._elements.push(element);
         return element;
     }
 
     remove(element) {
-        for(let i = 0; i < this._elements.length; i++) {
-            if(this._elements[i] === element) {
+        for (let i = 0; i < this._elements.length; i++) {
+            if (this._elements[i] === element) {
                 this._elements.splice(i, 1);
                 break;
             }
@@ -202,7 +192,7 @@ export default class SVGArea {
         //*****************************
         // Create a new circle and set its id.
         let newCircle = new Circle(centerX, centerY, radius);
-        newCircle.id = this.generateId();
+        newCircle.id = this.generateElementId();
         //console.log(newCircle.id);
 
         let lookAndFeel = new LookAndFeel();
@@ -222,7 +212,7 @@ export default class SVGArea {
         //*****************************
         // Create a new ellipse and set its id.
         let newEllipse = new Ellipse(centerX, centerY, radiusX, radiusY);
-        newEllipse.id = this.generateId();
+        newEllipse.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newEllipse);
@@ -241,7 +231,7 @@ export default class SVGArea {
         //*****************************
         // Create a new rectangle and set its id.
         let newRectangle = new Rectangle(x1, y1, x2, y2);
-        newRectangle.id = this.generateId();
+        newRectangle.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newRectangle);
@@ -260,7 +250,7 @@ export default class SVGArea {
         //*****************************
         // Create a new diamond and set its id.
         let newDiamond = new Diamond(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
-        newDiamond.id = this.generateId();
+        newDiamond.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newDiamond);
@@ -279,7 +269,7 @@ export default class SVGArea {
         //*****************************
         // Create a new text and set its id.
         let newText = new Text(x, y, "", undefined, fontStylingAttributes);
-        newText.id = this.generateId();
+        newText.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newText);
@@ -300,7 +290,7 @@ export default class SVGArea {
         //*****************************
         // Create a new image and set its id.
         let newImage = new Image(x, y, width, height, image);
-        newImage.id = this.generateId();
+        newImage.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newImage);
@@ -319,7 +309,7 @@ export default class SVGArea {
         //*****************************
         // Create a new vertical group and set its id.
         let newVGroup = new VerticalGroup(x, y, undefined, groupStyling);
-        newVGroup.id = this.generateId();
+        newVGroup.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newVGroup);
@@ -338,7 +328,7 @@ export default class SVGArea {
         //*****************************
         // Create a new linear group and set its id.
         let newLinearGroup = new LinearGroup(x1, y1, x2, y2, undefined, new GroupStylingAttributes(0, 0));
-        newLinearGroup.id = this.generateId();
+        newLinearGroup.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newLinearGroup);
@@ -357,7 +347,7 @@ export default class SVGArea {
         //*****************************
         // Create a new line and set its id.
         let newLine = new Line(x1, y1, x2, y2, stylingAttributes);
-        newLine.id = this.generateId();
+        newLine.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newLine);
@@ -377,7 +367,7 @@ export default class SVGArea {
         // Create a new line and set its id.
         let coordinates = Array.from(arguments).slice(1);
         let newPolyline = new PolyLine(stylingAttributes, coordinates);
-        newPolyline.id = this.generateId();
+        newPolyline.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
         let drawer = lookAndFeel.getDrawerFor(newPolyline);

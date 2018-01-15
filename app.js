@@ -24,6 +24,8 @@ import BoxVerticesDecorator from "./src/js/core/box-vertices-decorator.js";
 import BoxVerticesDecoratorDecoratedPositionChangeListener from "./src/js/core/box-vertices-decorator-decorated-position-change-listener.js";
 import BoxVerticesDecoratorDecoratedRotationChangeListener from "./src/js/core/box-vertices-decorator-decorated-rotation-change-listener.js";
 import BoxVerticesDecoratorDecoratedDimensionChangeListener from "./src/js/core/box-vertices-decorator-decorated-dimension-change-listener.js";
+import Layer from "./src/js/core/layer";
+import AreaDefaults from './src/js/core/area-defaults';
 // SVG implementation.
 import GeneralPositionChangeListener from "./src/js/svg/general-position-change-listener.js";
 import RectanglePositionChangeListener from "./src/js/svg/rectangle-position-change-listener.js";
@@ -66,8 +68,7 @@ import DefaultBoxVerticesDecoratorDrawer from "./src/js/svg/default-box-vertices
 import BoxVerticesDecoratorChangeListener from "./src/js/svg/box-vertices-decorator-change-listener.js";
 import SVGArea from './src/js/svg/svg-area.js';
 
-// General.
-import Area from './src/js/core/area.js';
+import Area from './src/js/core/area';
 
 export { StylingAttributes, FontStylingAttributes, GroupStylingAttributes, VerticalGroup, SVGArea, Area, Ellipse, BoxVerticesDecorator, GraphicalElement }
 // export { A, B, C, D, E, ... }
