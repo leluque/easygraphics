@@ -18,9 +18,10 @@
   "scripts": {
     "lint": "jshint src",
     "prepareFolders": "mkdirp build/js",
+	"test": "mocha --compilers js:babel-core/register ./test/**/*.spec.js",
     "build:js": "webpack --progress --colors --watch",
-    "copyTests": "cpx test/** build",
-    "start": "npm run lint && npm run prepareFolders && npm run copyTests && npm run build:js",
+    "copyTests": "cpx run/** build",
+    "start": "npm run lint && npm run test && npm run prepareFolders && npm run copyTests && npm run build:js",
     "patchPublish": "npm version patch && npm publish"
   },
   "keywords": [
@@ -45,6 +46,7 @@
     "eslint": "^4.15.0",
     "eslint-loader": "^1.9.0",
     "jshint": "^2.9.5",
+    "mocha": "^5.0.0",
     "webpack": "^3.10.0"
   }
 }

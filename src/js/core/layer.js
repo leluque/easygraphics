@@ -114,7 +114,7 @@ export default class Layer {
         this._onRemoveElement = value;
     }
 
-    add(element) {
+    addElement(element) {
         // Argument is not a graphical element.
         if (!(element instanceof GraphicalElement)) {
             throw "Layer elements must be graphical elements";
@@ -140,7 +140,7 @@ export default class Layer {
         return Object.keys(this._elements);
     }
 
-    remove(element) {
+    removeElement(element) {
         if (element in this._elements) {
             delete this._elements[element.id];
             this.notifyElementRemoval(element);

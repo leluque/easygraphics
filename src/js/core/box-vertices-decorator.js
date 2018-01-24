@@ -9,6 +9,7 @@
 'use strict';
 
 import GraphicalElement from "./graphical-element";
+import {notifyListeners} from "./util";
 
 export default class BoxVerticesDecorator extends GraphicalElement {
 
@@ -32,7 +33,9 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this._bottomLeftVertex = null;
         this._bottomRightVertex = null;
 
-        // Events.
+        // Events' callback functions for vertices.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         this._onVertexClick = null;
         this._onVertexDblClick = null;
         this._onVertexMouseDown = null;
@@ -210,54 +213,24 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this._bottomRightVertex = value;
     }
 
-// Events.
-    fireOnVertexClick(x, y, where) {
-        if (this._onVertexClick !== null && this._onVertexClick) {
-            if (typeof(this._onVertexClick) === "function") {
-                this._onVertexClick(event.clientX, event.clientY, where, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onVertexClick);
-            }
-        }
+    // Events.
+    dispathOnVertexClick(target, x, y, event) {
+        notifyListeners(this._onVertexClick, target, x, y, event);
     }
 
-    fireOnVertexDblClick(x, y, where) {
-        if (this._onVertexDblClick !== null && this._onVertexDblClick) {
-            if (typeof(this._onVertexDblClick) === "function") {
-                this._onVertexDblClick(event.clientX, event.clientY, where, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onVertexDblClick);
-            }
-        }
+    dispathOnVertexDblClick(target, x, y, event) {
+        notifyListeners(this._onVertexDblClick, target, x, y, event);
     }
 
-    fireOnVertexMouseDown(x, y, where) {
-        if (this._onVertexMouseDown !== null && this._onVertexMouseDown) {
-            if (typeof(this._onVertexMouseDown) === "function") {
-                this._onVertexMouseDown(event.clientX, event.clientY, where, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onVertexMouseDown);
-            }
-        }
+    dispathOnVertexMouseDown(target, x, y, event) {
+        notifyListeners(this._onVertexMouseDown, target, x, y, event);
     }
 
-    fireOnVertexMouseMove(x, y, where) {
-        if (this._onVertexMouseMove !== null && this._onVertexMouseMove) {
-            if (typeof(this._onVertexMouseMove) === "function") {
-                this._onVertexMouseMove(event.clientX, event.clientY, where, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onVertexMouseMove);
-            }
-        }
+    dispathOnVertexMouseMove(target, x, y, event) {
+        notifyListeners(this._onVertexMouseMove, target, x, y, event);
     }
 
-    fireOnVertexMouseUp(x, y, where) {
-        if (this._onVertexMouseUp !== null && this._onVertexMouseUp) {
-            if (typeof(this._onVertexMouseUp) === "function") {
-                this._onVertexMouseUp(event.clientX, event.clientY, where, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onVertexMouseUp);
-            }
-        }
+    dispathOnVertexMouseUp(target, x, y, event) {
+        notifyListeners(this._onVertexMouseUp, target, x, y, event);
     }
 }

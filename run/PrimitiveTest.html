@@ -44,7 +44,7 @@
 		let originalYPosition = -1;
 		let originalWidth = -1;
 		let originalHeight = -1;
-		function select(x, y, element, event) { 
+		function select(element, x, y, event) { 
 			if(element instanceof easygraphics.GraphicalElement) {
 				selectedElement = element;
 				if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
@@ -60,7 +60,7 @@
 				selectedElement = null;
 			}
 		}
-		function move(x, y, element) {
+		function move(element, x, y, event) {
 			if(selectedElement !== null) {
 				if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
 					if(selectedElement.tag == easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
@@ -80,7 +80,7 @@
 				}*/
 			}
 		}
-		function unselect(x, y, element) { 
+		function unselect(element, x, y, event) { 
 			selectedElement = null;
 			relativeXPosition = -1;
 			relativeYPosition = -1;
@@ -104,7 +104,7 @@
         umlClass.addChild(attribute);
 
 		// Editable attribute.
-		attribute.onDblClick = function(x, y, element, event) {
+		attribute.onDblClick = function(element, x, y, event) {
 			defaultTextEditor(x, y, element);
 			event.stopPropagation();
 		}
@@ -128,8 +128,8 @@
         let umlActor = svgArea.vgroup(10, 300);
         umlActor.addChild(svgArea.image(undefined, undefined, 25, 50, "images/uml_actor.svg"), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlActor.addChild(svgArea.text(undefined, undefined, "Actor"));
-		umlActor.onDblClick = function(x, y, element, event) {
-			svgArea.remove(element);
+		umlActor.onDblClick = function(element, x, y, event) {
+			svgArea.removeElement(element);
 		};
         //****************************
 /*

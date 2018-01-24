@@ -25,6 +25,7 @@ import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
 import ChangeListener from "../core/change-listener";
 import AreaDefaults from "../core/area-defaults";
+import {notifyListeners} from "../core/util";
 
 export default class SVGArea extends AreaDefaults {
 
@@ -44,13 +45,16 @@ export default class SVGArea extends AreaDefaults {
             'user-select': 'none'
         });
 
-        // Events.
+        // Events' callback functions.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         this._onClick = null;
         this._onDblClick = null;
         this._onMouseDown = null;
         this._onMouseMove = null;
         this._onMouseUp = null;
 
+        // Register methods in this class as callbacks for the HTML SVG element.
         this._svg.onclick = this.fireOnClick.bind(this);
         this._svg.ondblclick = this.fireOnDblClick.bind(this);
         this._svg.onmousedown = this.fireOnMouseDown.bind(this);
@@ -58,28 +62,20 @@ export default class SVGArea extends AreaDefaults {
         this._svg.onmouseup = this.fireOnMouseUp.bind(this);
     }
 
-    get svg() {
-        return this._svg;
+    static get LAYER() {
+        return "layer";
     }
 
-    set svg(value) {
-        this._svg = value;
+    get svg() {
+        return this._svg;
     }
 
     get namespace() {
         return this._namespace;
     }
 
-    set namespace(value) {
-        this._namespace = value;
-    }
-
     get elements() {
         return this._elements;
-    }
-
-    set elements(value) {
-        this._elements = value;
     }
 
     get onClick() {
@@ -122,73 +118,51 @@ export default class SVGArea extends AreaDefaults {
         this._onMouseUp = value;
     }
 
-    // Events.
+    // Callback methods called by HTML SVG element events.
     fireOnClick(event) {
-        if (this._onClick !== null && this._onClick) {
-            if (typeof(this._onClick) === "function") {
-                this._onClick(event.clientX, event.clientY, this);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onClick);
-            }
-        }
+        notifyListeners(this._onClick, this, event.clientX, event.clientY, event);
     }
 
     fireOnDblClick(event) {
-        if (this._onDblClick !== null && this._onDblClick) {
-            if (typeof(this._onDblClick) === "function") {
-                this._onDblClick(event.clientX, event.clientY, this);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onDblClick);
-            }
-        }
+        notifyListeners(this._onDblClick, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseDown(event) {
-        if (this._onMouseDown !== null && this._onMouseDown) {
-            if (typeof(this._onMouseDown) === "function") {
-                this._onMouseDown(event.clientX, event.clientY, this);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseDown);
-            }
-        }
+        notifyListeners(this._onMouseDown, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseMove(event) {
-        if (this._onMouseMove !== null && this._onMouseMove) {
-            if (typeof(this._onMouseMove) === "function") {
-                this._onMouseMove(event.clientX, event.clientY, this);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseMove);
-            }
-        }
+        notifyListeners(this._onMouseMove, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseUp(event) {
-        if (this._onMouseUp !== null && this._onMouseUp) {
-            if (typeof(this._onMouseUp) === "function") {
-                this._onMouseUp(event.clientX, event.clientY, this);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseUp);
-            }
-        }
+        notifyListeners(this._onMouseUp, this, event.clientX, event.clientY, event);
     }
 
-    addElement(element) {
-        this._elements.push(element);
+    addElement(element, layer) {
+        if (!layer || layer === null) {
+            layer = this.firstLayer;
+        }
+        //this._elements.push(element);
+        element.addTag(SVGArea.LAYER, layer);
+        layer.addElement(element);
         return element;
     }
 
-    remove(element) {
-        for (let i = 0; i < this._elements.length; i++) {
-            if (this._elements[i] === element) {
-                this._elements.splice(i, 1);
-                break;
-            }
-        }
+    removeElement(element) {
+        element.getTag(SVGArea.LAYER).removeElement(element);
+        /*
+                for (let i = 0; i < this._elements.length; i++) {
+                    if (this._elements[i] === element) {
+                        this._elements.splice(i, 1);
+                        break;
+                    }
+                }
+        */
         this.svg.removeChild(element.drawn);
     }
 
-    circle(centerX = 50, centerY = 50, radius = 100) {
+    circle(centerX = 50, centerY = 50, radius = 100, layer = null) {
         //*****************************
         // Create a new circle and set its id.
         let newCircle = new Circle(centerX, centerY, radius);
@@ -205,10 +179,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newCircle, drawnCircle);
 
-        return this.addElement(newCircle);
+        return this.addElement(newCircle, layer);
     }
 
-    ellipse(centerX = 50, centerY = 50, radiusX = 100, radiusY = 50) {
+    ellipse(centerX = 50, centerY = 50, radiusX = 100, radiusY = 50, layer = null) {
         //*****************************
         // Create a new ellipse and set its id.
         let newEllipse = new Ellipse(centerX, centerY, radiusX, radiusY);
@@ -224,10 +198,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newEllipse, drawnEllipse);
 
-        return this.addElement(newEllipse);
+        return this.addElement(newEllipse, layer);
     }
 
-    rect(x1 = 10, y1 = 10, x2 = 100, y2 = 20) {
+    rect(x1 = 10, y1 = 10, x2 = 100, y2 = 20, layer = null) {
         //*****************************
         // Create a new rectangle and set its id.
         let newRectangle = new Rectangle(x1, y1, x2, y2);
@@ -243,10 +217,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newRectangle, drawnRectangle);
 
-        return this.addElement(newRectangle);
+        return this.addElement(newRectangle, layer);
     }
 
-    diamond(x1 = 10, y1 = 10, width = 50, height = 50, preserveAspectRatio = false, stylingAttributes = new StylingAttributes(3)) {
+    diamond(x1 = 10, y1 = 10, width = 50, height = 50, preserveAspectRatio = false, stylingAttributes = new StylingAttributes(3), layer = null) {
         //*****************************
         // Create a new diamond and set its id.
         let newDiamond = new Diamond(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
@@ -262,10 +236,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newDiamond, drawnDiamond);
 
-        return this.addElement(newDiamond);
+        return this.addElement(newDiamond, layer);
     }
 
-    text(x = 10, y = 10, text = "This is an example text", fontStylingAttributes = new FontStylingAttributes()) {
+    text(x = 10, y = 10, text = "This is an example text", fontStylingAttributes = new FontStylingAttributes(), layer = null) {
         //*****************************
         // Create a new text and set its id.
         let newText = new Text(x, y, "", undefined, fontStylingAttributes);
@@ -283,10 +257,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newText, drawnText);
 
-        return this.addElement(newText);
+        return this.addElement(newText, layer);
     }
 
-    image(x = 10, y = 10, width = 20, height = 20, image = undefined) {
+    image(x = 10, y = 10, width = 20, height = 20, image = undefined, layer = null) {
         //*****************************
         // Create a new image and set its id.
         let newImage = new Image(x, y, width, height, image);
@@ -302,10 +276,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newImage, drawnImage);
 
-        return this.addElement(newImage);
+        return this.addElement(newImage, layer);
     }
 
-    vgroup(x = 10, y = 10, groupStyling = new GroupStylingAttributes()) {
+    vgroup(x = 10, y = 10, groupStyling = new GroupStylingAttributes(), layer = null) {
         //*****************************
         // Create a new vertical group and set its id.
         let newVGroup = new VerticalGroup(x, y, undefined, groupStyling);
@@ -324,7 +298,7 @@ export default class SVGArea extends AreaDefaults {
         return this.addElement(newVGroup);
     }
 
-    linearGroup(x1 = 10, y1 = 10, x2 = 100, y2 = 100) {
+    linearGroup(x1 = 10, y1 = 10, x2 = 100, y2 = 100, layer = null) {
         //*****************************
         // Create a new linear group and set its id.
         let newLinearGroup = new LinearGroup(x1, y1, x2, y2, undefined, new GroupStylingAttributes(0, 0));
@@ -340,10 +314,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newLinearGroup, drawnLinearGroup);
 
-        return this.addElement(newLinearGroup);
+        return this.addElement(newLinearGroup, layer);
     }
 
-    line(x1 = 10, y1 = 10, x2 = 100, y2 = 10, stylingAttributes = new StylingAttributes(1)) {
+    line(x1 = 10, y1 = 10, x2 = 100, y2 = 10, stylingAttributes = new StylingAttributes(1), layer = null) {
         //*****************************
         // Create a new line and set its id.
         let newLine = new Line(x1, y1, x2, y2, stylingAttributes);
@@ -359,10 +333,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newLine, drawnLine);
 
-        return this.addElement(newLine);
+        return this.addElement(newLine, layer);
     }
 
-    polyLine(stylingAttributes = new StylingAttributes(1, "black", "none")) {
+    polyLine(stylingAttributes = new StylingAttributes(1, "black", "none"), layer = null) {
         //*****************************
         // Create a new line and set its id.
         let coordinates = Array.from(arguments).slice(1);
@@ -379,10 +353,10 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newPolyline, drawnLine);
 
-        return this.addElement(newPolyline);
+        return this.addElement(newPolyline, layer);
     }
 
-    boxVerticesDecorator(decorated) {
+    boxVerticesDecorator(decorated, layer = null) {
         //*****************************
         // Create a new box vertices decorator and set its id.
         let newBoxVerticesDecorator = new BoxVerticesDecorator(decorated);
@@ -399,7 +373,7 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
 
-        return this.addElement(newBoxVerticesDecorator);
+        return this.addElement(newBoxVerticesDecorator, layer);
     }
 
     registerEvents(model, drawn) {

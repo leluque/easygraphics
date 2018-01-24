@@ -10,6 +10,7 @@
 
 import StylingAttributes from './styling-attributes.js';
 import ChangeListener from "./change-listener";
+import {notifyListeners} from "./util";
 
 /**
  * This class implements the default behaviour of graphical elements.
@@ -43,6 +44,8 @@ export default class GraphicalElement {
         this._tags = {};
 
         // Events' callback functions.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         this._onClick = null;
         this._onDblClick = null;
         this._onMouseDown = null;
@@ -412,52 +415,22 @@ export default class GraphicalElement {
 
     // Events.
     fireOnClick(event) {
-        if (this._onClick !== null && this._onClick) {
-            if (typeof(this._onClick) === "function") {
-                this._onClick(event.clientX, event.clientY, this, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onClick);
-            }
-        }
+        notifyListeners(this._onClick, this, event.clientX, event.clientY, event);
     }
 
     fireOnDblClick(event) {
-        if (this._onDblClick !== null && this._onDblClick) {
-            if (typeof(this._onDblClick) === "function") {
-                this._onDblClick(event.clientX, event.clientY, this, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onDblClick);
-            }
-        }
+        notifyListeners(this._onDblClick, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseDown(event) {
-        if (this._onMouseDown !== null && this._onMouseDown) {
-            if (typeof(this._onMouseDown) === "function") {
-                this._onMouseDown(event.clientX, event.clientY, this, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseDown);
-            }
-        }
+        notifyListeners(this._onMouseDown, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseMove(event) {
-        if (this._onMouseMove !== null && this._onMouseMove) {
-            if (typeof(this._onMouseMove) === "function") {
-                this._onMouseMove(event.clientX, event.clientY, this, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseMove);
-            }
-        }
+        notifyListeners(this._onMouseMove, this, event.clientX, event.clientY, event);
     }
 
     fireOnMouseUp(event) {
-        if (this._onMouseUp !== null && this._onMouseUp) {
-            if (typeof(this._onMouseUp) === "function") {
-                this._onMouseUp(event.clientX, event.clientY, this, event);
-            } else {
-                throw "Callback is not a function: " + typeof(this._onMouseUp);
-            }
-        }
+        notifyListeners(this._onMouseUp, this, event.clientX, event.clientY, event);
     }
 }

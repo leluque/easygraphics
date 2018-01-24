@@ -69,7 +69,7 @@ export function toDegrees(radians) {
 export function notifyListeners(listener, target) {
     if (listener !== null && listener) {
         if (typeof(listener) === "function") {
-            listener(target, arguments.slice(2));
+            listener(target, ...Array.prototype.slice.call(arguments, 2));
         } else {
             throw "Callback is not a function: " + typeof(listener);
         }

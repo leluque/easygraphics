@@ -123,27 +123,16 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
     }
 
     registerEvents(model, drawn, decorator) {
-        /*
-                if(!decorator || decorator == null) {
-                    drawn.onclick = model.fireOnClick.bind(model);
-                    drawn.ondblclick = model.fireOnDblClick.bind(model);
-                    drawn.onmousedown = model.fireOnMouseDown.bind(model);
-                    drawn.onmousemove = model.fireOnMouseMove.bind(model);
-                    drawn.onmouseup = model.fireOnMouseUp.bind(model);
-                }
-                else {
-        */
         drawn.onclick = model.fireOnClick.bind(model);
-        model.onClick = decorator.fireOnVertexClick.bind(decorator);
+        model.onClick = decorator.dispathOnVertexClick.bind(decorator);
         drawn.ondblclick = model.fireOnDblClick.bind(model);
-        model.onDblClick = decorator.fireOnVertexDblClick.bind(decorator);
+        model.onDblClick = decorator.dispathOnVertexDblClick.bind(decorator);
         drawn.onmousedown = model.fireOnMouseDown.bind(model);
-        model.onMouseDown = decorator.fireOnVertexMouseDown.bind(decorator);
+        model.onMouseDown = decorator.dispathOnVertexMouseDown.bind(decorator);
         drawn.onmousemove = model.fireOnMouseMove.bind(model);
-        model.onMouseMove = decorator.fireOnVertexMouseMove.bind(decorator);
+        model.onMouseMove = decorator.dispathOnVertexMouseMove.bind(decorator);
         drawn.onmouseup = model.fireOnMouseUp.bind(model);
-        model.onMouseUp = decorator.fireOnVertexMouseUp.bind(decorator);
-//        }
+        model.onMouseUp = decorator.dispathOnVertexMouseUp.bind(decorator);
     }
 
 }

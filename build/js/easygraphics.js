@@ -188,8 +188,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _stylingAttributes = __webpack_require__(2);
@@ -199,6 +197,8 @@ var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
+
+var _util = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -244,6 +244,8 @@ var GraphicalElement = function () {
         this._tags = {};
 
         // Events' callback functions.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         this._onClick = null;
         this._onDblClick = null;
         this._onMouseDown = null;
@@ -432,57 +434,27 @@ var GraphicalElement = function () {
     }, {
         key: 'fireOnClick',
         value: function fireOnClick(event) {
-            if (this._onClick !== null && this._onClick) {
-                if (typeof this._onClick === "function") {
-                    this._onClick(event.clientX, event.clientY, this, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onClick);
-                }
-            }
+            (0, _util.notifyListeners)(this._onClick, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnDblClick',
         value: function fireOnDblClick(event) {
-            if (this._onDblClick !== null && this._onDblClick) {
-                if (typeof this._onDblClick === "function") {
-                    this._onDblClick(event.clientX, event.clientY, this, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onDblClick);
-                }
-            }
+            (0, _util.notifyListeners)(this._onDblClick, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseDown',
         value: function fireOnMouseDown(event) {
-            if (this._onMouseDown !== null && this._onMouseDown) {
-                if (typeof this._onMouseDown === "function") {
-                    this._onMouseDown(event.clientX, event.clientY, this, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseDown);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseDown, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseMove',
         value: function fireOnMouseMove(event) {
-            if (this._onMouseMove !== null && this._onMouseMove) {
-                if (typeof this._onMouseMove === "function") {
-                    this._onMouseMove(event.clientX, event.clientY, this, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseMove);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseMove, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseUp',
         value: function fireOnMouseUp(event) {
-            if (this._onMouseUp !== null && this._onMouseUp) {
-                if (typeof this._onMouseUp === "function") {
-                    this._onMouseUp(event.clientX, event.clientY, this, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseUp);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseUp, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'x',
@@ -1218,6 +1190,9 @@ exports.angleBetween2Vectors = angleBetween2Vectors;
 exports.toRadians = toRadians;
 exports.toDegrees = toDegrees;
 exports.notifyListeners = notifyListeners;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
     var angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
     var angle2 = Math.atan2(by1 - by2, bx1 - bx2);
@@ -1267,7 +1242,7 @@ function toDegrees(radians) {
 function notifyListeners(listener, target) {
     if (listener !== null && listener) {
         if (typeof listener === "function") {
-            listener(target, arguments.slice(2));
+            listener.apply(undefined, [target].concat(_toConsumableArray(Array.prototype.slice.call(arguments, 2))));
         } else {
             throw "Callback is not a function: " + (typeof listener === "undefined" ? "undefined" : _typeof(listener));
         }
@@ -2436,13 +2411,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
+
+var _util = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2487,7 +2462,9 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
         _this._bottomLeftVertex = null;
         _this._bottomRightVertex = null;
 
-        // Events.
+        // Events' callback functions for vertices.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         _this._onVertexClick = null;
         _this._onVertexDblClick = null;
         _this._onVertexMouseDown = null;
@@ -2498,62 +2475,32 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
     }
 
     _createClass(BoxVerticesDecorator, [{
-        key: "fireOnVertexClick",
+        key: "dispathOnVertexClick",
 
 
         // Events.
-        value: function fireOnVertexClick(x, y, where) {
-            if (this._onVertexClick !== null && this._onVertexClick) {
-                if (typeof this._onVertexClick === "function") {
-                    this._onVertexClick(event.clientX, event.clientY, where, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onVertexClick);
-                }
-            }
+        value: function dispathOnVertexClick(target, x, y, event) {
+            (0, _util.notifyListeners)(this._onVertexClick, target, x, y, event);
         }
     }, {
-        key: "fireOnVertexDblClick",
-        value: function fireOnVertexDblClick(x, y, where) {
-            if (this._onVertexDblClick !== null && this._onVertexDblClick) {
-                if (typeof this._onVertexDblClick === "function") {
-                    this._onVertexDblClick(event.clientX, event.clientY, where, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onVertexDblClick);
-                }
-            }
+        key: "dispathOnVertexDblClick",
+        value: function dispathOnVertexDblClick(target, x, y, event) {
+            (0, _util.notifyListeners)(this._onVertexDblClick, target, x, y, event);
         }
     }, {
-        key: "fireOnVertexMouseDown",
-        value: function fireOnVertexMouseDown(x, y, where) {
-            if (this._onVertexMouseDown !== null && this._onVertexMouseDown) {
-                if (typeof this._onVertexMouseDown === "function") {
-                    this._onVertexMouseDown(event.clientX, event.clientY, where, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onVertexMouseDown);
-                }
-            }
+        key: "dispathOnVertexMouseDown",
+        value: function dispathOnVertexMouseDown(target, x, y, event) {
+            (0, _util.notifyListeners)(this._onVertexMouseDown, target, x, y, event);
         }
     }, {
-        key: "fireOnVertexMouseMove",
-        value: function fireOnVertexMouseMove(x, y, where) {
-            if (this._onVertexMouseMove !== null && this._onVertexMouseMove) {
-                if (typeof this._onVertexMouseMove === "function") {
-                    this._onVertexMouseMove(event.clientX, event.clientY, where, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onVertexMouseMove);
-                }
-            }
+        key: "dispathOnVertexMouseMove",
+        value: function dispathOnVertexMouseMove(target, x, y, event) {
+            (0, _util.notifyListeners)(this._onVertexMouseMove, target, x, y, event);
         }
     }, {
-        key: "fireOnVertexMouseUp",
-        value: function fireOnVertexMouseUp(x, y, where) {
-            if (this._onVertexMouseUp !== null && this._onVertexMouseUp) {
-                if (typeof this._onVertexMouseUp === "function") {
-                    this._onVertexMouseUp(event.clientX, event.clientY, where, event);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onVertexMouseUp);
-                }
-            }
+        key: "dispathOnVertexMouseUp",
+        value: function dispathOnVertexMouseUp(target, x, y, event) {
+            (0, _util.notifyListeners)(this._onVertexMouseUp, target, x, y, event);
         }
     }, {
         key: "vertexSize",
@@ -4537,8 +4484,8 @@ var Layer = function () {
     }
 
     _createClass(Layer, [{
-        key: "add",
-        value: function add(element) {
+        key: "addElement",
+        value: function addElement(element) {
             // Argument is not a graphical element.
             if (!(element instanceof _graphicalElement2.default)) {
                 throw "Layer elements must be graphical elements";
@@ -4567,8 +4514,8 @@ var Layer = function () {
             return Object.keys(this._elements);
         }
     }, {
-        key: "remove",
-        value: function remove(element) {
+        key: "removeElement",
+        value: function removeElement(element) {
             if (element in this._elements) {
                 delete this._elements[element.id];
                 this.notifyElementRemoval(element);
@@ -4693,7 +4640,7 @@ exports.default = Layer;
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 09/01/2017.
+ * Created by Leandro Luque on 16/01/2018.
  */
 
 
@@ -4722,28 +4669,104 @@ var AreaDefaults = function () {
         // It works like a map, but with complexity on search of O(1).
         // The key is the layer id.
         this._layers = {};
-        // Array of layers order.
+        // Array of layers order. It is used to define the drawing order.
         this._order = [];
 
-        // Id generators.
+        // Id count.
         this._elementIdCount = 1;
         this._layerIdCount = 1;
 
-        // Event listeners.
+        // Layer-related event listeners.
         // Functions that receive the area and the changed layer as arguments.
         this._onAddLayer = null;
         this._onRemoveLayer = null;
+        // Function that receive the area.
+        this._onChangeLayerOrder = null;
 
         // Create a default layer that will be used if the user does not create a new one.
-        this.add(new _layer2.default(this.generateLayerId()));
+        this.newLayer();
     }
 
     _createClass(AreaDefaults, [{
-        key: "add",
-        value: function add(layer) {
+        key: "moveLayerUp",
+
+
+        /**
+         * Move the specified layer one position to the top of the layer order array.
+         * @param layer The layer that must be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+        value: function moveLayerUp(layer) {
+            var layerPosition = this._order.indexOf(layer);
+            // If it is not the layer at the top.
+            if (layerPosition < this._order.length - 1) {
+                // Remove the layer from its position.
+                this._order.splice(layerPosition, 1);
+                // Add the layer to the next position.
+                this._order.splice(layerPosition + 1, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Move the specified layer one position to the bottom of the layer order array.
+         * @param layer The layer that must be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+
+    }, {
+        key: "moveLayerDown",
+        value: function moveLayerDown(layer) {
+            var layerPosition = this._order.indexOf(layer);
+            // If it is not the layer at the bottom.
+            if (layerPosition > 0) {
+                // Remove the layer from its position.
+                this._order.splice(layerPosition, 1);
+                // Add the layer to the previous position.
+                this._order.splice(layerPosition - 1, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Move the specified layer to the specified position of the layer order array.
+         * @param layer The layer that must be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+
+    }, {
+        key: "moveLayerTo",
+        value: function moveLayerTo(layer, targetPosition) {
+            if (targetPosition >= this._order.length) {
+                return false;
+            }
+            var layerPosition = this._order.indexOf(layer);
+            // If it is not at the targeted position.
+            if (layerPosition != targetPosition) {
+                // Remove the layer from its position.
+                this._order.splice(layerPosition, 1);
+                // Add the layer to the targeted position.
+                this._order.splice(targetPosition, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "newLayer",
+        value: function newLayer() {
+            this.addLayer(new _layer2.default(this.generateLayerId()));
+        }
+    }, {
+        key: "addLayer",
+        value: function addLayer(layer) {
             // Argument is not a layer.
             if (!(layer instanceof _layer2.default)) {
-                throw "Area elements must be layers";
+                throw "Area layers must be instances of Layer";
             }
             // If a layer with the same id does not exist in the layer, add it.
             if (!(layer.id in this._layers)) {
@@ -4751,6 +4774,8 @@ var AreaDefaults = function () {
                 this._order.push(layer);
                 this.notifyLayerAddition(layer);
                 return true;
+            } else {
+                throw "The layer with id " + layer.id + " is already on the area.";
             }
             return false;
         }
@@ -4759,19 +4784,39 @@ var AreaDefaults = function () {
         value: function countLayers() {
             return Object.keys(this._layers).length;
         }
+
+        /**
+         * Return the layer that has the specified id.
+         * @param id The layer id.
+         * @returns {Layer} The layer.
+         */
+
     }, {
-        key: "get",
-        value: function get(id) {
+        key: "getLayer",
+        value: function getLayer(id) {
             return this._layers[id];
         }
+
+        /**
+         * Return an array of layer ids.
+         * @returns {string[]} An array of layers id.
+         */
+
     }, {
-        key: "getIds",
-        value: function getIds() {
+        key: "getLayersIds",
+        value: function getLayersIds() {
             return Object.keys(this._layers);
         }
+
+        /**
+         * Remove the layer from the area if it exists.
+         * @param layer The layer that must be removed.
+         * @returns {boolean} true, if the layer was removed. false, otherwise.
+         */
+
     }, {
-        key: "remove",
-        value: function remove(layer) {
+        key: "removeLayer",
+        value: function removeLayer(layer) {
             if (layer in this._layers) {
                 delete this._layers[layer.id];
                 this._order.splice(this._order.indexOf(layer), 1);
@@ -4791,6 +4836,11 @@ var AreaDefaults = function () {
             (0, _util.notifyListeners)(this.onRemoveLayer, this, removedLayer);
         }
     }, {
+        key: "notifyLayerOrderChanging",
+        value: function notifyLayerOrderChanging() {
+            (0, _util.notifyListeners)(this.onChangeLayerOrder, this, null);
+        }
+    }, {
         key: "generateElementId",
         value: function generateElementId() {
             return "e_" + this._elementIdCount++;
@@ -4806,12 +4856,28 @@ var AreaDefaults = function () {
             return this._layers;
         }
     }, {
+        key: "firstLayer",
+        get: function get() {
+            if (this._order.length > 0) {
+                return this._order[0];
+            }
+            return null;
+        }
+    }, {
         key: "onAddLayer",
         get: function get() {
             return this._onAddLayer;
         },
         set: function set(value) {
             this._onAddLayer = value;
+        }
+    }, {
+        key: "onChangeLayerOrder",
+        get: function get() {
+            return this._onChangeLayerOrder;
+        },
+        set: function set(value) {
+            this._onChangeLayerOrder = value;
         }
     }, {
         key: "onRemoveLayer",
@@ -4822,12 +4888,14 @@ var AreaDefaults = function () {
             this._onRemoveLayer = value;
         }
     }, {
-        key: "idCount",
+        key: "elementIdCount",
         get: function get() {
             return this._elementIdCount;
-        },
-        set: function set(value) {
-            this._elementIdCount = value;
+        }
+    }, {
+        key: "layerIdCount",
+        get: function get() {
+            return this._layerIdCount;
         }
     }, {
         key: "order",
@@ -4837,7 +4905,7 @@ var AreaDefaults = function () {
     }, {
         key: "defaultLayer",
         get: function get() {
-            return this._order[this._order.length - 1];
+            return this._order[this._order.length - 1]; // The top layer.
         }
     }]);
 
@@ -7199,27 +7267,16 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
     }, {
         key: 'registerEvents',
         value: function registerEvents(model, drawn, decorator) {
-            /*
-                    if(!decorator || decorator == null) {
-                        drawn.onclick = model.fireOnClick.bind(model);
-                        drawn.ondblclick = model.fireOnDblClick.bind(model);
-                        drawn.onmousedown = model.fireOnMouseDown.bind(model);
-                        drawn.onmousemove = model.fireOnMouseMove.bind(model);
-                        drawn.onmouseup = model.fireOnMouseUp.bind(model);
-                    }
-                    else {
-            */
             drawn.onclick = model.fireOnClick.bind(model);
-            model.onClick = decorator.fireOnVertexClick.bind(decorator);
+            model.onClick = decorator.dispathOnVertexClick.bind(decorator);
             drawn.ondblclick = model.fireOnDblClick.bind(model);
-            model.onDblClick = decorator.fireOnVertexDblClick.bind(decorator);
+            model.onDblClick = decorator.dispathOnVertexDblClick.bind(decorator);
             drawn.onmousedown = model.fireOnMouseDown.bind(model);
-            model.onMouseDown = decorator.fireOnVertexMouseDown.bind(decorator);
+            model.onMouseDown = decorator.dispathOnVertexMouseDown.bind(decorator);
             drawn.onmousemove = model.fireOnMouseMove.bind(model);
-            model.onMouseMove = decorator.fireOnVertexMouseMove.bind(decorator);
+            model.onMouseMove = decorator.dispathOnVertexMouseMove.bind(decorator);
             drawn.onmouseup = model.fireOnMouseUp.bind(model);
-            model.onMouseUp = decorator.fireOnVertexMouseUp.bind(decorator);
-            //        }
+            model.onMouseUp = decorator.dispathOnVertexMouseUp.bind(decorator);
         }
     }]);
 
@@ -7301,8 +7358,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _circle = __webpack_require__(14);
@@ -7373,6 +7428,8 @@ var _areaDefaults = __webpack_require__(30);
 
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
+var _util = __webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7404,13 +7461,16 @@ var SVGArea = function (_AreaDefaults) {
             'user-select': 'none'
         });
 
-        // Events.
+        // Events' callback functions.
+        // The functions receive four attributes: the element in which the event occurred,
+        // the mouse x-coordinate, the mouse y-coordinate, and the event object.
         _this._onClick = null;
         _this._onDblClick = null;
         _this._onMouseDown = null;
         _this._onMouseMove = null;
         _this._onMouseUp = null;
 
+        // Register methods in this class as callbacks for the HTML SVG element.
         _this._svg.onclick = _this.fireOnClick.bind(_this);
         _this._svg.ondblclick = _this.fireOnDblClick.bind(_this);
         _this._svg.onmousedown = _this.fireOnMouseDown.bind(_this);
@@ -7423,75 +7483,53 @@ var SVGArea = function (_AreaDefaults) {
         key: 'fireOnClick',
 
 
-        // Events.
+        // Callback methods called by HTML SVG element events.
         value: function fireOnClick(event) {
-            if (this._onClick !== null && this._onClick) {
-                if (typeof this._onClick === "function") {
-                    this._onClick(event.clientX, event.clientY, this);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onClick);
-                }
-            }
+            (0, _util.notifyListeners)(this._onClick, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnDblClick',
         value: function fireOnDblClick(event) {
-            if (this._onDblClick !== null && this._onDblClick) {
-                if (typeof this._onDblClick === "function") {
-                    this._onDblClick(event.clientX, event.clientY, this);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onDblClick);
-                }
-            }
+            (0, _util.notifyListeners)(this._onDblClick, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseDown',
         value: function fireOnMouseDown(event) {
-            if (this._onMouseDown !== null && this._onMouseDown) {
-                if (typeof this._onMouseDown === "function") {
-                    this._onMouseDown(event.clientX, event.clientY, this);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseDown);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseDown, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseMove',
         value: function fireOnMouseMove(event) {
-            if (this._onMouseMove !== null && this._onMouseMove) {
-                if (typeof this._onMouseMove === "function") {
-                    this._onMouseMove(event.clientX, event.clientY, this);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseMove);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseMove, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'fireOnMouseUp',
         value: function fireOnMouseUp(event) {
-            if (this._onMouseUp !== null && this._onMouseUp) {
-                if (typeof this._onMouseUp === "function") {
-                    this._onMouseUp(event.clientX, event.clientY, this);
-                } else {
-                    throw "Callback is not a function: " + _typeof(this._onMouseUp);
-                }
-            }
+            (0, _util.notifyListeners)(this._onMouseUp, this, event.clientX, event.clientY, event);
         }
     }, {
         key: 'addElement',
-        value: function addElement(element) {
-            this._elements.push(element);
+        value: function addElement(element, layer) {
+            if (!layer || layer === null) {
+                layer = this.firstLayer;
+            }
+            //this._elements.push(element);
+            element.addTag(SVGArea.LAYER, layer);
+            layer.addElement(element);
             return element;
         }
     }, {
-        key: 'remove',
-        value: function remove(element) {
-            for (var i = 0; i < this._elements.length; i++) {
-                if (this._elements[i] === element) {
-                    this._elements.splice(i, 1);
-                    break;
-                }
-            }
+        key: 'removeElement',
+        value: function removeElement(element) {
+            element.getTag(SVGArea.LAYER).removeElement(element);
+            /*
+                    for (let i = 0; i < this._elements.length; i++) {
+                        if (this._elements[i] === element) {
+                            this._elements.splice(i, 1);
+                            break;
+                        }
+                    }
+            */
             this.svg.removeChild(element.drawn);
         }
     }, {
@@ -7500,6 +7538,7 @@ var SVGArea = function (_AreaDefaults) {
             var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
             var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
             var radius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+            var layer = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
             //*****************************
             // Create a new circle and set its id.
@@ -7517,7 +7556,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newCircle, drawnCircle);
 
-            return this.addElement(newCircle);
+            return this.addElement(newCircle, layer);
         }
     }, {
         key: 'ellipse',
@@ -7526,6 +7565,7 @@ var SVGArea = function (_AreaDefaults) {
             var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
             var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
             var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
+            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
             //*****************************
             // Create a new ellipse and set its id.
@@ -7542,7 +7582,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newEllipse, drawnEllipse);
 
-            return this.addElement(newEllipse);
+            return this.addElement(newEllipse, layer);
         }
     }, {
         key: 'rect',
@@ -7551,6 +7591,7 @@ var SVGArea = function (_AreaDefaults) {
             var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
             var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
             var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
+            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
             //*****************************
             // Create a new rectangle and set its id.
@@ -7567,7 +7608,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newRectangle, drawnRectangle);
 
-            return this.addElement(newRectangle);
+            return this.addElement(newRectangle, layer);
         }
     }, {
         key: 'diamond',
@@ -7578,6 +7619,7 @@ var SVGArea = function (_AreaDefaults) {
             var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
             var preserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
             var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default(3);
+            var layer = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
 
             //*****************************
             // Create a new diamond and set its id.
@@ -7594,7 +7636,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newDiamond, drawnDiamond);
 
-            return this.addElement(newDiamond);
+            return this.addElement(newDiamond, layer);
         }
     }, {
         key: 'text',
@@ -7605,6 +7647,7 @@ var SVGArea = function (_AreaDefaults) {
             var _text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "This is an example text";
 
             var fontStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _fontStylingAttributes2.default();
+            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
             //*****************************
             // Create a new text and set its id.
@@ -7623,7 +7666,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newText, drawnText);
 
-            return this.addElement(newText);
+            return this.addElement(newText, layer);
         }
     }, {
         key: 'image',
@@ -7634,6 +7677,8 @@ var SVGArea = function (_AreaDefaults) {
             var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
 
             var _image = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+
+            var layer = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
 
             //*****************************
             // Create a new image and set its id.
@@ -7650,7 +7695,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newImage, drawnImage);
 
-            return this.addElement(newImage);
+            return this.addElement(newImage, layer);
         }
     }, {
         key: 'vgroup',
@@ -7658,6 +7703,7 @@ var SVGArea = function (_AreaDefaults) {
             var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
             var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
             var groupStyling = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _groupStylingAttributes2.default();
+            var layer = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
             //*****************************
             // Create a new vertical group and set its id.
@@ -7683,6 +7729,7 @@ var SVGArea = function (_AreaDefaults) {
             var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
             var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
             var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
             //*****************************
             // Create a new linear group and set its id.
@@ -7699,7 +7746,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newLinearGroup, drawnLinearGroup);
 
-            return this.addElement(newLinearGroup);
+            return this.addElement(newLinearGroup, layer);
         }
     }, {
         key: 'line',
@@ -7709,6 +7756,7 @@ var SVGArea = function (_AreaDefaults) {
             var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
             var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
             var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
+            var layer = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
 
             //*****************************
             // Create a new line and set its id.
@@ -7725,12 +7773,13 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newLine, drawnLine);
 
-            return this.addElement(newLine);
+            return this.addElement(newLine, layer);
         }
     }, {
         key: 'polyLine',
         value: function polyLine() {
             var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1, "black", "none");
+            var layer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
             //*****************************
             // Create a new line and set its id.
@@ -7748,11 +7797,13 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newPolyline, drawnLine);
 
-            return this.addElement(newPolyline);
+            return this.addElement(newPolyline, layer);
         }
     }, {
         key: 'boxVerticesDecorator',
         value: function boxVerticesDecorator(decorated) {
+            var layer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
             //*****************************
             // Create a new box vertices decorator and set its id.
             var newBoxVerticesDecorator = new _boxVerticesDecorator2.default(decorated);
@@ -7769,7 +7820,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
 
-            return this.addElement(newBoxVerticesDecorator);
+            return this.addElement(newBoxVerticesDecorator, layer);
         }
     }, {
         key: 'registerEvents',
@@ -7784,25 +7835,16 @@ var SVGArea = function (_AreaDefaults) {
         key: 'svg',
         get: function get() {
             return this._svg;
-        },
-        set: function set(value) {
-            this._svg = value;
         }
     }, {
         key: 'namespace',
         get: function get() {
             return this._namespace;
-        },
-        set: function set(value) {
-            this._namespace = value;
         }
     }, {
         key: 'elements',
         get: function get() {
             return this._elements;
-        },
-        set: function set(value) {
-            this._elements = value;
         }
     }, {
         key: 'onClick',
@@ -7843,6 +7885,11 @@ var SVGArea = function (_AreaDefaults) {
         },
         set: function set(value) {
             this._onMouseUp = value;
+        }
+    }], [{
+        key: 'LAYER',
+        get: function get() {
+            return "layer";
         }
     }]);
 
@@ -8216,7 +8263,7 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
     }, {
         key: "moveTo",
         value: function moveTo(newX, newY) {
-            this._decorated.moveTo(newX, newY);
+            this._decorated.moveLayerTo(newX, newY);
         }
     }, {
         key: "resize",
@@ -8510,7 +8557,7 @@ exports.default = GraphicalElementDecorator;
 /* jshint -W097 */
 
 /**
- * Created by Leandro Luque on 09/01/2017.
+ * Created by Leandro Luque on 09/01/2018.
  */
 
 
@@ -8539,8 +8586,7 @@ var Area = function () {
         value: function init() {
             var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#area";
 
-            var area = document.querySelector(selector);
-            var name = area.tagName;
+            var name = document.querySelector(selector).tagName;
             if (name.toLowerCase() === "svg") {
                 return new _svgArea2.default(selector);
             } else {

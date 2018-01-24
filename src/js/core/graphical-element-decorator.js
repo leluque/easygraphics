@@ -220,7 +220,7 @@ export default class GraphicalElementDecorator extends GraphicalElement {
     }
 
     moveTo(newX, newY) {
-        this._decorated.moveTo(newX, newY);
+        this._decorated.moveLayerTo(newX, newY);
     }
 
     resize(newWidth, newHeight) {
