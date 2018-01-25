@@ -31,9 +31,11 @@ export default class Diamond extends GraphicalElement {
     set width(value) {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.width = value;
+/*
         if (this.preserveAspectRatio) {
             super.height = value;
         }
+*/
         this.enableChangeNotifications();
         this.notifyListeners(ChangeListener.DIMENSION);
     }
@@ -45,9 +47,11 @@ export default class Diamond extends GraphicalElement {
     set height(value) {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
+/*
         if (this.preserveAspectRatio) {
             super.width = value;
         }
+*/
         this.enableChangeNotifications();
         this.notifyListeners(ChangeListener.DIMENSION);
     }

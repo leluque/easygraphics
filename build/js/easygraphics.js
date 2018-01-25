@@ -216,6 +216,7 @@ var GraphicalElement = function () {
         var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 7;
         var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
         var id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : -1;
+        var preserveAspectRatio = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
 
         _classCallCheck(this, GraphicalElement);
 
@@ -251,6 +252,8 @@ var GraphicalElement = function () {
         this._onMouseDown = null;
         this._onMouseMove = null;
         this._onMouseUp = null;
+
+        this._preserveAspectRatio = preserveAspectRatio;
     }
 
     _createClass(GraphicalElement, [{
@@ -457,6 +460,14 @@ var GraphicalElement = function () {
             (0, _util.notifyListeners)(this._onMouseUp, this, event.clientX, event.clientY, event);
         }
     }, {
+        key: 'preserveAspectRatio',
+        get: function get() {
+            return this._preserveAspectRatio;
+        },
+        set: function set(value) {
+            this._preserveAspectRatio = value;
+        }
+    }, {
         key: 'x',
         get: function get() {
             return this._x;
@@ -487,11 +498,18 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             if (value >= this.minWidth) {
+                var relation = this.height / this.width;
                 var delta = value - this._width;
                 this._width = value;
                 this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
                 // Adjust the rotation center based on its current value and the variation of width.
                 this.rotationCenterX += delta;
+                // Preserve the aspect ratio?
+                if (this.preserveAspectRatio) {
+                    this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
+                    this.height = value * relation;
+                    this.preserveAspectRatio = true;
+                }
                 this.enableChangeNotifications();
                 this.notifyListeners(_changeListener2.default.DIMENSION);
             }
@@ -514,12 +532,19 @@ var GraphicalElement = function () {
         },
         set: function set(value) {
             if (value >= this.minHeight) {
+                var relation = this.width / this.height;
                 var delta = value - this._height;
                 this._height = value;
                 this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
                 // Adjust the rotation center based on its current value and the variation of height.
                 this.rotationCenterX += delta;
                 this.rotationCenterY = this.y + this.height / 2;
+                // Preserve the aspect ratio?
+                if (this.preserveAspectRatio) {
+                    this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
+                    this.width = value * relation;
+                    this.preserveAspectRatio = true;
+                }
                 this.enableChangeNotifications();
                 this.notifyListeners(_changeListener2.default.DIMENSION);
             }
@@ -723,10 +748,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _graphicalElement = __webpack_require__(1);
-
-var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
-
 var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
@@ -750,7 +771,19 @@ var StylingAttributes = function () {
         this._fillColor = fillColor;
         this._target = target;
         this._strokeDashArray = strokeDashArray;
+        //this._visible = true;
     }
+
+    /*
+        get visible() {
+            return this._visible;
+        }
+    
+        set visible(value) {
+            this._visible = value;
+            this.notifyTarget();
+        }
+    */
 
     _createClass(StylingAttributes, [{
         key: 'fromJSON',
@@ -762,7 +795,13 @@ var StylingAttributes = function () {
     }, {
         key: 'toJSON',
         value: function toJSON() {
-            return { fill: this.fillColor, stroke: this.strokeColor, strokeWidth: this.strokeWidth };
+            //let visibilityValue = this.visible ? "visible" : "hidden";
+            return {
+                fill: this.fillColor,
+                stroke: this.strokeColor,
+                strokeWidth: this.strokeWidth
+            };
+            // visibility: visibilityValue
         }
     }, {
         key: 'toString',
@@ -2924,10 +2963,11 @@ var Ellipse = function (_GraphicalElement) {
         var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
         var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 25;
         var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
+        var preserveAspectRatio = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
 
         _classCallCheck(this, Ellipse);
 
-        return _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this, centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes));
+        return _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this, centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes, -1000, preserveAspectRatio));
     }
 
     _createClass(Ellipse, [{
@@ -3020,7 +3060,6 @@ var Ellipse = function (_GraphicalElement) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'width', value, this);
             this.enableChangeNotifications();
-            //  super.height = value / 2; // Keep the proportion.
             this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
@@ -3032,7 +3071,6 @@ var Ellipse = function (_GraphicalElement) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'height', value, this);
             this.enableChangeNotifications();
-            //        super.width = value * 2; // Keep the proportion.
             this.notifyListeners(_changeListener2.default.DIMENSION);
         }
     }, {
@@ -3216,9 +3254,11 @@ var Diamond = function (_GraphicalElement) {
         set: function set(value) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'width', value, this);
-            if (this.preserveAspectRatio) {
-                _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'height', value, this);
-            }
+            /*
+                    if (this.preserveAspectRatio) {
+                        super.height = value;
+                    }
+            */
             this.enableChangeNotifications();
             this.notifyListeners(_changeListener2.default.DIMENSION);
         }
@@ -3230,9 +3270,11 @@ var Diamond = function (_GraphicalElement) {
         set: function set(value) {
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'height', value, this);
-            if (this.preserveAspectRatio) {
-                _set(Diamond.prototype.__proto__ || Object.getPrototypeOf(Diamond.prototype), 'width', value, this);
-            }
+            /*
+                    if (this.preserveAspectRatio) {
+                        super.width = value;
+                    }
+            */
             this.enableChangeNotifications();
             this.notifyListeners(_changeListener2.default.DIMENSION);
         }
@@ -4476,7 +4518,7 @@ var Layer = function () {
 
         // Event listeners.
         // Functions that receive the layer, the old, and the new value as arguments.
-        this._onChangeId = null;
+        //this._onChangeId = null;
         this._onChangeVisibility = null;
         // Functions that receive the layer and the changed element as arguments.
         this._onAddElement = null;
@@ -4504,13 +4546,13 @@ var Layer = function () {
             return Object.keys(this._elements).length;
         }
     }, {
-        key: "get",
-        value: function get(id) {
+        key: "getElement",
+        value: function getElement(id) {
             return this._elements[id];
         }
     }, {
-        key: "getIds",
-        value: function getIds() {
+        key: "getElementsIds",
+        value: function getElementsIds() {
             return Object.keys(this._elements);
         }
     }, {
@@ -4528,11 +4570,11 @@ var Layer = function () {
         value: function notifyVisibilityChange(oldValue, newValue) {
             (0, _util.notifyListeners)(this.onChangeVisibility, this, oldValue, newValue);
         }
-    }, {
-        key: "notifyIdChange",
-        value: function notifyIdChange(oldValue, newValue) {
-            (0, _util.notifyListeners)(this.onChangeId, this, oldValue, newValue);
-        }
+
+        /*   notifyIdChange(oldValue, newValue) {
+               notifyListeners(this.onChangeId, this, oldValue, newValue);
+           }*/
+
     }, {
         key: "notifyElementAddition",
         value: function notifyElementAddition(addedElement) {
@@ -4547,16 +4589,18 @@ var Layer = function () {
         key: "id",
         get: function get() {
             return this._id;
-        },
-        set: function set(value) {
-            if (value !== this.id) {
-                var oldValue = this.id;
-                this._id = value;
-                this.notifyIdChange(oldValue, value);
-            } else {
-                this._id = value;
-            }
         }
+
+        /* set id(value) {
+             if (value !== this.id) {
+                 let oldValue = this.id;
+                 this._id = value;
+                 this.notifyIdChange(oldValue, value);
+             } else {
+                 this._id = value;
+             }
+         }*/
+
     }, {
         key: "visible",
         get: function get() {
@@ -4575,18 +4619,18 @@ var Layer = function () {
                 this._visible = value;
             }
         }
-    }, {
-        key: "onChangeId",
-        get: function get() {
-            return this._onChangeId;
-        },
-        set: function set(value) {
-            // Argument is not a function.
-            if (typeof value !== "function") {
-                throw "Listener must be a function";
-            }
-            this._onChangeId = value;
-        }
+
+        /*  get onChangeId() {
+              return this._onChangeId;
+          }
+            set onChangeId(value) {
+              // Argument is not a function.
+              if (typeof(value) !== "function") {
+                  throw "Listener must be a function";
+              }
+              this._onChangeId = value;
+          }*/
+
     }, {
         key: "onChangeVisibility",
         get: function get() {
@@ -4622,6 +4666,11 @@ var Layer = function () {
                 throw "Listener must be a function";
             }
             this._onRemoveElement = value;
+        }
+    }, {
+        key: "elements",
+        get: function get() {
+            return this._elements;
         }
     }]);
 
@@ -4860,6 +4909,14 @@ var AreaDefaults = function () {
         get: function get() {
             if (this._order.length > 0) {
                 return this._order[0];
+            }
+            return null;
+        }
+    }, {
+        key: "topLayer",
+        get: function get() {
+            if (this._order.length > 0) {
+                return this._order[this._order.length - 1];
             }
             return null;
         }
@@ -7360,6 +7417,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _circle = __webpack_require__(14);
 
 var _circle2 = _interopRequireDefault(_circle);
@@ -7376,13 +7435,13 @@ var _diamond = __webpack_require__(16);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _text2 = __webpack_require__(17);
+var _text = __webpack_require__(17);
 
-var _text3 = _interopRequireDefault(_text2);
+var _text2 = _interopRequireDefault(_text);
 
-var _image2 = __webpack_require__(21);
+var _image = __webpack_require__(21);
 
-var _image3 = _interopRequireDefault(_image2);
+var _image2 = _interopRequireDefault(_image);
 
 var _verticalGroup = __webpack_require__(11);
 
@@ -7408,10 +7467,6 @@ var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
 
-var _stylingAttributes = __webpack_require__(2);
-
-var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
-
 var _polyline = __webpack_require__(20);
 
 var _polyline2 = _interopRequireDefault(_polyline);
@@ -7429,6 +7484,10 @@ var _areaDefaults = __webpack_require__(30);
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
 var _util = __webpack_require__(8);
+
+var _stylingAttributes = __webpack_require__(2);
+
+var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7480,10 +7539,33 @@ var SVGArea = function (_AreaDefaults) {
     }
 
     _createClass(SVGArea, [{
-        key: 'fireOnClick',
-
+        key: 'addLayer',
+        value: function addLayer(layer) {
+            layer.onChangeVisibility = this.handleLayerVisibilityChange.bind(this);
+            return _get(SVGArea.prototype.__proto__ || Object.getPrototypeOf(SVGArea.prototype), 'addLayer', this).call(this, layer);
+        }
+    }, {
+        key: 'handleLayerVisibilityChange',
+        value: function handleLayerVisibilityChange(layer, oldValue, newValue) {
+            if (oldValue !== newValue) {
+                if (newValue === true) {
+                    // Make visible all elements in the layer.
+                    Object.keys(layer.elements).forEach(function (id) {
+                        layer.getElement(id).stylingAttributes.visible = true;
+                    });
+                } else {
+                    // Hide all elements in the layer.
+                    Object.keys(layer.elements).forEach(function (id) {
+                        layer.getElement(id).stylingAttributes.visible = false;
+                    });
+                }
+            }
+        }
 
         // Callback methods called by HTML SVG element events.
+
+    }, {
+        key: 'fireOnClick',
         value: function fireOnClick(event) {
             (0, _util.notifyListeners)(this._onClick, this, event.clientX, event.clientY, event);
         }
@@ -7513,7 +7595,6 @@ var SVGArea = function (_AreaDefaults) {
             if (!layer || layer === null) {
                 layer = this.firstLayer;
             }
-            //this._elements.push(element);
             element.addTag(SVGArea.LAYER, layer);
             layer.addElement(element);
             return element;
@@ -7522,29 +7603,36 @@ var SVGArea = function (_AreaDefaults) {
         key: 'removeElement',
         value: function removeElement(element) {
             element.getTag(SVGArea.LAYER).removeElement(element);
-            /*
-                    for (let i = 0; i < this._elements.length; i++) {
-                        if (this._elements[i] === element) {
-                            this._elements.splice(i, 1);
-                            break;
-                        }
-                    }
-            */
             this.svg.removeChild(element.drawn);
         }
-    }, {
-        key: 'circle',
-        value: function circle() {
-            var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
-            var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-            var radius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var layer = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
+        /**
+         * Draw a new circle with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: centerX, centerY, radius, and layer.
+         */
+
+    }, {
+        key: 'circ',
+        value: function circ(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('centerX' in parameterObject)) {
+                parameterObject.centerX = 50;
+            }
+            if (!('centerY' in parameterObject)) {
+                parameterObject.centerY = 50;
+            }
+            if (!('radius' in parameterObject)) {
+                parameterObject.radius = 50;
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
             //*****************************
             // Create a new circle and set its id.
-            var newCircle = new _circle2.default(centerX, centerY, radius);
+            var newCircle = new _circle2.default(parameterObject.centerX, parameterObject.centerY, parameterObject.radius);
             newCircle.id = this.generateElementId();
-            //console.log(newCircle.id);
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newCircle);
@@ -7556,20 +7644,49 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newCircle, drawnCircle);
 
-            return this.addElement(newCircle, layer);
+            return this.addElement(newCircle, parameterObject.layer);
         }
+
+        /**
+         * @see {@link circ}
+         */
+
+    }, {
+        key: 'circle',
+        value: function circle(parameterObject) {
+            return this.circ(parameterObject);
+        }
+
+        /**
+         * Draw a new ellipse with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: centerX, centerY, radiusX, radiusY, preserveAspectRatio, and layer.
+         */
+
     }, {
         key: 'ellipse',
-        value: function ellipse() {
-            var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
-            var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-            var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
-            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+        value: function ellipse(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('centerX' in parameterObject)) {
+                parameterObject.centerX = 50;
+            }
+            if (!('centerY' in parameterObject)) {
+                parameterObject.centerY = 50;
+            }
+            if (!('radiusX' in parameterObject)) {
+                parameterObject.radiusX = 100;
+            }
+            if (!('radiusY' in parameterObject)) {
+                parameterObject.radiusY = 50;
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new ellipse and set its id.
-            var newEllipse = new _ellipse2.default(centerX, centerY, radiusX, radiusY);
+            var newEllipse = new _ellipse2.default(parameterObject.centerX, parameterObject.centerY, parameterObject.radiusX, parameterObject.radiusY);
             newEllipse.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7582,20 +7699,39 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newEllipse, drawnEllipse);
 
-            return this.addElement(newEllipse, layer);
+            return this.addElement(newEllipse, parameterObject.layer);
         }
+
+        /**
+         * Draw a new rectangle with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, and layer.
+         */
+
     }, {
         key: 'rect',
-        value: function rect() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
-            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+        value: function rect(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x1' in parameterObject)) {
+                parameterObject.x1 = 10;
+            }
+            if (!('y1' in parameterObject)) {
+                parameterObject.y1 = 10;
+            }
+            if (!('x2' in parameterObject)) {
+                parameterObject.x2 = 10;
+            }
+            if (!('y2' in parameterObject)) {
+                parameterObject.y2 = 10;
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new rectangle and set its id.
-            var newRectangle = new _rectangle2.default(x1, y1, x2, y2);
+            var newRectangle = new _rectangle2.default(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2);
             newRectangle.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7608,22 +7744,55 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newRectangle, drawnRectangle);
 
-            return this.addElement(newRectangle, layer);
+            return this.addElement(newRectangle, parameterObject.layer);
         }
+
+        /**
+         * @see {@link rect}
+         */
+
+    }, {
+        key: 'rectangle',
+        value: function rectangle(parameterObject) {
+            return this.rect(parameterObject);
+        }
+
+        /**
+         * Draw a new diamond with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x1, y1, width, height, preserveAspectRatio, stylingAttributes, and layer.
+         */
+
     }, {
         key: 'diamond',
-        value: function diamond() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
-            var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50;
-            var preserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-            var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default(3);
-            var layer = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+        value: function diamond(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x1' in parameterObject)) {
+                parameterObject.x1 = 10;
+            }
+            if (!('y1' in parameterObject)) {
+                parameterObject.y1 = 10;
+            }
+            if (!('width' in parameterObject)) {
+                parameterObject.width = 50;
+            }
+            if (!('height' in parameterObject)) {
+                parameterObject.height = 50;
+            }
+            if (!('preserveAspectRatio' in parameterObject)) {
+                parameterObject.preserveAspectRatio = true;
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttributes = new _stylingAttributes2.default();
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new diamond and set its id.
-            var newDiamond = new _diamond2.default(x1, y1, width, height, preserveAspectRatio, stylingAttributes);
+            var newDiamond = new _diamond2.default(parameterObject.x1, parameterObject.y1, parameterObject.width, parameterObject.height, parameterObject.preserveAspectRatio, parameterObject.stylingAttributes);
             newDiamond.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7636,22 +7805,42 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newDiamond, drawnDiamond);
 
-            return this.addElement(newDiamond, layer);
+            return this.addElement(newDiamond, parameterObject.layer);
         }
+
+        /**
+         * Draw a new text with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x, y, text, stylingAttributes, fontStylingAttributes, and layer.
+         */
+
     }, {
-        key: 'text',
-        value: function text() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-
-            var _text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "This is an example text";
-
-            var fontStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _fontStylingAttributes2.default();
-            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+        key: 'txt',
+        value: function txt(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x' in parameterObject)) {
+                parameterObject.x = 10;
+            }
+            if (!('y' in parameterObject)) {
+                parameterObject.y = 10;
+            }
+            if (!('text' in parameterObject)) {
+                parameterObject.text = "This is an example text";
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttributes = new _stylingAttributes2.default(1, "black", "black");
+            }
+            if (!('fontStylingAttributes' in parameterObject)) {
+                parameterObject.fontStylingAttributes = new _fontStylingAttributes2.default();
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new text and set its id.
-            var newText = new _text3.default(x, y, "", undefined, fontStylingAttributes);
+            var newText = new _text2.default(parameterObject.x, parameterObject.y, parameterObject.text, parameterObject.stylingAttributes, parameterObject.fontStylingAttributes);
             newText.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7661,28 +7850,56 @@ var SVGArea = function (_AreaDefaults) {
             this.svg.appendChild(drawnText);
 
             newText.drawn = drawnText;
-            newText.text = _text; // Recalculate the text width calling a listener.
-            //newText.calculateDimensions();
+            newText.text = parameterObject.text; // Recalculate the text width calling a listener.
 
             this.registerEvents(newText, drawnText);
 
-            return this.addElement(newText, layer);
+            return this.addElement(newText, parameterObject.layer);
         }
+
+        /**
+         * @see {@link txt}
+         */
+
     }, {
-        key: 'image',
-        value: function image() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
-            var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
+        key: 'text',
+        value: function text(parameterObject) {
+            return this.txt(parameterObject);
+        }
 
-            var _image = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+        /**
+         * Draw a new image with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x, y, width, height, image, and layer.
+         */
 
-            var layer = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
+    }, {
+        key: 'img',
+        value: function img(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x' in parameterObject)) {
+                parameterObject.x = 10;
+            }
+            if (!('y' in parameterObject)) {
+                parameterObject.y = 10;
+            }
+            if (!('width' in parameterObject)) {
+                parameterObject.width = 50;
+            }
+            if (!('height' in parameterObject)) {
+                parameterObject.height = 50;
+            }
+            if (!('image' in parameterObject)) {
+                parameterObject.image = null;
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new image and set its id.
-            var newImage = new _image3.default(x, y, width, height, _image);
+            var newImage = new _image2.default(parameterObject.x, parameterObject.y, parameterObject.width, parameterObject.height, parameterObject.image);
             newImage.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7695,19 +7912,49 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newImage, drawnImage);
 
-            return this.addElement(newImage, layer);
+            return this.addElement(newImage, parameterObject.layer);
         }
+
+        /**
+         * @see {@link img}
+         */
+
     }, {
-        key: 'vgroup',
-        value: function vgroup() {
-            var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var groupStyling = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _groupStylingAttributes2.default();
-            var layer = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+        key: 'image',
+        value: function image(parameterObject) {
+            return this.img(parameterObject);
+        }
+
+        /**
+         * Draw a new vertical group with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x, y, stylingAttributes, groupStylingAttributes, and layer.
+         */
+
+    }, {
+        key: 'vGroup',
+        value: function vGroup(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x' in parameterObject)) {
+                parameterObject.x = 10;
+            }
+            if (!('y' in parameterObject)) {
+                parameterObject.y = 10;
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttibutes = new _stylingAttributes2.default();
+            }
+            if (!('groupStylingAttributes' in parameterObject)) {
+                parameterObject.groupStylingAttributes = new _groupStylingAttributes2.default();
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new vertical group and set its id.
-            var newVGroup = new _verticalGroup2.default(x, y, undefined, groupStyling);
+            var newVGroup = new _verticalGroup2.default(parameterObject.x, parameterObject.y, parameterObject.stylingAttributes, parameterObject.groupStylingAttributes);
             newVGroup.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7720,20 +7967,55 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newVGroup, drawnVGroup);
 
-            return this.addElement(newVGroup);
+            return this.addElement(newVGroup, parameterObject.layer);
         }
+
+        /**
+         * @see {@link vGroup}
+         */
+
     }, {
-        key: 'linearGroup',
-        value: function linearGroup() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-            var layer = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+        key: 'verticalGroup',
+        value: function verticalGroup(parameterObject) {
+            return this.vGroup(parameterObject);
+        }
+
+        /**
+         * Draw a new linear group with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, stylingAttributes, groupStylingAttributes, and layer.
+         */
+
+    }, {
+        key: 'lGroup',
+        value: function lGroup(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x1' in parameterObject)) {
+                parameterObject.x1 = 10;
+            }
+            if (!('y1' in parameterObject)) {
+                parameterObject.y1 = 10;
+            }
+            if (!('x2' in parameterObject)) {
+                parameterObject.x2 = 100;
+            }
+            if (!('y2' in parameterObject)) {
+                parameterObject.y2 = 100;
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttributes = new _stylingAttributes2.default();
+            }
+            if (!('groupStylingAttributes' in parameterObject)) {
+                parameterObject.groupStylingAttributes = new _groupStylingAttributes2.default(0, 0);
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new linear group and set its id.
-            var newLinearGroup = new _linearGroup2.default(x1, y1, x2, y2, undefined, new _groupStylingAttributes2.default(0, 0));
+            var newLinearGroup = new _linearGroup2.default(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2, parameterObject.stylingAttributes, parameterObject.groupStylingAttributes);
             newLinearGroup.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7746,21 +8028,52 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newLinearGroup, drawnLinearGroup);
 
-            return this.addElement(newLinearGroup, layer);
+            return this.addElement(newLinearGroup, parameterObject.layer);
         }
+
+        /**
+         * @see {@link lGroup}
+         */
+
+    }, {
+        key: 'linearGroup',
+        value: function linearGroup(parameterObject) {
+            return this.lGroup(parameterObject);
+        }
+
+        /**
+         * Draw a new line with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, stylingAttributes, and layer.
+         */
+
     }, {
         key: 'line',
-        value: function line() {
-            var x1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-            var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-            var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
-            var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 10;
-            var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
-            var layer = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
+        value: function line(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('x1' in parameterObject)) {
+                parameterObject.x1 = 10;
+            }
+            if (!('y1' in parameterObject)) {
+                parameterObject.y1 = 10;
+            }
+            if (!('x2' in parameterObject)) {
+                parameterObject.x2 = 100;
+            }
+            if (!('y2' in parameterObject)) {
+                parameterObject.y2 = 10;
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttributes = new _stylingAttributes2.default();
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new line and set its id.
-            var newLine = new _line2.default(x1, y1, x2, y2, stylingAttributes);
+            var newLine = new _line2.default(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2, parameterObject.stylingAttributes);
             newLine.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7773,18 +8086,32 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newLine, drawnLine);
 
-            return this.addElement(newLine, layer);
+            return this.addElement(newLine, parameterObject.layer);
         }
+
+        /**
+         * Draw a new poly line with the specified parameters.
+         * @param parameterObject An object with the following optional attributes: stylingAttributes and layer.
+         * @param pairOfCoordinates An undefined odd number of coordinates (x and y).
+         */
+
     }, {
         key: 'polyLine',
-        value: function polyLine() {
-            var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1, "black", "none");
-            var layer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        value: function polyLine(parameterObject, pairOfCoordinates) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('stylingAttributes' in parameterObject)) {
+                parameterObject.stylingAttributes = new _stylingAttributes2.default(1, "black", "none");
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new line and set its id.
             var coordinates = Array.from(arguments).slice(1);
-            var newPolyline = new _polyline2.default(stylingAttributes, coordinates);
+            var newPolyline = new _polyline2.default(parameterObject.stylingAttributes, coordinates);
             newPolyline.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7797,17 +8124,31 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newPolyline, drawnLine);
 
-            return this.addElement(newPolyline, layer);
+            return this.addElement(newPolyline, parameterObject.layer);
         }
+
+        /**
+         * Draw a new box vertices decorator with the specified parameters.
+         * @param parameterObject An object with the following required attributes: decorated; and the following optional attributes: layer.
+         */
+
     }, {
         key: 'boxVerticesDecorator',
-        value: function boxVerticesDecorator(decorated) {
-            var layer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        value: function boxVerticesDecorator(parameterObject) {
+            if (!parameterObject || parameterObject === null) {
+                parameterObject = {};
+            }
+            if (!('decorated' in parameterObject)) {
+                throw "An object to decorated is required to create a new Box Vertices Decorator";
+            }
+            if (!('layer' in parameterObject)) {
+                parameterObject.layer = this.topLayer;
+            }
 
             //*****************************
             // Create a new box vertices decorator and set its id.
-            var newBoxVerticesDecorator = new _boxVerticesDecorator2.default(decorated);
-            newBoxVerticesDecorator.id = decorated.id;
+            var newBoxVerticesDecorator = new _boxVerticesDecorator2.default(parameterObject.decorated);
+            newBoxVerticesDecorator.id = parameterObject.decorated.id;
 
             var lookAndFeel = new _lookAndFeel2.default();
             var drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
@@ -7820,7 +8161,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
 
-            return this.addElement(newBoxVerticesDecorator, layer);
+            return this.addElement(newBoxVerticesDecorator, parameterObject.layer);
         }
     }, {
         key: 'registerEvents',

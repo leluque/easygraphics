@@ -12,13 +12,14 @@ import StylingAttributes from './styling-attributes.js';
 import ChangeListener from "./change-listener";
 import {notifyListeners} from "./util";
 
+
 /**
  * This class implements the default behaviour of graphical elements.
  * It is the base class for all graphical elements.
  */
 export default class GraphicalElement {
 
-    constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1) {
+    constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1, preserveAspectRatio = false) {
         this._x = x;
         this._y = y;
         this._minWidth = 1;
@@ -51,6 +52,16 @@ export default class GraphicalElement {
         this._onMouseDown = null;
         this._onMouseMove = null;
         this._onMouseUp = null;
+
+        this._preserveAspectRatio = preserveAspectRatio;
+    }
+
+    get preserveAspectRatio() {
+        return this._preserveAspectRatio;
+    }
+
+    set preserveAspectRatio(value) {
+        this._preserveAspectRatio = value;
     }
 
     static get PARENT() {
@@ -87,11 +98,18 @@ export default class GraphicalElement {
 
     set width(value) {
         if (value >= this.minWidth) {
+            let relation = this.height / this.width;
             let delta = value - this._width;
             this._width = value;
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             // Adjust the rotation center based on its current value and the variation of width.
             this.rotationCenterX += delta;
+            // Preserve the aspect ratio?
+            if(this.preserveAspectRatio) {
+                this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
+                this.height = value * relation;
+                this.preserveAspectRatio = true;
+            }
             this.enableChangeNotifications();
             this.notifyListeners(ChangeListener.DIMENSION);
         }
@@ -114,12 +132,19 @@ export default class GraphicalElement {
 
     set height(value) {
         if (value >= this.minHeight) {
+            let relation = this.width / this.height;
             let delta = value - this._height;
             this._height = value;
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             // Adjust the rotation center based on its current value and the variation of height.
             this.rotationCenterX += delta;
             this.rotationCenterY = this.y + this.height / 2;
+            // Preserve the aspect ratio?
+            if(this.preserveAspectRatio) {
+                this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
+                this.width = value * relation;
+                this.preserveAspectRatio = true;
+            }
             this.enableChangeNotifications();
             this.notifyListeners(ChangeListener.DIMENSION);
         }

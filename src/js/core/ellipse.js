@@ -23,8 +23,8 @@ import ChangeListener from "./change-listener";
  */
 export default class Ellipse extends GraphicalElement {
 
-    constructor(centerX = 0, centerY = 0, radiusX = 50, radiusY = 25, stylingAttributes = new StylingAttributes()) {
-        super(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes);
+    constructor(centerX = 0, centerY = 0, radiusX = 50, radiusY = 25, stylingAttributes = new StylingAttributes(), preserveAspectRatio = true) {
+        super(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes, -1000, preserveAspectRatio);
     }
 
     get width() {
@@ -35,7 +35,6 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.width = value;
         this.enableChangeNotifications();
-      //  super.height = value / 2; // Keep the proportion.
         this.notifyListeners(ChangeListener.DIMENSION);
     }
 
@@ -47,7 +46,6 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
         this.enableChangeNotifications();
-//        super.width = value * 2; // Keep the proportion.
         this.notifyListeners(ChangeListener.DIMENSION);
     }
 

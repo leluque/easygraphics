@@ -8,7 +8,6 @@
 
 'use strict';
 
-import GraphicalElement from './graphical-element.js';
 import ChangeListener from "./change-listener";
 
 export default class StylingAttributes {
@@ -19,8 +18,19 @@ export default class StylingAttributes {
         this._fillColor = fillColor;
         this._target = target;
         this._strokeDashArray = strokeDashArray;
-
+        //this._visible = true;
     }
+
+/*
+    get visible() {
+        return this._visible;
+    }
+
+    set visible(value) {
+        this._visible = value;
+        this.notifyTarget();
+    }
+*/
 
     get strokeWidth() {
         return this._strokeWidth;
@@ -72,7 +82,13 @@ export default class StylingAttributes {
     }
 
     toJSON() {
-        return {fill: this.fillColor, stroke: this.strokeColor, strokeWidth: this.strokeWidth};
+        //let visibilityValue = this.visible ? "visible" : "hidden";
+        return {
+            fill: this.fillColor,
+            stroke: this.strokeColor,
+            strokeWidth: this.strokeWidth
+        };
+        // visibility: visibilityValue
     }
 
     toString() {

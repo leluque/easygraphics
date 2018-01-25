@@ -27,7 +27,7 @@ export default class Layer {
 
         // Event listeners.
         // Functions that receive the layer, the old, and the new value as arguments.
-        this._onChangeId = null;
+        //this._onChangeId = null;
         this._onChangeVisibility = null;
         // Functions that receive the layer and the changed element as arguments.
         this._onAddElement = null;
@@ -38,7 +38,7 @@ export default class Layer {
         return this._id;
     }
 
-    set id(value) {
+   /* set id(value) {
         if (value !== this.id) {
             let oldValue = this.id;
             this._id = value;
@@ -46,7 +46,7 @@ export default class Layer {
         } else {
             this._id = value;
         }
-    }
+    }*/
 
     get visible() {
         return this._visible;
@@ -66,7 +66,7 @@ export default class Layer {
         }
     }
 
-    get onChangeId() {
+  /*  get onChangeId() {
         return this._onChangeId;
     }
 
@@ -76,7 +76,7 @@ export default class Layer {
             throw "Listener must be a function";
         }
         this._onChangeId = value;
-    }
+    }*/
 
     get onChangeVisibility() {
         return this._onChangeVisibility;
@@ -132,12 +132,16 @@ export default class Layer {
         return Object.keys(this._elements).length;
     }
 
-    get(id) {
+    getElement(id) {
         return this._elements[id];
     }
 
-    getIds() {
+    getElementsIds() {
         return Object.keys(this._elements);
+    }
+
+    get elements() {
+        return this._elements;
     }
 
     removeElement(element) {
@@ -153,9 +157,9 @@ export default class Layer {
         notifyListeners(this.onChangeVisibility, this, oldValue, newValue);
     }
 
-    notifyIdChange(oldValue, newValue) {
+ /*   notifyIdChange(oldValue, newValue) {
         notifyListeners(this.onChangeId, this, oldValue, newValue);
-    }
+    }*/
 
     notifyElementAddition(addedElement) {
         notifyListeners(this.onAddElement, this, addedElement);

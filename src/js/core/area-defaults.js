@@ -46,6 +46,13 @@ export default class AreaDefaults {
         return null;
     }
 
+    get topLayer() {
+        if (this._order.length > 0) {
+            return this._order[this._order.length-1];
+        }
+        return null;
+    }
+
     get onAddLayer() {
         return this._onAddLayer;
     }
