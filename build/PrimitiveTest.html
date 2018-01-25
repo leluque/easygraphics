@@ -229,14 +229,21 @@
 		box.style.position = 'absolute';  // position it
 		box.style.left = element.x + 'px';
 		box.style.top = element.y + 'px';  
+		box.style.width = element.width + 20 + 'px';  
 		box.value = element.text;
+		
+		let initialValue = element.text;
 		
 		document.body.appendChild(box); // add it as last child of body elemnt
 		box.focus();
-		box.onkeypress = function(e){
+		box.onkeydown = function(e){
 			if (!e) e = window.event;
 			var keyCode = e.keyCode || e.which;
-			if (keyCode == '13'){
+			if (keyCode == '13'){ // ENTER
+			  box.blur();
+			  return false;
+			} else if (keyCode == '27'){ // ESC
+			  box.value = initialValue;
 			  box.blur();
 			  return false;
 			}
