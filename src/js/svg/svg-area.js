@@ -478,7 +478,7 @@ export default class SVGArea extends AreaDefaults {
             parameterObject.y = 10;
         }
         if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttibutes = new StylingAttributes();
+            parameterObject.stylingAttributes = new StylingAttributes();
         }
         if (!('groupStylingAttributes' in parameterObject)) {
             parameterObject.groupStylingAttributes = new GroupStylingAttributes();

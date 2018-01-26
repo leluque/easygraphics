@@ -14,8 +14,14 @@ import StylingAttributes from "./styling-attributes";
 
 export default class Image extends GraphicalElement {
 
-    constructor(x = 10, y = 10, width = 20, height = 20, image = undefined, stylingAttributes = new StylingAttributes()) {
-        super(x, y, width, height, stylingAttributes);
+    constructor(imageX = 10, imageY = 10, imageWidth = 20, imageHeight = 20, image = undefined, imageStylingAttributes = new StylingAttributes()) {
+        super({
+            x: imageX,
+            y: imageY,
+            width: imageWidth,
+            height: imageHeight,
+            stylingAttributes: imageStylingAttributes
+        });
         this._image = image;
         this._boundingBoxFunction = this.defaultBoundingBox;
         this._widthToFitFunction = this.defaultWidthToFit;

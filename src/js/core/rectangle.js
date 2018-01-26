@@ -17,8 +17,8 @@ import StylingAttributes from "./styling-attributes";
  */
 export default class Rectangle extends GraphicalElement {
 
-    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, stylingAttributes = new StylingAttributes()) {
-        super(x1, y1, x2 - x1, y2 - y1, stylingAttributes);
+    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, rectangleStylingAttributes = new StylingAttributes()) {
+        super({x: x1, y: y1, width: x2 - x1, height: y2 - y1, stylingAttributes: rectangleStylingAttributes});
     }
 
     contentBox(width, height) { // For rectangles, it does not matter the current width/height of a group they may be a frame of.

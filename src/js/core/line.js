@@ -9,14 +9,18 @@
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
-import BoundingBox from './bounding-box.js';
 import StylingAttributes from './styling-attributes';
 
 export default class Line extends GraphicalElement {
 
-    constructor(x1 = 10, y1 = 10, x2 = 1, y2 = 1, stylingAttributes = new StylingAttributes(1)) {
-        super(x1, y1, x2 - x1 + stylingAttributes.strokeWidth, y2 - y1 + stylingAttributes.strokeWidth, stylingAttributes);
-        // (+1) was used because the line has at least one pixel even if their initial and final coordinate are equal.
+    constructor(x1 = 10, y1 = 10, x2 = 1, y2 = 1, lineStylingAttributes = new StylingAttributes(1)) {
+        super({
+            x: x1,
+            y: y1,
+            width: x2 - x1 + lineStylingAttributes.strokeWidth,
+            height: y2 - y1 + lineStylingAttributes.strokeWidth,
+            stylingAttributes: lineStylingAttributes
+        });
     }
 
     get x1() {

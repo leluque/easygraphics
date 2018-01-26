@@ -23,8 +23,8 @@ import ChangeListener from "./change-listener";
  */
 export default class Ellipse extends GraphicalElement {
 
-    constructor(centerX = 0, centerY = 0, radiusX = 50, radiusY = 25, stylingAttributes = new StylingAttributes(), preserveAspectRatio = true) {
-        super(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes, -1000, preserveAspectRatio);
+    constructor(centerX = 0, centerY = 0, radiusX = 50, radiusY = 25, ellipseStylingAttributes = new StylingAttributes(), ellipsePreserveAspectRatio = false) {
+        super({x: centerX - radiusX, y: centerY - radiusY, width: radiusX * 2, height: radiusY * 2, stylingAttributes: ellipseStylingAttributes, preserveAspectRatio: ellipsePreserveAspectRatio});
     }
 
     get width() {

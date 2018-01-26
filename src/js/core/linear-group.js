@@ -9,7 +9,6 @@
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
-import BoundingBox from './bounding-box.js';
 import StylingAttributes from "./styling-attributes";
 import GroupStylingAttributes from "./group-styling-attributes";
 import VerticalGroup from "./vertical-group";
@@ -17,9 +16,9 @@ import {angleBetween2Lines} from "./util";
 
 export default class LinearGroup extends GraphicalElement {
 
-    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, stylingAttributes = new StylingAttributes()) {
-        super(x1, y1, x2 - x1, y2 - y1, stylingAttributes);
-        this._verticalGroup = new VerticalGroup(x1, y1, stylingAttributes, new GroupStylingAttributes(0, 0));
+    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, linearGroupStylingAttributes = new StylingAttributes()) {
+        super({x: x1, y: y1, width: x2 - x1, height: y2 - y1, stylingAttributes: linearGroupStylingAttributes});
+        this._verticalGroup = new VerticalGroup(x1, y1, linearGroupStylingAttributes, new GroupStylingAttributes(0, 0));
     }
 
     get verticalGroup() {

@@ -18,10 +18,16 @@ import ChangeListener from "./change-listener";
  */
 export default class Diamond extends GraphicalElement {
 
-    constructor(x1 = 0, y1 = 0, width = 0, height = 0, preserveAspectRatio = false, stylingAttributes = new StylingAttributes()) {
+    constructor(x1 = 0, y1 = 0, width = 0, height = 0, diamondPreserveAspectRatio = false, diamondStylingAttributes = new StylingAttributes()) {
         // The third parameter is the horizontal diagonal and the fourth one is the vertical diagonal.
-        super(x1, y1, Math.sqrt(2 * Math.pow(width, 2)), Math.sqrt(2 * Math.pow(height, 2)), stylingAttributes);
-        this._preserveAspectRatio = preserveAspectRatio;
+        super({
+            x: x1,
+            y: y1,
+            width: Math.sqrt(2 * Math.pow(width, 2)),
+            height: Math.sqrt(2 * Math.pow(height, 2)),
+            stylingAttributes: diamondStylingAttributes,
+            preserveAspectRatio: diamondPreserveAspectRatio
+        });
     }
 
     get width() {
@@ -31,11 +37,11 @@ export default class Diamond extends GraphicalElement {
     set width(value) {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.width = value;
-/*
-        if (this.preserveAspectRatio) {
-            super.height = value;
-        }
-*/
+        /*
+                if (this.preserveAspectRatio) {
+                    super.height = value;
+                }
+        */
         this.enableChangeNotifications();
         this.notifyListeners(ChangeListener.DIMENSION);
     }
@@ -47,21 +53,13 @@ export default class Diamond extends GraphicalElement {
     set height(value) {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
-/*
-        if (this.preserveAspectRatio) {
-            super.width = value;
-        }
-*/
+        /*
+                if (this.preserveAspectRatio) {
+                    super.width = value;
+                }
+        */
         this.enableChangeNotifications();
         this.notifyListeners(ChangeListener.DIMENSION);
-    }
-
-    get preserveAspectRatio() {
-        return this._preserveAspectRatio;
-    }
-
-    set preserveAspectRatio(value) {
-        this._preserveAspectRatio = value;
     }
 
     boundaryX1For(givenY) {

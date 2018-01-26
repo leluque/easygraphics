@@ -17,8 +17,14 @@ import ChangeListener from "./change-listener";
 
 export default class VerticalGroup extends GraphicalElement {
 
-    constructor(x = 0, y = 0, stylingAttributes = new StylingAttributes(), groupStylingAttributes = new GroupStylingAttributes()) {
-        super(x, y, 0, 0, stylingAttributes);
+    constructor(verticalGroupX = 0, verticalGroupY = 0, verticalGroupStylingAttributes = new StylingAttributes(), groupStylingAttributes = new GroupStylingAttributes()) {
+        super({
+            x: verticalGroupX,
+            y: verticalGroupY,
+            width: 0,
+            height: 0,
+            stylingAttributes: verticalGroupStylingAttributes
+        });
         this._groupStylingAttributes = groupStylingAttributes;
         this._children = [];
         this._resizePolicy = [];
@@ -35,17 +41,17 @@ export default class VerticalGroup extends GraphicalElement {
         this._fitContent = true;
     }
 
-    // It goes further the content area and touches the frame borders.
+    // The child goes further the content area and touches the frame borders.
     static get MATCH_PARENT() {
         return 3;
     }
 
-    // It does not use horizontal margins for elements.
+    // The child does not use horizontal margins for elements.
     static get MATCH_CONTENT_AREA() {
         return 2;
     }
 
-    // It uses horizontal margins for elements.
+    // The child uses the parent space minus the margins.
     static get FILL_SPACE() {
         return 1;
     }
@@ -340,11 +346,11 @@ export default class VerticalGroup extends GraphicalElement {
         return this._dimensionReadjustmentEnabled === 0;
     }
 
-/*
-    set dimensionReadjustmentEnabled(value) {
-        this._dimensionReadjustmentEnabled = value;
-    }
-*/
+    /*
+        set dimensionReadjustmentEnabled(value) {
+            this._dimensionReadjustmentEnabled = value;
+        }
+    */
 
     get fitContent() {
         return this._fitContent;

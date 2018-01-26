@@ -13,7 +13,7 @@ import GraphicalElement from "./graphical-element";
 export default class GraphicalElementDecorator extends GraphicalElement {
 
     constructor(decorated) {
-        super(decorated.x, decorated.y, decorated.width, decorated.height);
+        super({x: decorated.x, y: decorated.y, width: decorated.width, height: decorated.height});
         this._decorated = decorated;
     }
 
@@ -139,13 +139,13 @@ export default class GraphicalElementDecorator extends GraphicalElement {
         this._decorated.id = value;
     }
 
-/*    get drawn() {
-        return this._decorated.drawn;
-    }
+    /*    get drawn() {
+            return this._decorated.drawn;
+        }
 
-    set drawn(value) {
-        this._decorated.drawn = value;
-    }*/
+        set drawn(value) {
+            this._decorated.drawn = value;
+        }*/
 
     get changeListeners() {
         return this._decorated.changeListeners;

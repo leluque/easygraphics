@@ -15,12 +15,12 @@ import Point from "./point";
 
 export default class PolyLine extends GraphicalElement {
 
-    constructor(stylingAttributes = new StylingAttributes(1)) {
-        super(0, 0, 0, 0, stylingAttributes);
+    constructor(polyLineStylingAttributes = new StylingAttributes(1)) {
+        super({x: 0, y: 0, width: 0, height: 0, stylingAttributes: polyLineStylingAttributes});
         this._idCount = 1;
         this._points = [];
         let coordinates = Array.from(arguments).slice(1);
-        if(Array.isArray(coordinates)) {
+        if (Array.isArray(coordinates)) {
             coordinates = coordinates[0]; // SVGArea may have passed it as an array.
         }
 

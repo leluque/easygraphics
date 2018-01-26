@@ -21,8 +21,14 @@ import StylingAttributes from "./styling-attributes";
 export default class Circle
     extends GraphicalElement {
 
-    constructor(centerX = 0, centerY = 0, radius = 50, stylingAttributes = new StylingAttributes()) {
-        super(centerX - radius, centerY - radius, radius * 2, radius * 2, stylingAttributes);
+    constructor(centerX = 0, centerY = 0, radius = 50, circleStylingAttributes = new StylingAttributes()) {
+        super({
+            x: centerX - radius,
+            y: centerY - radius,
+            width: radius * 2,
+            height: radius * 2,
+            stylingAttributes: circleStylingAttributes
+        });
     }
 
     get centerX() {

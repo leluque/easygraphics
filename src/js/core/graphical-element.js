@@ -10,8 +10,7 @@
 
 import StylingAttributes from './styling-attributes.js';
 import ChangeListener from "./change-listener";
-import {notifyListeners} from "./util";
-
+import {notifyListeners, validateArgumentsObject} from "./util";
 
 /**
  * This class implements the default behaviour of graphical elements.
@@ -19,16 +18,30 @@ import {notifyListeners} from "./util";
  */
 export default class GraphicalElement {
 
-    constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1, preserveAspectRatio = false) {
-        this._x = x;
-        this._y = y;
+    //constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1, preserveAspectRatio = false) {
+    constructor(argumentsObject) {
+        if (!argumentsObject || argumentsObject === null) {
+            argumentsObject = {};
+        }
+        validateArgumentsObject(argumentsObject, 'id', -1);
+        validateArgumentsObject(argumentsObject, 'x', 0);
+        validateArgumentsObject(argumentsObject, 'y', 0);
+        validateArgumentsObject(argumentsObject, 'width', 7);
+        validateArgumentsObject(argumentsObject, 'height', 7);
+        validateArgumentsObject(argumentsObject, 'stylingAttributes', function () {
+            return new StylingAttributes();
+        });
+        validateArgumentsObject(argumentsObject, 'preserveAspectRatio', false);
+
+        this._x = argumentsObject.x;
+        this._y = argumentsObject.y;
         this._minWidth = 1;
-        this._width = width;
+        this._width = argumentsObject.width;
         this._minHeight = 1;
-        this._height = height;
-        this._stylingAttributes = stylingAttributes;
+        this._height = argumentsObject.height;
+        this._stylingAttributes = argumentsObject.stylingAttributes;
         this._stylingAttributes.target = this; // Bidirectional navigation.
-        this._id = id;
+        this._id = argumentsObject.id;
         this._drawn = null; // A reference to the shape drawn on a drawing area (in case of svg, for example).
         this._changeListeners = []; // A graphical element may have many change listeners.
         this._changeNotificationsEnabled = 0; // Must listeners be notified about changes?
@@ -36,8 +49,8 @@ export default class GraphicalElement {
                                               // Any value greater than 0 means a recursive call to
                                               // disable change notifications.
         this._rotation = 0; // Rotation angle in degrees.
-        this._rotationCenterX = x + width / 2; // The rotation point x-coordinate.
-        this._rotationCenterY = y + height / 2; // The rotation point y-coordinate.
+        this._rotationCenterX = argumentsObject.x + argumentsObject.width / 2; // The rotation reference point x-coordinate.
+        this._rotationCenterY = argumentsObject.y + argumentsObject.height / 2; // The rotation reference point y-coordinate.
         this._tag = null; // Additional information about the graphical element.
         // Define a new object to store additional information.
         // It works like a map, but with complexity on search of O(1).
@@ -53,7 +66,11 @@ export default class GraphicalElement {
         this._onMouseMove = null;
         this._onMouseUp = null;
 
-        this._preserveAspectRatio = preserveAspectRatio;
+        this._preserveAspectRatio = argumentsObject.preserveAspectRatio;
+    }
+
+    static get PARENT() {
+        return "parent";
     }
 
     get preserveAspectRatio() {
@@ -62,10 +79,6 @@ export default class GraphicalElement {
 
     set preserveAspectRatio(value) {
         this._preserveAspectRatio = value;
-    }
-
-    static get PARENT() {
-        return "parent";
     }
 
     get x() {
@@ -105,7 +118,7 @@ export default class GraphicalElement {
             // Adjust the rotation center based on its current value and the variation of width.
             this.rotationCenterX += delta;
             // Preserve the aspect ratio?
-            if(this.preserveAspectRatio) {
+            if (this.preserveAspectRatio) {
                 this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
                 this.height = value * relation;
                 this.preserveAspectRatio = true;
@@ -140,7 +153,7 @@ export default class GraphicalElement {
             this.rotationCenterX += delta;
             this.rotationCenterY = this.y + this.height / 2;
             // Preserve the aspect ratio?
-            if(this.preserveAspectRatio) {
+            if (this.preserveAspectRatio) {
                 this.preserveAspectRatio = false; // Necessary to avoid recursive calls.
                 this.width = value * relation;
                 this.preserveAspectRatio = true;

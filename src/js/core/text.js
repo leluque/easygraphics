@@ -10,7 +10,6 @@
 
 import GraphicalElement from './graphical-element.js';
 import StylingAttributes from './styling-attributes.js';
-import BoundingBox from './bounding-box.js';
 import FontStylingAttributes from "./font-styling-attributes";
 import ChangeListener from "./change-listener";
 
@@ -19,8 +18,8 @@ import ChangeListener from "./change-listener";
  */
 export default class Text extends GraphicalElement {
 
-    constructor(x = 10, y = 10, text = "Text", stylingAttributes = new StylingAttributes(1, "black", "black"), fontStylingAttributes = new FontStylingAttributes()) {
-        super(x, y, undefined, undefined, stylingAttributes);
+    constructor(textX = 10, textY = 10, text = "Text", textStylingAttributes = new StylingAttributes(1, "black", "black"), fontStylingAttributes = new FontStylingAttributes()) {
+        super({x: textX, y: textY, stylingAttributes: textStylingAttributes});
         this._text = text;
         this._fontStylingAttributes = fontStylingAttributes;
         this._fontStylingAttributes.target = this;

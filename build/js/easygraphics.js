@@ -198,7 +198,7 @@ var _changeListener = __webpack_require__(0);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -209,26 +209,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * It is the base class for all graphical elements.
  */
 var GraphicalElement = function () {
-    function GraphicalElement() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 7;
-        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 7;
-        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
-        var id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : -1;
-        var preserveAspectRatio = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
 
+    //constructor(x = 0, y = 0, width = 7, height = 7, stylingAttributes = new StylingAttributes(), id = -1, preserveAspectRatio = false) {
+    function GraphicalElement(argumentsObject) {
         _classCallCheck(this, GraphicalElement);
 
-        this._x = x;
-        this._y = y;
+        if (!argumentsObject || argumentsObject === null) {
+            argumentsObject = {};
+        }
+        (0, _util.validateArgumentsObject)(argumentsObject, 'id', -1);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'x', 0);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'y', 0);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'width', 7);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'height', 7);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'stylingAttributes', function () {
+            return new _stylingAttributes2.default();
+        });
+        (0, _util.validateArgumentsObject)(argumentsObject, 'preserveAspectRatio', false);
+
+        this._x = argumentsObject.x;
+        this._y = argumentsObject.y;
         this._minWidth = 1;
-        this._width = width;
+        this._width = argumentsObject.width;
         this._minHeight = 1;
-        this._height = height;
-        this._stylingAttributes = stylingAttributes;
+        this._height = argumentsObject.height;
+        this._stylingAttributes = argumentsObject.stylingAttributes;
         this._stylingAttributes.target = this; // Bidirectional navigation.
-        this._id = id;
+        this._id = argumentsObject.id;
         this._drawn = null; // A reference to the shape drawn on a drawing area (in case of svg, for example).
         this._changeListeners = []; // A graphical element may have many change listeners.
         this._changeNotificationsEnabled = 0; // Must listeners be notified about changes?
@@ -236,8 +243,8 @@ var GraphicalElement = function () {
         // Any value greater than 0 means a recursive call to
         // disable change notifications.
         this._rotation = 0; // Rotation angle in degrees.
-        this._rotationCenterX = x + width / 2; // The rotation point x-coordinate.
-        this._rotationCenterY = y + height / 2; // The rotation point y-coordinate.
+        this._rotationCenterX = argumentsObject.x + argumentsObject.width / 2; // The rotation reference point x-coordinate.
+        this._rotationCenterY = argumentsObject.y + argumentsObject.height / 2; // The rotation reference point y-coordinate.
         this._tag = null; // Additional information about the graphical element.
         // Define a new object to store additional information.
         // It works like a map, but with complexity on search of O(1).
@@ -253,7 +260,7 @@ var GraphicalElement = function () {
         this._onMouseMove = null;
         this._onMouseUp = null;
 
-        this._preserveAspectRatio = preserveAspectRatio;
+        this._preserveAspectRatio = argumentsObject.preserveAspectRatio;
     }
 
     _createClass(GraphicalElement, [{
@@ -930,6 +937,299 @@ exports.default = DefaultDrawer;
 
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GeneralPositionChangeListener = function (_ChangeListener) {
+    _inherits(GeneralPositionChangeListener, _ChangeListener);
+
+    function GeneralPositionChangeListener() {
+        _classCallCheck(this, GeneralPositionChangeListener);
+
+        return _possibleConstructorReturn(this, (GeneralPositionChangeListener.__proto__ || Object.getPrototypeOf(GeneralPositionChangeListener)).call(this, _changeListener2.default.POSITION));
+    }
+
+    _createClass(GeneralPositionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            this.changeX(target);
+            this.changeY(target);
+        }
+    }, {
+        key: 'changeX',
+        value: function changeX(target) {
+            target.drawn.setAttribute("x", target.x);
+        }
+    }, {
+        key: 'changeY',
+        value: function changeY(target) {
+            target.drawn.setAttribute("y", target.y);
+        }
+    }]);
+
+    return GeneralPositionChangeListener;
+}(_changeListener2.default);
+
+exports.default = GeneralPositionChangeListener;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GeneralDimensionChangeListener = function (_ChangeListener) {
+    _inherits(GeneralDimensionChangeListener, _ChangeListener);
+
+    function GeneralDimensionChangeListener() {
+        _classCallCheck(this, GeneralDimensionChangeListener);
+
+        return _possibleConstructorReturn(this, (GeneralDimensionChangeListener.__proto__ || Object.getPrototypeOf(GeneralDimensionChangeListener)).call(this, _changeListener2.default.DIMENSION));
+    }
+
+    _createClass(GeneralDimensionChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            this.changeWidth(target);
+            this.changeHeight(target);
+        }
+    }, {
+        key: 'changeWidth',
+        value: function changeWidth(target) {
+            target.drawn.setAttribute("width", target.width);
+        }
+    }, {
+        key: 'changeHeight',
+        value: function changeHeight(target) {
+            target.drawn.setAttribute("height", target.height);
+        }
+    }]);
+
+    return GeneralDimensionChangeListener;
+}(_changeListener2.default);
+
+exports.default = GeneralDimensionChangeListener;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _changeListener = __webpack_require__(0);
+
+var _changeListener2 = _interopRequireDefault(_changeListener);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var StyleChangeListener = function (_ChangeListener) {
+    _inherits(StyleChangeListener, _ChangeListener);
+
+    function StyleChangeListener() {
+        _classCallCheck(this, StyleChangeListener);
+
+        return _possibleConstructorReturn(this, (StyleChangeListener.__proto__ || Object.getPrototypeOf(StyleChangeListener)).call(this, _changeListener2.default.STYLING));
+    }
+
+    _createClass(StyleChangeListener, [{
+        key: 'update',
+        value: function update(target) {
+            Object.assign(target.drawn.style, target.stylingAttributes.toJSON());
+        }
+    }]);
+
+    return StyleChangeListener;
+}(_changeListener2.default);
+
+exports.default = StyleChangeListener;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 03/07/2017.
+ */
+
+
+
+/**
+ * This method returns the angle in degrees between two lines.
+ * @param ax1 The first line x1 coordinate.
+ * @param ay1 The first line y1 coordinate.
+ * @param ax2 The first line x2 coordinate.
+ * @param ay2 The first line y2 coordinate.
+ * @param bx1 The second line x1 coordinate.
+ * @param by1 The second line y1 coordinate.
+ * @param bx2 The second line x2 coordinate.
+ * @param by2 The second line y2 coordinate.
+ * @returns {number} The angle in degrees between the two lines.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.angleBetween2Lines = angleBetween2Lines;
+exports.angleBetween2Vectors = angleBetween2Vectors;
+exports.toRadians = toRadians;
+exports.toDegrees = toDegrees;
+exports.notifyListeners = notifyListeners;
+exports.validateArgumentsObject = validateArgumentsObject;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
+    var angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
+    var angle2 = Math.atan2(by1 - by2, bx1 - bx2);
+    return toDegrees(Math.abs(angle1) - Math.abs(angle2));
+}
+
+/**
+ * This method calculates the angle in degrees between two vectors with origin at (0, 0).
+ * @param ax2 The x-coordinate of the second point (1st vector).
+ * @param ay2 The y-coordinate of the second point (1st vector).
+ * @param bx2 The x-coordinate of the second point (2nd vector).
+ * @param by2 The y-coordinate of the second point (2nd vector).
+ * @returns {number} The angle between the two vectors in degrees.
+ */
+function angleBetween2Vectors(ax2, ay2, bx2, by2) {
+    // See http://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
+
+    // Convert y cartesian coordinate to y drawing coordinate.
+    ay2 *= -1;
+    by2 *= -1;
+
+    // Calculate the length of each vector.
+    var lengthV1 = Math.sqrt(ax2 * ax2 + ay2 * ay2);
+    var lengthV2 = Math.sqrt(bx2 * bx2 + by2 * by2);
+
+    // Calculate the scalar product of the two vectors.
+    var scalarProduct = ax2 * bx2 + ay2 * by2;
+
+    // Calculate the cosine of the angle between the two vectors.
+    var cosine = scalarProduct / (lengthV1 * lengthV2);
+
+    // Find the angle based on the arccosine.
+    var angle = Math.acos(cosine);
+    return toDegrees(angle);
+}
+
+// Converts from degrees to radians.
+function toRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+// Converts from radians to degrees.
+function toDegrees(radians) {
+    return radians * 180 / Math.PI;
+}
+
+function notifyListeners(listener, target) {
+    if (listener !== null && listener) {
+        if (typeof listener === "function") {
+            listener.apply(undefined, [target].concat(_toConsumableArray(Array.prototype.slice.call(arguments, 2))));
+        } else {
+            throw "Callback is not a function: " + (typeof listener === "undefined" ? "undefined" : _typeof(listener));
+        }
+    }
+}
+
+function validateArgumentsObject(argumentsObject, key, defaultValue) {
+    if (!(key in argumentsObject)) {
+        if (typeof defaultValue === 'function') {
+            argumentsObject[key] = defaultValue();
+        } else {
+            argumentsObject[key] = defaultValue;
+        }
+    }
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+/**
+ * Created by Leandro Luque on 08/06/2017.
+ */
+
+
+
 /**
  * This class implements a bounding box.
  */
@@ -1005,288 +1305,6 @@ var BoundingBox = function () {
 }();
 
 exports.default = BoundingBox;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _changeListener = __webpack_require__(0);
-
-var _changeListener2 = _interopRequireDefault(_changeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GeneralPositionChangeListener = function (_ChangeListener) {
-    _inherits(GeneralPositionChangeListener, _ChangeListener);
-
-    function GeneralPositionChangeListener() {
-        _classCallCheck(this, GeneralPositionChangeListener);
-
-        return _possibleConstructorReturn(this, (GeneralPositionChangeListener.__proto__ || Object.getPrototypeOf(GeneralPositionChangeListener)).call(this, _changeListener2.default.POSITION));
-    }
-
-    _createClass(GeneralPositionChangeListener, [{
-        key: 'update',
-        value: function update(target) {
-            this.changeX(target);
-            this.changeY(target);
-        }
-    }, {
-        key: 'changeX',
-        value: function changeX(target) {
-            target.drawn.setAttribute("x", target.x);
-        }
-    }, {
-        key: 'changeY',
-        value: function changeY(target) {
-            target.drawn.setAttribute("y", target.y);
-        }
-    }]);
-
-    return GeneralPositionChangeListener;
-}(_changeListener2.default);
-
-exports.default = GeneralPositionChangeListener;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _changeListener = __webpack_require__(0);
-
-var _changeListener2 = _interopRequireDefault(_changeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GeneralDimensionChangeListener = function (_ChangeListener) {
-    _inherits(GeneralDimensionChangeListener, _ChangeListener);
-
-    function GeneralDimensionChangeListener() {
-        _classCallCheck(this, GeneralDimensionChangeListener);
-
-        return _possibleConstructorReturn(this, (GeneralDimensionChangeListener.__proto__ || Object.getPrototypeOf(GeneralDimensionChangeListener)).call(this, _changeListener2.default.DIMENSION));
-    }
-
-    _createClass(GeneralDimensionChangeListener, [{
-        key: 'update',
-        value: function update(target) {
-            this.changeWidth(target);
-            this.changeHeight(target);
-        }
-    }, {
-        key: 'changeWidth',
-        value: function changeWidth(target) {
-            target.drawn.setAttribute("width", target.width);
-        }
-    }, {
-        key: 'changeHeight',
-        value: function changeHeight(target) {
-            target.drawn.setAttribute("height", target.height);
-        }
-    }]);
-
-    return GeneralDimensionChangeListener;
-}(_changeListener2.default);
-
-exports.default = GeneralDimensionChangeListener;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _changeListener = __webpack_require__(0);
-
-var _changeListener2 = _interopRequireDefault(_changeListener);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var StyleChangeListener = function (_ChangeListener) {
-    _inherits(StyleChangeListener, _ChangeListener);
-
-    function StyleChangeListener() {
-        _classCallCheck(this, StyleChangeListener);
-
-        return _possibleConstructorReturn(this, (StyleChangeListener.__proto__ || Object.getPrototypeOf(StyleChangeListener)).call(this, _changeListener2.default.STYLING));
-    }
-
-    _createClass(StyleChangeListener, [{
-        key: 'update',
-        value: function update(target) {
-            Object.assign(target.drawn.style, target.stylingAttributes.toJSON());
-        }
-    }]);
-
-    return StyleChangeListener;
-}(_changeListener2.default);
-
-exports.default = StyleChangeListener;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 03/07/2017.
- */
-
-
-
-/**
- * This method returns the angle in degrees between two lines.
- * @param ax1 The first line x1 coordinate.
- * @param ay1 The first line y1 coordinate.
- * @param ax2 The first line x2 coordinate.
- * @param ay2 The first line y2 coordinate.
- * @param bx1 The second line x1 coordinate.
- * @param by1 The second line y1 coordinate.
- * @param bx2 The second line x2 coordinate.
- * @param by2 The second line y2 coordinate.
- * @returns {number} The angle in degrees between the two lines.
- */
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.angleBetween2Lines = angleBetween2Lines;
-exports.angleBetween2Vectors = angleBetween2Vectors;
-exports.toRadians = toRadians;
-exports.toDegrees = toDegrees;
-exports.notifyListeners = notifyListeners;
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
-    var angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
-    var angle2 = Math.atan2(by1 - by2, bx1 - bx2);
-    return toDegrees(Math.abs(angle1) - Math.abs(angle2));
-}
-
-/**
- * This method calculates the angle in degrees between two vectors with origin at (0, 0).
- * @param ax2 The x-coordinate of the second point (1st vector).
- * @param ay2 The y-coordinate of the second point (1st vector).
- * @param bx2 The x-coordinate of the second point (2nd vector).
- * @param by2 The y-coordinate of the second point (2nd vector).
- * @returns {number} The angle between the two vectors in degrees.
- */
-function angleBetween2Vectors(ax2, ay2, bx2, by2) {
-    // See http://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
-
-    // Convert y cartesian coordinate to y drawing coordinate.
-    ay2 *= -1;
-    by2 *= -1;
-
-    // Calculate the length of each vector.
-    var lengthV1 = Math.sqrt(ax2 * ax2 + ay2 * ay2);
-    var lengthV2 = Math.sqrt(bx2 * bx2 + by2 * by2);
-
-    // Calculate the scalar product of the two vectors.
-    var scalarProduct = ax2 * bx2 + ay2 * by2;
-
-    // Calculate the cosine of the angle between the two vectors.
-    var cosine = scalarProduct / (lengthV1 * lengthV2);
-
-    // Find the angle based on the arccosine.
-    var angle = Math.acos(cosine);
-    return toDegrees(angle);
-}
-
-// Converts from degrees to radians.
-function toRadians(degrees) {
-    return degrees * Math.PI / 180;
-}
-
-// Converts from radians to degrees.
-function toDegrees(radians) {
-    return radians * 180 / Math.PI;
-}
-
-function notifyListeners(listener, target) {
-    if (listener !== null && listener) {
-        if (typeof listener === "function") {
-            listener.apply(undefined, [target].concat(_toConsumableArray(Array.prototype.slice.call(arguments, 2))));
-        } else {
-            throw "Callback is not a function: " + (typeof listener === "undefined" ? "undefined" : _typeof(listener));
-        }
-    }
-}
 
 /***/ }),
 /* 9 */
@@ -1384,7 +1402,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -1411,11 +1429,11 @@ var Rectangle = function (_GraphicalElement) {
         var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
+        var rectangleStylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
 
         _classCallCheck(this, Rectangle);
 
-        return _possibleConstructorReturn(this, (Rectangle.__proto__ || Object.getPrototypeOf(Rectangle)).call(this, x1, y1, x2 - x1, y2 - y1, stylingAttributes));
+        return _possibleConstructorReturn(this, (Rectangle.__proto__ || Object.getPrototypeOf(Rectangle)).call(this, { x: x1, y: y1, width: x2 - x1, height: y2 - y1, stylingAttributes: rectangleStylingAttributes }));
     }
 
     _createClass(Rectangle, [{
@@ -1476,7 +1494,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -1508,14 +1526,20 @@ var VerticalGroup = function (_GraphicalElement) {
     _inherits(VerticalGroup, _GraphicalElement);
 
     function VerticalGroup() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var stylingAttributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _stylingAttributes2.default();
+        var verticalGroupX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var verticalGroupY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var verticalGroupStylingAttributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new _stylingAttributes2.default();
         var groupStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _groupStylingAttributes2.default();
 
         _classCallCheck(this, VerticalGroup);
 
-        var _this = _possibleConstructorReturn(this, (VerticalGroup.__proto__ || Object.getPrototypeOf(VerticalGroup)).call(this, x, y, 0, 0, stylingAttributes));
+        var _this = _possibleConstructorReturn(this, (VerticalGroup.__proto__ || Object.getPrototypeOf(VerticalGroup)).call(this, {
+            x: verticalGroupX,
+            y: verticalGroupY,
+            width: 0,
+            height: 0,
+            stylingAttributes: verticalGroupStylingAttributes
+        }));
 
         _this._groupStylingAttributes = groupStylingAttributes;
         _this._children = [];
@@ -1534,7 +1558,7 @@ var VerticalGroup = function (_GraphicalElement) {
         return _this;
     }
 
-    // It goes further the content area and touches the frame borders.
+    // The child goes further the content area and touches the frame borders.
 
 
     _createClass(VerticalGroup, [{
@@ -2326,7 +2350,7 @@ var VerticalGroup = function (_GraphicalElement) {
             return 3;
         }
 
-        // It does not use horizontal margins for elements.
+        // The child does not use horizontal margins for elements.
 
     }, {
         key: 'MATCH_CONTENT_AREA',
@@ -2334,7 +2358,7 @@ var VerticalGroup = function (_GraphicalElement) {
             return 2;
         }
 
-        // It uses horizontal margins for elements.
+        // The child uses the parent space minus the margins.
 
     }, {
         key: 'FILL_SPACE',
@@ -2456,7 +2480,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2754,7 +2778,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -2783,11 +2807,17 @@ var Circle = function (_GraphicalElement) {
         var centerX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var radius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
-        var stylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _stylingAttributes2.default();
+        var circleStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _stylingAttributes2.default();
 
         _classCallCheck(this, Circle);
 
-        return _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this, centerX - radius, centerY - radius, radius * 2, radius * 2, stylingAttributes));
+        return _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this, {
+            x: centerX - radius,
+            y: centerY - radius,
+            width: radius * 2,
+            height: radius * 2,
+            stylingAttributes: circleStylingAttributes
+        }));
     }
 
     _createClass(Circle, [{
@@ -2926,7 +2956,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -2962,12 +2992,12 @@ var Ellipse = function (_GraphicalElement) {
         var centerY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var radiusX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
         var radiusY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 25;
-        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
-        var preserveAspectRatio = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
+        var ellipseStylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
+        var ellipsePreserveAspectRatio = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
         _classCallCheck(this, Ellipse);
 
-        return _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this, centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2, stylingAttributes, -1000, preserveAspectRatio));
+        return _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this, { x: centerX - radiusX, y: centerY - radiusY, width: radiusX * 2, height: radiusY * 2, stylingAttributes: ellipseStylingAttributes, preserveAspectRatio: ellipsePreserveAspectRatio }));
     }
 
     _createClass(Ellipse, [{
@@ -3141,7 +3171,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -3172,17 +3202,20 @@ var Diamond = function (_GraphicalElement) {
         var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        var preserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-        var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default();
+        var diamondPreserveAspectRatio = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+        var diamondStylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default();
 
         _classCallCheck(this, Diamond);
 
-        var _this = _possibleConstructorReturn(this, (Diamond.__proto__ || Object.getPrototypeOf(Diamond)).call(this, x1, y1, Math.sqrt(2 * Math.pow(width, 2)), Math.sqrt(2 * Math.pow(height, 2)), stylingAttributes));
         // The third parameter is the horizontal diagonal and the fourth one is the vertical diagonal.
-
-
-        _this._preserveAspectRatio = preserveAspectRatio;
-        return _this;
+        return _possibleConstructorReturn(this, (Diamond.__proto__ || Object.getPrototypeOf(Diamond)).call(this, {
+            x: x1,
+            y: y1,
+            width: Math.sqrt(2 * Math.pow(width, 2)),
+            height: Math.sqrt(2 * Math.pow(height, 2)),
+            stylingAttributes: diamondStylingAttributes,
+            preserveAspectRatio: diamondPreserveAspectRatio
+        }));
     }
 
     _createClass(Diamond, [{
@@ -3278,14 +3311,6 @@ var Diamond = function (_GraphicalElement) {
             this.enableChangeNotifications();
             this.notifyListeners(_changeListener2.default.DIMENSION);
         }
-    }, {
-        key: 'preserveAspectRatio',
-        get: function get() {
-            return this._preserveAspectRatio;
-        },
-        set: function set(value) {
-            this._preserveAspectRatio = value;
-        }
     }]);
 
     return Diamond;
@@ -3322,10 +3347,6 @@ var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _boundingBox = __webpack_require__(4);
-
-var _boundingBox2 = _interopRequireDefault(_boundingBox);
-
 var _fontStylingAttributes = __webpack_require__(18);
 
 var _fontStylingAttributes2 = _interopRequireDefault(_fontStylingAttributes);
@@ -3349,15 +3370,15 @@ var Text = function (_GraphicalElement) {
     _inherits(Text, _GraphicalElement);
 
     function Text() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+        var textX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+        var textY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
         var text = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Text";
-        var stylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _stylingAttributes2.default(1, "black", "black");
+        var textStylingAttributes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new _stylingAttributes2.default(1, "black", "black");
         var fontStylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _fontStylingAttributes2.default();
 
         _classCallCheck(this, Text);
 
-        var _this = _possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, x, y, undefined, undefined, stylingAttributes));
+        var _this = _possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, { x: textX, y: textY, stylingAttributes: textStylingAttributes }));
 
         _this._text = text;
         _this._fontStylingAttributes = fontStylingAttributes;
@@ -3537,10 +3558,6 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
-
-var _boundingBox2 = _interopRequireDefault(_boundingBox);
-
 var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
@@ -3561,12 +3578,17 @@ var Line = function (_GraphicalElement) {
         var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
         var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
         var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
-        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
+        var lineStylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default(1);
 
         _classCallCheck(this, Line);
 
-        return _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, x1, y1, x2 - x1 + stylingAttributes.strokeWidth, y2 - y1 + stylingAttributes.strokeWidth, stylingAttributes));
-        // (+1) was used because the line has at least one pixel even if their initial and final coordinate are equal.
+        return _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, {
+            x: x1,
+            y: y1,
+            width: x2 - x1 + lineStylingAttributes.strokeWidth,
+            height: y2 - y1 + lineStylingAttributes.strokeWidth,
+            stylingAttributes: lineStylingAttributes
+        }));
     }
 
     _createClass(Line, [{
@@ -3637,7 +3659,7 @@ var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -3657,11 +3679,11 @@ var PolyLine = function (_GraphicalElement) {
     _inherits(PolyLine, _GraphicalElement);
 
     function PolyLine() {
-        var stylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1);
+        var polyLineStylingAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _stylingAttributes2.default(1);
 
         _classCallCheck(this, PolyLine);
 
-        var _this = _possibleConstructorReturn(this, (PolyLine.__proto__ || Object.getPrototypeOf(PolyLine)).call(this, 0, 0, 0, 0, stylingAttributes));
+        var _this = _possibleConstructorReturn(this, (PolyLine.__proto__ || Object.getPrototypeOf(PolyLine)).call(this, { x: 0, y: 0, width: 0, height: 0, stylingAttributes: polyLineStylingAttributes }));
 
         _this._idCount = 1;
         _this._points = [];
@@ -3828,7 +3850,7 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -3848,16 +3870,22 @@ var Image = function (_GraphicalElement) {
     _inherits(Image, _GraphicalElement);
 
     function Image() {
-        var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
-        var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
-        var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
+        var imageX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+        var imageY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+        var imageWidth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
+        var imageHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
         var image = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
-        var stylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default();
+        var imageStylingAttributes = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new _stylingAttributes2.default();
 
         _classCallCheck(this, Image);
 
-        var _this = _possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).call(this, x, y, width, height, stylingAttributes));
+        var _this = _possibleConstructorReturn(this, (Image.__proto__ || Object.getPrototypeOf(Image)).call(this, {
+            x: imageX,
+            y: imageY,
+            width: imageWidth,
+            height: imageHeight,
+            stylingAttributes: imageStylingAttributes
+        }));
 
         _this._image = image;
         _this._boundingBoxFunction = _this.defaultBoundingBox;
@@ -3960,10 +3988,6 @@ var _graphicalElement = __webpack_require__(1);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _boundingBox = __webpack_require__(4);
-
-var _boundingBox2 = _interopRequireDefault(_boundingBox);
-
 var _stylingAttributes = __webpack_require__(2);
 
 var _stylingAttributes2 = _interopRequireDefault(_stylingAttributes);
@@ -3976,7 +4000,7 @@ var _verticalGroup = __webpack_require__(11);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3994,13 +4018,13 @@ var LinearGroup = function (_GraphicalElement) {
         var y1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var x2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         var y2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        var stylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
+        var linearGroupStylingAttributes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new _stylingAttributes2.default();
 
         _classCallCheck(this, LinearGroup);
 
-        var _this = _possibleConstructorReturn(this, (LinearGroup.__proto__ || Object.getPrototypeOf(LinearGroup)).call(this, x1, y1, x2 - x1, y2 - y1, stylingAttributes));
+        var _this = _possibleConstructorReturn(this, (LinearGroup.__proto__ || Object.getPrototypeOf(LinearGroup)).call(this, { x: x1, y: y1, width: x2 - x1, height: y2 - y1, stylingAttributes: linearGroupStylingAttributes }));
 
-        _this._verticalGroup = new _verticalGroup2.default(x1, y1, stylingAttributes, new _groupStylingAttributes2.default(0, 0));
+        _this._verticalGroup = new _verticalGroup2.default(x1, y1, linearGroupStylingAttributes, new _groupStylingAttributes2.default(0, 0));
         return _this;
     }
 
@@ -4118,7 +4142,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4491,7 +4515,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 var _graphicalElement = __webpack_require__(1);
 
@@ -4700,7 +4724,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 var _layer = __webpack_require__(29);
 
@@ -4990,7 +5014,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5037,7 +5061,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5112,7 +5136,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5169,7 +5193,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5216,7 +5240,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5276,7 +5300,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5335,7 +5359,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5396,7 +5420,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -5453,7 +5477,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5500,7 +5524,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5575,7 +5599,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5634,7 +5658,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5679,7 +5703,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5726,7 +5750,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5785,7 +5809,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -5848,7 +5872,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -6295,7 +6319,7 @@ var _circlePositionChangeListener = __webpack_require__(38);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6375,7 +6399,7 @@ var _ellipsePositionChangeListener = __webpack_require__(33);
 
 var _ellipsePositionChangeListener2 = _interopRequireDefault(_ellipsePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6456,7 +6480,7 @@ var _rectanglePositionChangeListener = __webpack_require__(31);
 
 var _rectanglePositionChangeListener2 = _interopRequireDefault(_rectanglePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6537,7 +6561,7 @@ var _diamondPositionChangeListener = __webpack_require__(32);
 
 var _diamondPositionChangeListener2 = _interopRequireDefault(_diamondPositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6634,7 +6658,7 @@ var _fontChangeListener = __webpack_require__(50);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6919,7 +6943,7 @@ var _linePositionChangeListener = __webpack_require__(36);
 
 var _linePositionChangeListener2 = _interopRequireDefault(_linePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -6994,7 +7018,7 @@ var _defaultDrawer = __webpack_require__(3);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -7084,7 +7108,7 @@ var _polylinePositionChangeListener = __webpack_require__(37);
 
 var _polylinePositionChangeListener2 = _interopRequireDefault(_polylinePositionChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -7483,7 +7507,7 @@ var _areaDefaults = __webpack_require__(30);
 
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 var _stylingAttributes = __webpack_require__(2);
 
@@ -7943,7 +7967,7 @@ var SVGArea = function (_AreaDefaults) {
                 parameterObject.y = 10;
             }
             if (!('stylingAttributes' in parameterObject)) {
-                parameterObject.stylingAttibutes = new _stylingAttributes2.default();
+                parameterObject.stylingAttributes = new _stylingAttributes2.default();
             }
             if (!('groupStylingAttributes' in parameterObject)) {
                 parameterObject.groupStylingAttributes = new _groupStylingAttributes2.default();
@@ -8251,7 +8275,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GraphicalElement = exports.BoxVerticesDecorator = exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStylingAttributes = exports.FontStylingAttributes = exports.StylingAttributes = undefined;
 
-var _util = __webpack_require__(8);
+var _util = __webpack_require__(7);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -8259,7 +8283,7 @@ var _point = __webpack_require__(24);
 
 var _point2 = _interopRequireDefault(_point);
 
-var _boundingBox = __webpack_require__(4);
+var _boundingBox = __webpack_require__(8);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
@@ -8355,7 +8379,7 @@ var _areaDefaults = __webpack_require__(30);
 
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
-var _generalPositionChangeListener = __webpack_require__(5);
+var _generalPositionChangeListener = __webpack_require__(4);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
@@ -8391,7 +8415,7 @@ var _circlePositionChangeListener = __webpack_require__(38);
 
 var _circlePositionChangeListener2 = _interopRequireDefault(_circlePositionChangeListener);
 
-var _generalDimensionChangeListener = __webpack_require__(6);
+var _generalDimensionChangeListener = __webpack_require__(5);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
@@ -8447,7 +8471,7 @@ var _fontChangeListener = __webpack_require__(50);
 
 var _fontChangeListener2 = _interopRequireDefault(_fontChangeListener);
 
-var _styleChangeListener = __webpack_require__(7);
+var _styleChangeListener = __webpack_require__(6);
 
 var _styleChangeListener2 = _interopRequireDefault(_styleChangeListener);
 
@@ -8575,7 +8599,7 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
     function GraphicalElementDecorator(decorated) {
         _classCallCheck(this, GraphicalElementDecorator);
 
-        var _this = _possibleConstructorReturn(this, (GraphicalElementDecorator.__proto__ || Object.getPrototypeOf(GraphicalElementDecorator)).call(this, decorated.x, decorated.y, decorated.width, decorated.height));
+        var _this = _possibleConstructorReturn(this, (GraphicalElementDecorator.__proto__ || Object.getPrototypeOf(GraphicalElementDecorator)).call(this, { x: decorated.x, y: decorated.y, width: decorated.width, height: decorated.height }));
 
         _this._decorated = decorated;
         return _this;
@@ -8820,8 +8844,7 @@ var GraphicalElementDecorator = function (_GraphicalElement) {
         /*    get drawn() {
                 return this._decorated.drawn;
             }
-        
-            set drawn(value) {
+              set drawn(value) {
                 this._decorated.drawn = value;
             }*/
 

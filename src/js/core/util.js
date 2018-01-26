@@ -75,3 +75,13 @@ export function notifyListeners(listener, target) {
         }
     }
 }
+
+export function validateArgumentsObject(argumentsObject, key, defaultValue) {
+    if (!(key in argumentsObject)) {
+        if (typeof(defaultValue) === 'function') {
+            argumentsObject[key] = defaultValue();
+        } else {
+            argumentsObject[key] = defaultValue;
+        }
+    }
+}
