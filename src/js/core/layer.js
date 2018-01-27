@@ -16,7 +16,7 @@ import GraphicalElement from "./graphical-element";
  */
 export default class Layer {
 
-    constructor(id, visible) {
+    constructor({id, visible}={}) {
         this._id = id;
         this._visible = visible ? visible : true;
 

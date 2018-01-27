@@ -120,13 +120,13 @@ export default class SVGArea extends AreaDefaults {
 
     addLayer(layer) {
         layer.onChangeVisibility = this.handleLayerVisibilityChange.bind(this);
-        return super.addLayer(layer);
+        return super.addLayer({layer: layer});
     }
 
     handleLayerVisibilityChange(layer, oldValue, newValue) {
         if (oldValue !== newValue) {
             if (newValue === true) {
-                // Make visible all elements in the layer.
+                // Make all elements in the layer visible.
                 Object.keys(layer.elements).forEach(function (id) {
                     layer.getElement(id).stylingAttributes.visible = true;
                 });
@@ -176,27 +176,15 @@ export default class SVGArea extends AreaDefaults {
 
     /**
      * Draw a new circle with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: centerX, centerY, radius, and layer.
+     * @param centerX
+     * @param centerY
+     * @param radius
+     * @param layer
      */
-    circ(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('centerX' in parameterObject)) {
-            parameterObject.centerX = 50;
-        }
-        if (!('centerY' in parameterObject)) {
-            parameterObject.centerY = 50;
-        }
-        if (!('radius' in parameterObject)) {
-            parameterObject.radius = 50;
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
+    circ({centerX = 0, centerY = 0, radius = 7, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new circle and set its id.
-        let newCircle = new Circle(parameterObject.centerX, parameterObject.centerY, parameterObject.radius);
+        let newCircle = new Circle(centerX, centerY, radius);
         newCircle.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -209,7 +197,7 @@ export default class SVGArea extends AreaDefaults {
 
         this.registerEvents(newCircle, drawnCircle);
 
-        return this.addElement(newCircle, parameterObject.layer);
+        return this.addElement(newCircle, layer);
     }
 
     /**

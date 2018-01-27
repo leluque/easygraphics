@@ -220,8 +220,8 @@ var GraphicalElement = function () {
         (0, _util.validateArgumentsObject)(argumentsObject, 'id', -1);
         (0, _util.validateArgumentsObject)(argumentsObject, 'x', 0);
         (0, _util.validateArgumentsObject)(argumentsObject, 'y', 0);
-        (0, _util.validateArgumentsObject)(argumentsObject, 'width', 7);
-        (0, _util.validateArgumentsObject)(argumentsObject, 'height', 7);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'width', 0);
+        (0, _util.validateArgumentsObject)(argumentsObject, 'height', 0);
         (0, _util.validateArgumentsObject)(argumentsObject, 'stylingAttributes', function () {
             return new _stylingAttributes2.default();
         });
@@ -4529,7 +4529,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * This class implements a layer where the graphic elements can be drawn.
  */
 var Layer = function () {
-    function Layer(id, visible) {
+    function Layer() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            id = _ref.id,
+            visible = _ref.visible;
+
         _classCallCheck(this, Layer);
 
         this._id = id;
@@ -4708,13 +4712,32 @@ exports.default = Layer;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 16/01/2018.
- */
 
 
 
@@ -4742,18 +4765,19 @@ var AreaDefaults = function () {
         // It works like a map, but with complexity on search of O(1).
         // The key is the layer id.
         this._layers = {};
-        // Array of layers order. It is used to define the drawing order.
-        this._order = [];
+        // Layer stack. It is used to define the drawing layerStack of the layers' elements.
+        this._layerStack = [];
 
         // Id count.
         this._elementIdCount = 1;
         this._layerIdCount = 1;
 
         // Layer-related event listeners.
+        // -----------------------------
         // Functions that receive the area and the changed layer as arguments.
         this._onAddLayer = null;
         this._onRemoveLayer = null;
-        // Function that receive the area.
+        // Function that receives the area.
         this._onChangeLayerOrder = null;
 
         // Create a default layer that will be used if the user does not create a new one.
@@ -4765,18 +4789,20 @@ var AreaDefaults = function () {
 
 
         /**
-         * Move the specified layer one position to the top of the layer order array.
+         * Move the specified layer one position to the top of the layer stack.
          * @param layer The layer that must be moved.
          * @returns {boolean} true, if the layer was moved. false, otherwise.
          */
         value: function moveLayerUp(layer) {
-            var layerPosition = this._order.indexOf(layer);
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
             // If it is not the layer at the top.
-            if (layerPosition < this._order.length - 1) {
+            if (layerPosition < this._layerStack.length - 1) {
                 // Remove the layer from its position.
-                this._order.splice(layerPosition, 1);
+                this._layerStack.splice(layerPosition, 1);
                 // Add the layer to the next position.
-                this._order.splice(layerPosition + 1, 0, layer);
+                this._layerStack.splice(layerPosition + 1, 0, layer);
                 this.notifyLayerOrderChanging();
                 return true;
             }
@@ -4784,7 +4810,7 @@ var AreaDefaults = function () {
         }
 
         /**
-         * Move the specified layer one position to the bottom of the layer order array.
+         * Move the specified layer one position to the bottom of the layer stack.
          * @param layer The layer that must be moved.
          * @returns {boolean} true, if the layer was moved. false, otherwise.
          */
@@ -4792,13 +4818,15 @@ var AreaDefaults = function () {
     }, {
         key: "moveLayerDown",
         value: function moveLayerDown(layer) {
-            var layerPosition = this._order.indexOf(layer);
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
             // If it is not the layer at the bottom.
             if (layerPosition > 0) {
                 // Remove the layer from its position.
-                this._order.splice(layerPosition, 1);
+                this._layerStack.splice(layerPosition, 1);
                 // Add the layer to the previous position.
-                this._order.splice(layerPosition - 1, 0, layer);
+                this._layerStack.splice(layerPosition - 1, 0, layer);
                 this.notifyLayerOrderChanging();
                 return true;
             }
@@ -4806,24 +4834,35 @@ var AreaDefaults = function () {
         }
 
         /**
-         * Move the specified layer to the specified position of the layer order array.
+         * Move the specified layer to the specified position of the layer stack.
          * @param layer The layer that must be moved.
+         * @param targetPosition The position to which the layer has to be moved.
          * @returns {boolean} true, if the layer was moved. false, otherwise.
          */
 
     }, {
         key: "moveLayerTo",
-        value: function moveLayerTo(layer, targetPosition) {
-            if (targetPosition >= this._order.length) {
-                return false;
+        value: function moveLayerTo() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+                layer = _ref.layer,
+                targetPosition = _ref.targetPosition;
+
+            // Argument is not a layer.
+            if (!(layer instanceof _layer2.default)) {
+                throw "The element to be moved must be a layer";
             }
-            var layerPosition = this._order.indexOf(layer);
+            if (targetPosition < 0 || targetPosition >= this._layerStack.length) {
+                throw "The position is invalid.";
+            }
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
             // If it is not at the targeted position.
-            if (layerPosition != targetPosition) {
+            if (layerPosition !== targetPosition) {
                 // Remove the layer from its position.
-                this._order.splice(layerPosition, 1);
+                this._layerStack.splice(layerPosition, 1);
                 // Add the layer to the targeted position.
-                this._order.splice(targetPosition, 0, layer);
+                this._layerStack.splice(targetPosition, 0, layer);
                 this.notifyLayerOrderChanging();
                 return true;
             }
@@ -4832,25 +4871,24 @@ var AreaDefaults = function () {
     }, {
         key: "newLayer",
         value: function newLayer() {
-            this.addLayer(new _layer2.default(this.generateLayerId()));
+            return this.addLayer(new _layer2.default({ id: this.generateLayerId() }));
         }
     }, {
         key: "addLayer",
         value: function addLayer(layer) {
             // Argument is not a layer.
             if (!(layer instanceof _layer2.default)) {
-                throw "Area layers must be instances of Layer";
+                throw "Area's layers must be instances of Layer";
             }
-            // If a layer with the same id does not exist in the layer, add it.
+            // If a layer with the same id does not exist in the area, add it.
             if (!(layer.id in this._layers)) {
                 this._layers[layer.id] = layer;
-                this._order.push(layer);
+                this._layerStack.push(layer);
                 this.notifyLayerAddition(layer);
-                return true;
+                return layer;
             } else {
-                throw "The layer with id " + layer.id + " is already on the area.";
+                throw "The area already has a layer with id " + layer.id + ".";
             }
-            return false;
         }
     }, {
         key: "countLayers",
@@ -4860,7 +4898,7 @@ var AreaDefaults = function () {
 
         /**
          * Return the layer that has the specified id.
-         * @param id The layer id.
+         * @param {string} id The layer id.
          * @returns {Layer} The layer.
          */
 
@@ -4868,6 +4906,21 @@ var AreaDefaults = function () {
         key: "getLayer",
         value: function getLayer(id) {
             return this._layers[id];
+        }
+
+        /**
+         * Return the layer that has the specified id.
+         * @param {string} id The layer id.
+         * @returns {Layer} The layer.
+         */
+
+    }, {
+        key: "getLayerAt",
+        value: function getLayerAt(position) {
+            if (position < 0 || position >= this._layerStack.length) {
+                throw "The position is invalid.";
+            }
+            return this._layerStack[position];
         }
 
         /**
@@ -4889,10 +4942,19 @@ var AreaDefaults = function () {
 
     }, {
         key: "removeLayer",
-        value: function removeLayer(layer) {
-            if (layer in this._layers) {
+        value: function removeLayer() {
+            var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+                layer = _ref2.layer;
+
+            // Argument is not a layer.
+            if (!(layer instanceof _layer2.default)) {
+                throw "The element to be removed must be a layer";
+            }
+            if (layer.id in this._layers) {
                 delete this._layers[layer.id];
-                this._order.splice(this._order.indexOf(layer), 1);
+                this._layerStack.splice(this._layerStack.map(function (o) {
+                    return o.id;
+                }).indexOf(layer.id), 1);
                 this.notifyLayerRemoval(layer);
                 return true;
             }
@@ -4924,25 +4986,34 @@ var AreaDefaults = function () {
             return "l_" + this._layerIdCount++;
         }
     }, {
-        key: "layers",
-        get: function get() {
-            return this._layers;
+        key: "toString",
+        value: function toString() {
+            var result = "Area with " + this.countLayers() + ": ";
+            for (var i = 0; i < this.countLayers(); i++) {
+                var layer = this.getLayerAt({ position: i });
+                if (layer == null) {
+                    result += "UND; ";
+                } else {
+                    result += layer.id + "; ";
+                }
+            }
+            return result;
         }
     }, {
-        key: "firstLayer",
+        key: "bottomLayer",
         get: function get() {
-            if (this._order.length > 0) {
-                return this._order[0];
+            if (this._layerStack.length > 0) {
+                return this._layerStack[0];
             }
-            return null;
+            throw "The area has no layers.";
         }
     }, {
         key: "topLayer",
         get: function get() {
-            if (this._order.length > 0) {
-                return this._order[this._order.length - 1];
+            if (this._layerStack.length > 0) {
+                return this._layerStack[this._layerStack.length - 1];
             }
-            return null;
+            throw "The area has no layers.";
         }
     }, {
         key: "onAddLayer",
@@ -4950,6 +5021,9 @@ var AreaDefaults = function () {
             return this._onAddLayer;
         },
         set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
             this._onAddLayer = value;
         }
     }, {
@@ -4958,6 +5032,9 @@ var AreaDefaults = function () {
             return this._onChangeLayerOrder;
         },
         set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
             this._onChangeLayerOrder = value;
         }
     }, {
@@ -4966,6 +5043,9 @@ var AreaDefaults = function () {
             return this._onRemoveLayer;
         },
         set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
             this._onRemoveLayer = value;
         }
     }, {
@@ -4979,14 +5059,9 @@ var AreaDefaults = function () {
             return this._layerIdCount;
         }
     }, {
-        key: "order",
+        key: "layerStack",
         get: function get() {
-            return this._order;
-        }
-    }, {
-        key: "defaultLayer",
-        get: function get() {
-            return this._order[this._order.length - 1]; // The top layer.
+            return this._layerStack;
         }
     }]);
 
@@ -7566,14 +7641,14 @@ var SVGArea = function (_AreaDefaults) {
         key: 'addLayer',
         value: function addLayer(layer) {
             layer.onChangeVisibility = this.handleLayerVisibilityChange.bind(this);
-            return _get(SVGArea.prototype.__proto__ || Object.getPrototypeOf(SVGArea.prototype), 'addLayer', this).call(this, layer);
+            return _get(SVGArea.prototype.__proto__ || Object.getPrototypeOf(SVGArea.prototype), 'addLayer', this).call(this, { layer: layer });
         }
     }, {
         key: 'handleLayerVisibilityChange',
         value: function handleLayerVisibilityChange(layer, oldValue, newValue) {
             if (oldValue !== newValue) {
                 if (newValue === true) {
-                    // Make visible all elements in the layer.
+                    // Make all elements in the layer visible.
                     Object.keys(layer.elements).forEach(function (id) {
                         layer.getElement(id).stylingAttributes.visible = true;
                     });
@@ -7632,30 +7707,28 @@ var SVGArea = function (_AreaDefaults) {
 
         /**
          * Draw a new circle with the specified parameters.
-         * @param parameterObject An object with the following optional attributes: centerX, centerY, radius, and layer.
+         * @param centerX
+         * @param centerY
+         * @param radius
+         * @param layer
          */
 
     }, {
         key: 'circ',
-        value: function circ(parameterObject) {
-            if (!parameterObject || parameterObject === null) {
-                parameterObject = {};
-            }
-            if (!('centerX' in parameterObject)) {
-                parameterObject.centerX = 50;
-            }
-            if (!('centerY' in parameterObject)) {
-                parameterObject.centerY = 50;
-            }
-            if (!('radius' in parameterObject)) {
-                parameterObject.radius = 50;
-            }
-            if (!('layer' in parameterObject)) {
-                parameterObject.layer = this.topLayer;
-            }
+        value: function circ() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+                _ref$centerX = _ref.centerX,
+                centerX = _ref$centerX === undefined ? 0 : _ref$centerX,
+                _ref$centerY = _ref.centerY,
+                centerY = _ref$centerY === undefined ? 0 : _ref$centerY,
+                _ref$radius = _ref.radius,
+                radius = _ref$radius === undefined ? 7 : _ref$radius,
+                _ref$layer = _ref.layer,
+                layer = _ref$layer === undefined ? this.topLayer : _ref$layer;
+
             //*****************************
             // Create a new circle and set its id.
-            var newCircle = new _circle2.default(parameterObject.centerX, parameterObject.centerY, parameterObject.radius);
+            var newCircle = new _circle2.default(centerX, centerY, radius);
             newCircle.id = this.generateElementId();
 
             var lookAndFeel = new _lookAndFeel2.default();
@@ -7668,7 +7741,7 @@ var SVGArea = function (_AreaDefaults) {
 
             this.registerEvents(newCircle, drawnCircle);
 
-            return this.addElement(newCircle, parameterObject.layer);
+            return this.addElement(newCircle, layer);
         }
 
         /**

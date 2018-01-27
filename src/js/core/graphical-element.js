@@ -26,8 +26,8 @@ export default class GraphicalElement {
         validateArgumentsObject(argumentsObject, 'id', -1);
         validateArgumentsObject(argumentsObject, 'x', 0);
         validateArgumentsObject(argumentsObject, 'y', 0);
-        validateArgumentsObject(argumentsObject, 'width', 7);
-        validateArgumentsObject(argumentsObject, 'height', 7);
+        validateArgumentsObject(argumentsObject, 'width', 0);
+        validateArgumentsObject(argumentsObject, 'height', 0);
         validateArgumentsObject(argumentsObject, 'stylingAttributes', function () {
             return new StylingAttributes();
         });

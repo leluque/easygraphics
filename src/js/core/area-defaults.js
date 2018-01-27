@@ -1,12 +1,32 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 16/01/2018.
- */
-
 'use strict';
+
 import {notifyListeners} from "./util";
 import Layer from "./layer";
 
@@ -17,40 +37,37 @@ export default class AreaDefaults {
         // It works like a map, but with complexity on search of O(1).
         // The key is the layer id.
         this._layers = {};
-        // Array of layers order. It is used to define the drawing order.
-        this._order = [];
+        // Layer stack. It is used to define the drawing layerStack of the layers' elements.
+        this._layerStack = [];
 
         // Id count.
         this._elementIdCount = 1;
         this._layerIdCount = 1;
 
         // Layer-related event listeners.
+        // -----------------------------
         // Functions that receive the area and the changed layer as arguments.
         this._onAddLayer = null;
         this._onRemoveLayer = null;
-        // Function that receive the area.
+        // Function that receives the area.
         this._onChangeLayerOrder = null;
 
         // Create a default layer that will be used if the user does not create a new one.
         this.newLayer();
     }
 
-    get layers() {
-        return this._layers;
-    }
-
-    get firstLayer() {
-        if (this._order.length > 0) {
-            return this._order[0];
+    get bottomLayer() {
+        if (this._layerStack.length > 0) {
+            return this._layerStack[0];
         }
-        return null;
+        throw "The area has no layers.";
     }
 
     get topLayer() {
-        if (this._order.length > 0) {
-            return this._order[this._order.length-1];
+        if (this._layerStack.length > 0) {
+            return this._layerStack[this._layerStack.length - 1];
         }
-        return null;
+        throw "The area has no layers.";
     }
 
     get onAddLayer() {
@@ -58,6 +75,9 @@ export default class AreaDefaults {
     }
 
     set onAddLayer(value) {
+        if (typeof(value) !== 'function') {
+            throw "The callback must be a function.";
+        }
         this._onAddLayer = value;
     }
 
@@ -66,6 +86,9 @@ export default class AreaDefaults {
     }
 
     set onChangeLayerOrder(value) {
+        if (typeof(value) !== 'function') {
+            throw "The callback must be a function.";
+        }
         this._onChangeLayerOrder = value;
     }
 
@@ -74,6 +97,9 @@ export default class AreaDefaults {
     }
 
     set onRemoveLayer(value) {
+        if (typeof(value) !== 'function') {
+            throw "The callback must be a function.";
+        }
         this._onRemoveLayer = value;
     }
 
@@ -85,27 +111,23 @@ export default class AreaDefaults {
         return this._layerIdCount;
     }
 
-    get order() {
-        return this._order;
-    }
-
-    get defaultLayer() {
-        return this._order[this._order.length - 1]; // The top layer.
+    get layerStack() {
+        return this._layerStack;
     }
 
     /**
-     * Move the specified layer one position to the top of the layer order array.
+     * Move the specified layer one position to the top of the layer stack.
      * @param layer The layer that must be moved.
      * @returns {boolean} true, if the layer was moved. false, otherwise.
      */
     moveLayerUp(layer) {
-        let layerPosition = this._order.indexOf(layer);
+        let layerPosition = this._layerStack.map(o => o.id).indexOf(layer.id);
         // If it is not the layer at the top.
-        if (layerPosition < this._order.length - 1) {
+        if (layerPosition < this._layerStack.length - 1) {
             // Remove the layer from its position.
-            this._order.splice(layerPosition, 1);
+            this._layerStack.splice(layerPosition, 1);
             // Add the layer to the next position.
-            this._order.splice(layerPosition + 1, 0, layer);
+            this._layerStack.splice(layerPosition + 1, 0, layer);
             this.notifyLayerOrderChanging();
             return true;
         }
@@ -113,18 +135,18 @@ export default class AreaDefaults {
     }
 
     /**
-     * Move the specified layer one position to the bottom of the layer order array.
+     * Move the specified layer one position to the bottom of the layer stack.
      * @param layer The layer that must be moved.
      * @returns {boolean} true, if the layer was moved. false, otherwise.
      */
     moveLayerDown(layer) {
-        let layerPosition = this._order.indexOf(layer);
+        let layerPosition = this._layerStack.map(o => o.id).indexOf(layer.id);
         // If it is not the layer at the bottom.
         if (layerPosition > 0) {
             // Remove the layer from its position.
-            this._order.splice(layerPosition, 1);
+            this._layerStack.splice(layerPosition, 1);
             // Add the layer to the previous position.
-            this._order.splice(layerPosition - 1, 0, layer);
+            this._layerStack.splice(layerPosition - 1, 0, layer);
             this.notifyLayerOrderChanging();
             return true;
         }
@@ -132,21 +154,26 @@ export default class AreaDefaults {
     }
 
     /**
-     * Move the specified layer to the specified position of the layer order array.
+     * Move the specified layer to the specified position of the layer stack.
      * @param layer The layer that must be moved.
+     * @param targetPosition The position to which the layer has to be moved.
      * @returns {boolean} true, if the layer was moved. false, otherwise.
      */
-    moveLayerTo(layer, targetPosition) {
-        if (targetPosition >= this._order.length) {
-            return false;
+    moveLayerTo({layer, targetPosition} = {}) {
+        // Argument is not a layer.
+        if (!(layer instanceof Layer)) {
+            throw "The element to be moved must be a layer";
         }
-        let layerPosition = this._order.indexOf(layer);
+        if (targetPosition < 0 || targetPosition >= this._layerStack.length) {
+            throw "The position is invalid.";
+        }
+        let layerPosition = this._layerStack.map(o => o.id).indexOf(layer.id);
         // If it is not at the targeted position.
-        if (layerPosition != targetPosition) {
+        if (layerPosition !== targetPosition) {
             // Remove the layer from its position.
-            this._order.splice(layerPosition, 1);
+            this._layerStack.splice(layerPosition, 1);
             // Add the layer to the targeted position.
-            this._order.splice(targetPosition, 0, layer);
+            this._layerStack.splice(targetPosition, 0, layer);
             this.notifyLayerOrderChanging();
             return true;
         }
@@ -154,24 +181,23 @@ export default class AreaDefaults {
     }
 
     newLayer() {
-        this.addLayer(new Layer(this.generateLayerId()));
+        return this.addLayer(new Layer({id: this.generateLayerId()}));
     }
 
     addLayer(layer) {
         // Argument is not a layer.
         if (!(layer instanceof Layer)) {
-            throw "Area layers must be instances of Layer";
+            throw "Area's layers must be instances of Layer";
         }
-        // If a layer with the same id does not exist in the layer, add it.
+        // If a layer with the same id does not exist in the area, add it.
         if (!(layer.id in this._layers)) {
             this._layers[layer.id] = layer;
-            this._order.push(layer);
+            this._layerStack.push(layer);
             this.notifyLayerAddition(layer);
-            return true;
+            return layer;
         } else {
-            throw "The layer with id " + layer.id + " is already on the area.";
+            throw "The area already has a layer with id " + layer.id + ".";
         }
-        return false;
     }
 
     countLayers() {
@@ -180,11 +206,23 @@ export default class AreaDefaults {
 
     /**
      * Return the layer that has the specified id.
-     * @param id The layer id.
+     * @param {string} id The layer id.
      * @returns {Layer} The layer.
      */
     getLayer(id) {
         return this._layers[id];
+    }
+
+    /**
+     * Return the layer that has the specified id.
+     * @param {string} id The layer id.
+     * @returns {Layer} The layer.
+     */
+    getLayerAt(position) {
+        if (position < 0 || position >= this._layerStack.length) {
+            throw "The position is invalid.";
+        }
+        return this._layerStack[position];
     }
 
     /**
@@ -200,10 +238,14 @@ export default class AreaDefaults {
      * @param layer The layer that must be removed.
      * @returns {boolean} true, if the layer was removed. false, otherwise.
      */
-    removeLayer(layer) {
-        if (layer in this._layers) {
+    removeLayer({layer} = {}) {
+        // Argument is not a layer.
+        if (!(layer instanceof Layer)) {
+            throw "The element to be removed must be a layer";
+        }
+        if (layer.id in this._layers) {
             delete this._layers[layer.id];
-            this._order.splice(this._order.indexOf(layer), 1);
+            this._layerStack.splice(this._layerStack.map(o => o.id).indexOf(layer.id), 1);
             this.notifyLayerRemoval(layer);
             return true;
         }
@@ -218,7 +260,7 @@ export default class AreaDefaults {
         notifyListeners(this.onRemoveLayer, this, removedLayer);
     }
 
-    notifyLayerOrderChanging() {
+    notifyLayerOrderChanging() {    
         notifyListeners(this.onChangeLayerOrder, this, null);
     }
 
@@ -228,6 +270,19 @@ export default class AreaDefaults {
 
     generateLayerId() {
         return "l_" + (this._layerIdCount++);
+    }
+
+    toString() {
+        let result = "Area with " + this.countLayers() + ": ";
+        for (let i = 0; i < this.countLayers(); i++) {
+            let layer = this.getLayerAt({position: i});
+            if (layer == null) {
+                result += "UND; ";
+            } else {
+                result += layer.id + "; ";
+            }
+        }
+        return result;
     }
 
 }

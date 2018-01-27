@@ -1,0 +1,22 @@
+'use strict'
+
+var assert = require('assert');
+import NewVerticalGroup from '../src/js/core/new-vertical-group';
+import NewGroupStylingAttributes from '../src/js/core/new-group-styling-attributes';
+
+describe('VerticalGroup', () => {
+
+    describe('Minimum width', () => {
+
+/*        it('Minimum with must be 0', () => {
+            let vGroup = new NewVerticalGroup();
+			assert.equal(vGroup.minContentWidth, 0);
+        });
+		
+		it('Minimum with must be 10', () => {
+            let vGroup = new NewVerticalGroup({groupStylingAttributes: new NewGroupStylingAttributes({horPadding: 5})});
+			assert.equal(vGroup.minContentWidth, 10);
+        });*/
+    });
+
+});
