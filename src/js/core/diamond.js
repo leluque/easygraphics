@@ -1,65 +1,44 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
 
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
 import BoundingBox from './bounding-box.js';
-import StylingAttributes from "./styling-attributes";
-import ChangeListener from "./change-listener";
+import {getNonNullValue} from "./util";
 
 /**
  * This class implements diamonds.
  */
 export default class Diamond extends GraphicalElement {
 
-    constructor(x1 = 0, y1 = 0, width = 0, height = 0, diamondPreserveAspectRatio = false, diamondStylingAttributes = new StylingAttributes()) {
-        // The third parameter is the horizontal diagonal and the fourth one is the vertical diagonal.
-        super({
-            x: x1,
-            y: y1,
-            width: Math.sqrt(2 * Math.pow(width, 2)),
-            height: Math.sqrt(2 * Math.pow(height, 2)),
-            stylingAttributes: diamondStylingAttributes,
-            preserveAspectRatio: diamondPreserveAspectRatio
-        });
-    }
-
-    get width() {
-        return super.width;
-    }
-
-    set width(value) {
-        this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
-        super.width = value;
-        /*
-                if (this.preserveAspectRatio) {
-                    super.height = value;
-                }
-        */
-        this.enableChangeNotifications();
-        this.notifyListeners(ChangeListener.DIMENSION);
-    }
-
-    get height() {
-        return super.height;
-    }
-
-    set height(value) {
-        this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
-        super.height = value;
-        /*
-                if (this.preserveAspectRatio) {
-                    super.width = value;
-                }
-        */
-        this.enableChangeNotifications();
-        this.notifyListeners(ChangeListener.DIMENSION);
+    constructor({id, x1, x, y1, y, x2, width, w, y2, height, h, style, preserveAspectRatio} = {}) {
+        // The arguments validation is done inside the GraphicalElement constructor.
+        super(...arguments);
     }
 
     boundaryX1For(givenY) {
@@ -87,7 +66,7 @@ export default class Diamond extends GraphicalElement {
         let middleY = this.y + this.height / 2;
         let middleX = this.x + this.width / 2;
         let a = this.height / this.width;
-        if (givenY == middleY) { // Middle.
+        if (givenY === middleY) { // Middle.
             return this.x + this.width;
         } else if (givenY < middleY) { // Use the top "\" line.
             return middleX + (givenY - this.y) / a;
@@ -96,11 +75,18 @@ export default class Diamond extends GraphicalElement {
         }
     }
 
-    contentBox(width, height) { // For diamonds, it does not matter the current width/height of a group they may be a frame of.
-        let deltaX = this.width / 4;
-        let deltaY = this.height / 4;
-        let boundingBox = new BoundingBox(this.x + deltaX, this.y + deltaY, this.x + this.width - deltaX, this.y + this.height - deltaY);
-        return boundingBox;
+    contentBox({width, w, height, h} = {}) { // For diamonds, it does not matter the current width/height of a group they may be a frame of.
+        width = getNonNullValue(width, w, this.width);
+        height = getNonNullValue(height, h, this.height);
+
+        let deltaX = width / 4;
+        let deltaY = height / 4;
+        return new BoundingBox({
+            x1: this.x + deltaX,
+            y1: this.y + deltaY,
+            x2: this.x + width - deltaX,
+            y2: this.y + height - deltaY
+        });
     }
 
     widthToFit(boundingBox) {
@@ -110,4 +96,5 @@ export default class Diamond extends GraphicalElement {
     heightToFit(boundingBox) {
         return 2 * boundingBox.height;
     }
+
 }

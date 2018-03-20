@@ -1,42 +1,42 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
-import BoundingBox from './bounding-box.js';
-import StylingAttributes from "./styling-attributes";
 
 /**
  * This class implements rectangles.
  */
 export default class Rectangle extends GraphicalElement {
 
-    constructor(x1 = 0, y1 = 0, x2 = 0, y2 = 0, rectangleStylingAttributes = new StylingAttributes()) {
-        super({x: x1, y: y1, width: x2 - x1, height: y2 - y1, stylingAttributes: rectangleStylingAttributes});
-    }
-
-    contentBox(width, height) { // For rectangles, it does not matter the current width/height of a group they may be a frame of.
-        let border = this.borderSize;
-        let boundingBox = new BoundingBox(this.x + border, this.y + border, this.x + this.width - border, this.y + this.height - border);
-        return boundingBox;
-    }
-
-    widthToFit(boundingBox) {
-        let boundingBoxWidth = boundingBox.x2 - boundingBox.x1;
-        boundingBoxWidth += this.stylingAttributes.strokeWidth;
-        return boundingBoxWidth;
-    }
-
-    heightToFit(boundingBox) {
-        let boundingBoxHeight = boundingBox.y2 - boundingBox.y1;
-        boundingBoxHeight += this.stylingAttributes.strokeWidth;
-        return boundingBoxHeight;
+    constructor({id, x1, x, y1, y, x2, y2, width, w, height, h, style, preserveAspectRatio} = {}) {
+        // The arguments validation is done inside the GraphicalElement constructor.
+        super(...arguments);
     }
 
 }

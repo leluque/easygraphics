@@ -1,31 +1,46 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
-import BoundingBox from './bounding-box.js';
-import StylingAttributes from "./styling-attributes";
+import {checkRedundantArguments, getNonNullValue, error} from "./util";
 
 export default class Image extends GraphicalElement {
 
-    constructor(imageX = 10, imageY = 10, imageWidth = 20, imageHeight = 20, image = undefined, imageStylingAttributes = new StylingAttributes()) {
-        super({
-            x: imageX,
-            y: imageY,
-            width: imageWidth,
-            height: imageHeight,
-            stylingAttributes: imageStylingAttributes
-        });
-        this._image = image;
-        this._boundingBoxFunction = this.defaultBoundingBox;
-        this._widthToFitFunction = this.defaultWidthToFit;
-        this._heightToFitFunction = this.defaultHeightToFit;
+    constructor({id, x1, x, y1, y, x2, y2, width, w, height, h, style, preserveAspectRatio, image, img} = {}) {
+        super(...arguments);
+        // **************************************
+        // Check whether there are redundant arguments.
+        if (checkRedundantArguments(image, img)) {
+            error("Warning: Both image and img were informed.");
+        }
+        // **************************************
+        this._image = getNonNullValue(image, img);
     }
 
     get image() {
@@ -34,54 +49,6 @@ export default class Image extends GraphicalElement {
 
     set image(value) {
         this._image = value;
-    }
-
-    get boundingBoxFunction() {
-        return this._boundingBoxFunction;
-    }
-
-    set boundingBoxFunction(value) {
-        this._boundingBoxFunction = value;
-    }
-
-    get widthToFitFunction() {
-        return this._widthToFitFunction;
-    }
-
-    set widthToFitFunction(value) {
-        this._widthToFitFunction = value;
-    }
-
-    get heightToFitFunction() {
-        return this._heightToFitFunction;
-    }
-
-    set heightToFitFunction(value) {
-        this._heightToFitFunction = value;
-    }
-
-    defaultBoundingBox(width, height) {
-        return new BoundingBox(this.x, this.y, this.x2, this.y2);
-    }
-
-    defaultWidthToFit(boundingBox) {
-        return boundingBox.width;
-    }
-
-    defaultHeightToFit(boundingBox) {
-        return boundingBox.height;
-    }
-
-    contentBox(width, height) {
-        return this.boundingBoxFunction(width, height);
-    }
-
-    widthToFit(boundingBox) {
-        return this.widthToFitFunction(boundingBox);
-    }
-
-    heightToFit(boundingBox) {
-        return this.heightToFitFunction(boundingBox);
     }
 
 }

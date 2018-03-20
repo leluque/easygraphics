@@ -1,10 +1,29 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 15/01/2017.
- */
 
 'use strict';
 
@@ -16,16 +35,17 @@ import GraphicalElement from "./graphical-element";
  */
 export default class Layer {
 
-    constructor({id, visible}={}) {
+    constructor({id, name, visible = true} = {}) {
         this._id = id;
-        this._visible = visible ? visible : true;
+        this._name = name;
+        this._visible = visible;
 
         // Define a new object to store graphical elements.
         // It works like a map, but with complexity on search of O(1).
         // The key is the element name.
         this._elements = {};
 
-        // Event listeners.
+        // Event listener.
         // Functions that receive the layer, the old, and the new value as arguments.
         //this._onChangeId = null;
         this._onChangeVisibility = null;
@@ -38,15 +58,13 @@ export default class Layer {
         return this._id;
     }
 
-   /* set id(value) {
-        if (value !== this.id) {
-            let oldValue = this.id;
-            this._id = value;
-            this.notifyIdChange(oldValue, value);
-        } else {
-            this._id = value;
-        }
-    }*/
+    get name() {
+        return this._name;
+    }
+
+    set name(value) {
+        this._name = value;
+    }
 
     get visible() {
         return this._visible;
@@ -61,22 +79,8 @@ export default class Layer {
             let oldValue = this.visible;
             this._visible = value;
             this.notifyVisibilityChange(oldValue, value);
-        } else {
-            this._visible = value;
         }
     }
-
-  /*  get onChangeId() {
-        return this._onChangeId;
-    }
-
-    set onChangeId(value) {
-        // Argument is not a function.
-        if (typeof(value) !== "function") {
-            throw "Listener must be a function";
-        }
-        this._onChangeId = value;
-    }*/
 
     get onChangeVisibility() {
         return this._onChangeVisibility;
@@ -114,6 +118,10 @@ export default class Layer {
         this._onRemoveElement = value;
     }
 
+    get elements() {
+        return this._elements;
+    }
+
     addElement(element) {
         // Argument is not a graphical element.
         if (!(element instanceof GraphicalElement)) {
@@ -140,10 +148,6 @@ export default class Layer {
         return Object.keys(this._elements);
     }
 
-    get elements() {
-        return this._elements;
-    }
-
     removeElement(element) {
         if (element in this._elements) {
             delete this._elements[element.id];
@@ -154,19 +158,15 @@ export default class Layer {
     }
 
     notifyVisibilityChange(oldValue, newValue) {
-        notifyListeners(this.onChangeVisibility, this, oldValue, newValue);
+        notifyListeners({listener: this.onChangeVisibility, target: this}, oldValue, newValue);
     }
 
- /*   notifyIdChange(oldValue, newValue) {
-        notifyListeners(this.onChangeId, this, oldValue, newValue);
-    }*/
-
     notifyElementAddition(addedElement) {
-        notifyListeners(this.onAddElement, this, addedElement);
+        notifyListeners({listener: this.onAddElement, target: this}, addedElement);
     }
 
     notifyElementRemoval(removedElement) {
-        notifyListeners(this.onRemoveElement, this, removedElement);
+        notifyListeners({listener: this.onRemoveElement, target: this}, removedElement);
     }
 
 }

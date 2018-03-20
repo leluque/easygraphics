@@ -1,0 +1,60 @@
+<html>
+<head>
+
+  <script>
+  
+    class Classe1 {
+	
+	  constructor(a) {
+	    this._a = a;
+	  }
+	  
+	  set a(value) {
+	    this._a = value;
+	  }
+	  
+	  get a() {
+		return this._a;
+	  }
+	
+	  fazAlgo() {
+	    console.log("fazAlgo");
+	  }
+	
+	}
+	
+	function teste() {
+	return 2;
+	}
+	
+	var c1 = new Classe1();
+	c1.fazAlgo();
+	
+	c1.copiaFazAlgo = c1.fazAlgo;
+	c1.fazAlgo = function() {
+	  console.log("--");
+	  this.copiaFazAlgo();
+	  console.log(teste());
+	  console.log("Faz outro algo");
+	};
+	
+	c1.fazAlgo();
+	c1.aindaOutro = c1.fazAlgo.bind(c1);
+	c1.aindaOutro();
+	
+	c1.fazAlgo();
+	c1.copiaFazAlgo();
+	
+	c1.fazAlgo = c1.copiaFazAlgo;
+	
+	c1.fazAlgo();
+  
+  </script>
+
+</head>
+<body>
+
+  Teste!
+
+</body>
+</html>

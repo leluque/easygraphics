@@ -1,25 +1,50 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 15/01/2018.
- */
-
 'use strict';
 
 import GraphicalElement from "./graphical-element";
-import {notifyListeners} from "./util";
+import {isNotBoolean, isNotInt, notifyListeners} from "./util";
 
+/**
+ * This class implements a decorator that shows squared vertices over a graphical element.
+ */
 export default class BoxVerticesDecorator extends GraphicalElement {
 
-    static get VERTEX() {
-        return "vertex";
-    }
-
-    constructor(decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 5) {
+    constructor({decorated, topLeft = true, topRight = true, bottomLeft = true, bottomRight = true, vertexSize = 7} = {}) {
         super();
-        decorated.addTag(BoxVerticesDecorator.BOX_VERTICES_TAG, this);
+        decorated.addTag({key: BoxVerticesDecorator.BOX_VERTICES_TAG, value: this});
+        if (decorated === undefined && decorated === null) {
+            throw "A decorator must have a decorated.";
+        }
+        if (!(decorated instanceof GraphicalElement)) {
+            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+        }
+
         this._decorated = decorated;
 
         this._topLeft = topLeft;
@@ -27,11 +52,7 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this._bottomLeft = bottomLeft;
         this._bottomRight = bottomRight;
 
-        // Vertices drawn.
-        this._topLeftVertex = null;
-        this._topRightVertex = null;
-        this._bottomLeftVertex = null;
-        this._bottomRightVertex = null;
+        this._vertexSize = vertexSize;
 
         // Events' callback functions for vertices.
         // The functions receive four attributes: the element in which the event occurred,
@@ -41,7 +62,16 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this._onVertexMouseDown = null;
         this._onVertexMouseMove = null;
         this._onVertexMouseUp = null;
-        this._vertexSize = vertexSize;
+
+        this._propagateToDecorated = 0;
+    }
+
+    static get VERTEX() {
+        return "vertex";
+    }
+
+    static get IS_VERTEX() {
+        return "isVertex";
     }
 
     static get BOX_VERTICES_TAG() {
@@ -66,11 +96,26 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         return 3;
     }
 
+    get propagateToDecorated() {
+        return 0 === this._propagateToDecorated;
+    }
+
+    enablePropagationToDecorated() {
+        this._propagateToDecorated--;
+    }
+
+    disablePropagationToDecorated() {
+        this._propagateToDecorated++;
+    }
+
     get vertexSize() {
         return this._vertexSize;
     }
 
     set vertexSize(value) {
+        if (isNotInt(value) || value <= 0) {
+            throw "The vertex size must be a positive integer.";
+        }
         this._vertexSize = value;
     }
 
@@ -79,6 +124,9 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     }
 
     set topLeft(value) {
+        if (isNotBoolean(value)) {
+            throw "The top left value must be a boolean.";
+        }
         this._topLeft = value;
     }
 
@@ -87,6 +135,9 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     }
 
     set topRight(value) {
+        if (isNotBoolean(value)) {
+            throw "The top right value must be a boolean.";
+        }
         this._topRight = value;
     }
 
@@ -95,6 +146,9 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     }
 
     set bottomLeft(value) {
+        if (isNotBoolean(value)) {
+            throw "The bottom left value must be a boolean.";
+        }
         this._bottomLeft = value;
     }
 
@@ -103,6 +157,9 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     }
 
     set bottomRight(value) {
+        if (isNotBoolean(value)) {
+            throw "The bottom right value must be a boolean.";
+        }
         this._bottomRight = value;
     }
 
@@ -159,78 +216,125 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     }
 
     set width(value) {
-        //this.disableChangeNotifications();
-        //this.decorated.disableChangeNotifications();
         this.decorated.width = value;
-        //this.decorated.enableChangeNotifications();
-        //this.decorated.notifyListeners(ChangeListener.DIMENSION);
-        //this.enableChangeNotifications();
     }
+
 
     get height() {
         return this.decorated.height;
     }
 
     set height(value) {
-        //this.disableChangeNotifications();
-        //this.decorated.disableChangeNotifications();
         this.decorated.height = value;
-        //this.decorated.enableChangeNotifications();
-        //this.decorated.notifyListeners(ChangeListener.DIMENSION);
-        //this.enableChangeNotifications();
     }
 
 
-    get topLeftVertex() {
-        return this._topLeftVertex;
+    get minHeight() {
+        return this.decorated.minHeight;
     }
 
-    set topLeftVertex(value) {
-        this._topLeftVertex = value;
+    set minHeight(value) {
+        this.decorated.minHeight = value;
     }
 
-    get topRightVertex() {
-        return this._topRightVertex;
+    get y2() {
+        return this.decorated.y2;
     }
 
-    set topRightVertex(value) {
-        this._topRightVertex = value;
+    set y2(value) {
+        this.decorated.y2 = value;
     }
 
-    get bottomLeftVertex() {
-        return this._bottomLeftVertex;
+    getAbsY2() {
+        return this.decorated.getAbsY2();
     }
 
-    set bottomLeftVertex(value) {
-        this._bottomLeftVertex = value;
+    resizeTo({width, w, height, h} = {}) {
+        this.decorated.resizeTo({width, w, height, h});
     }
 
-    get bottomRightVertex() {
-        return this._bottomRightVertex;
+    widthToFit(boundingBox) {
+        return this.decorated.widthToFit(boundingBox);
     }
 
-    set bottomRightVertex(value) {
-        this._bottomRightVertex = value;
+    get minWidth() {
+        return this.decorated.minWidth;
     }
 
-    // Events.
-    dispathOnVertexClick(target, x, y, event) {
-        notifyListeners(this._onVertexClick, target, x, y, event);
+    set minWidth(value) {
+        this.decorated.minWidth = value;
     }
 
-    dispathOnVertexDblClick(target, x, y, event) {
-        notifyListeners(this._onVertexDblClick, target, x, y, event);
+    changeX2(value) {
+        this.decorated.changeX2(value);
     }
 
-    dispathOnVertexMouseDown(target, x, y, event) {
-        notifyListeners(this._onVertexMouseDown, target, x, y, event);
+    changeHeight(value) {
+        this.decorated.changeHeight(value);
     }
 
-    dispathOnVertexMouseMove(target, x, y, event) {
-        notifyListeners(this._onVertexMouseMove, target, x, y, event);
+    changeY2(value) {
+        this.decorated.changeY2(value);
     }
 
-    dispathOnVertexMouseUp(target, x, y, event) {
-        notifyListeners(this._onVertexMouseUp, target, x, y, event);
+    validateMinWidth(value) {
+        this.decorated.validateMinWidth(value);
+    }
+
+    validateMinHeight(value) {
+        this.decorated.validateMinHeight(value);
+    }
+
+    resizeBy({width, w, height, h} = {}) {
+        this.decorated.resizeBy({width, w, height, h});
+    }
+
+    contentBox({width, w, height, h} = {}) {
+        return this.decorated.contentBox({width, w, height, h});
+    }
+
+    heightToFit(boundingBox) {
+        return this.decorated.heightToFit(boundingBox);
+    }
+
+    get x2() {
+        return this.decorated.x2;
+    }
+
+    set x2(value) {
+        this.decorated.x2 = value;
+    }
+
+    getAbsX2() {
+        return this.decorated.getAbsX2();
+    }
+
+    changeWidth(value) {
+        this.decorated.changeWidth(value);
+    }
+
+    boundaryX2For(givenY) {
+        return this.decorated.boundaryX2For(givenY);
+    }
+
+// Events.
+    dispatchOnVertexClick(target, x, y, event) {
+        notifyListeners({listener: this._onVertexClick, target: target}, x, y, event);
+    }
+
+    dispatchOnVertexDblClick(target, x, y, event) {
+        notifyListeners({listener: this._onVertexDblClick, target: target}, x, y, event);
+    }
+
+    dispatchOnVertexMouseDown(target, x, y, event) {
+        notifyListeners({listener: this._onVertexMouseDown, target: target}, x, y, event);
+    }
+
+    dispatchOnVertexMouseMove(target, x, y, event) {
+        notifyListeners({listener: this._onVertexMouseMove, target: target}, x, y, event);
+    }
+
+    dispatchOnVertexMouseUp(target, x, y, event) {
+        notifyListeners({listener: this._onVertexMouseUp, target: target}, x, y, event);
     }
 }

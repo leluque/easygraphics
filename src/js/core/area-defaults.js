@@ -27,7 +27,7 @@
 
 'use strict';
 
-import {notifyListeners} from "./util";
+import {getNonNullValue, isNull, notifyListeners} from "./util";
 import Layer from "./layer";
 
 export default class AreaDefaults {
@@ -44,7 +44,7 @@ export default class AreaDefaults {
         this._elementIdCount = 1;
         this._layerIdCount = 1;
 
-        // Layer-related event listeners.
+        // Layer-related event listener.
         // -----------------------------
         // Functions that receive the area and the changed layer as arguments.
         this._onAddLayer = null;
@@ -156,24 +156,26 @@ export default class AreaDefaults {
     /**
      * Move the specified layer to the specified position of the layer stack.
      * @param layer The layer that must be moved.
-     * @param targetPosition The position to which the layer has to be moved.
+     * @param position The position to which the layer has to be moved.
      * @returns {boolean} true, if the layer was moved. false, otherwise.
      */
-    moveLayerTo({layer, targetPosition} = {}) {
+    moveLayerTo({layer, l, position, pos} = {}) {
+        layer = getNonNullValue(layer, l);
+        position = getNonNullValue(position, pos);
         // Argument is not a layer.
         if (!(layer instanceof Layer)) {
             throw "The element to be moved must be a layer";
         }
-        if (targetPosition < 0 || targetPosition >= this._layerStack.length) {
+        if (position < 0 || position >= this._layerStack.length) {
             throw "The position is invalid.";
         }
         let layerPosition = this._layerStack.map(o => o.id).indexOf(layer.id);
         // If it is not at the targeted position.
-        if (layerPosition !== targetPosition) {
+        if (layerPosition !== position) {
             // Remove the layer from its position.
             this._layerStack.splice(layerPosition, 1);
             // Add the layer to the targeted position.
-            this._layerStack.splice(targetPosition, 0, layer);
+            this._layerStack.splice(position, 0, layer);
             this.notifyLayerOrderChanging();
             return true;
         }
@@ -186,8 +188,11 @@ export default class AreaDefaults {
 
     addLayer(layer) {
         // Argument is not a layer.
+        if(isNull(Layer)) {
+            throw "The layer cannot be null.";
+        }
         if (!(layer instanceof Layer)) {
-            throw "Area's layers must be instances of Layer";
+            throw "Area's layers must be instances of Layer. It is an instance of " + layer.prototype !== null && layer.prototype !== undefined ? layer.prototype.name : "null" + ".";
         }
         // If a layer with the same id does not exist in the area, add it.
         if (!(layer.id in this._layers)) {
@@ -238,7 +243,7 @@ export default class AreaDefaults {
      * @param layer The layer that must be removed.
      * @returns {boolean} true, if the layer was removed. false, otherwise.
      */
-    removeLayer({layer} = {}) {
+    removeLayer(layer) {
         // Argument is not a layer.
         if (!(layer instanceof Layer)) {
             throw "The element to be removed must be a layer";
@@ -253,15 +258,15 @@ export default class AreaDefaults {
     }
 
     notifyLayerAddition(addedLayer) {
-        notifyListeners(this.onAddLayer, this, addedLayer);
+        notifyListeners({listener: this.onAddLayer, target: this}, addedLayer);
     }
 
     notifyLayerRemoval(removedLayer) {
-        notifyListeners(this.onRemoveLayer, this, removedLayer);
+        notifyListeners({listener: this.onRemoveLayer, target: this}, removedLayer);
     }
 
-    notifyLayerOrderChanging() {    
-        notifyListeners(this.onChangeLayerOrder, this, null);
+    notifyLayerOrderChanging() {
+        notifyListeners({listener: this.onChangeLayerOrder, target: this}, null);
     }
 
     generateElementId() {
@@ -273,16 +278,7 @@ export default class AreaDefaults {
     }
 
     toString() {
-        let result = "Area with " + this.countLayers() + ": ";
-        for (let i = 0; i < this.countLayers(); i++) {
-            let layer = this.getLayerAt({position: i});
-            if (layer == null) {
-                result += "UND; ";
-            } else {
-                result += layer.id + "; ";
-            }
-        }
-        return result;
+        return "Area with " + this.countLayers() + ": " + this._layerStack.map(o => o.id).join();
     }
 
 }

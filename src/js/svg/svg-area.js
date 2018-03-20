@@ -1,10 +1,29 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
-
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
 
 'use strict';
 
@@ -15,17 +34,16 @@ import Diamond from '../core/diamond.js';
 import Text from '../core/text.js';
 import Image from '../core/image.js';
 import VerticalGroup from '../core/vertical-group.js';
-import LinearGroup from '../core/linear-group.js';
 import Line from '../core/line.js';
 import LookAndFeel from './look-and-feel.js';
-import GroupStylingAttributes from '../core/group-styling-attributes.js';
-import FontStylingAttributes from '../core/font-styling-attributes.js';
 import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
-import ChangeListener from "../core/change-listener";
+import ChangeListenerConstants from "../core/listener/change-listener-constants";
 import AreaDefaults from "../core/area-defaults";
 import {notifyListeners} from "../core/util";
-import StylingAttributes from "../core/styling-attributes";
+import DefaultLookAndFeelFactory from "./default-look-and-feel-factory";
+import SVGAreaConstants from "./svg-area-constants";
+import Marker from "../core/marker";
 
 export default class SVGArea extends AreaDefaults {
 
@@ -35,6 +53,8 @@ export default class SVGArea extends AreaDefaults {
         this._svg = document.querySelector(svgSelector);
         this._namespace = "http://www.w3.org/2000/svg";
         this._elements = [];
+
+        this._lookAndFeel = new DefaultLookAndFeelFactory();
 
         // Avoid text selection when dragging and dropping on the area.
         Object.assign(this._svg.style, {
@@ -60,14 +80,41 @@ export default class SVGArea extends AreaDefaults {
         this._svg.onmousedown = this.fireOnMouseDown.bind(this);
         this._svg.onmousemove = this.fireOnMouseMove.bind(this);
         this._svg.onmouseup = this.fireOnMouseUp.bind(this);
+
+        this.addMarkers();
     }
 
-    static get LAYER() {
-        return "layer";
+    addMarkers(svg) {
+        //*****************************
+        // Create a new marker and set its id.
+
+        // Filled Triangle.
+        let newModel = new Marker({id:Marker.FILLED_TRIANGLE, position: Marker.END, type: Marker.FILLED_TRIANGLE});
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
+        drawer.svgArea = this;
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
+
+        // Triangle.
+        newModel = new Marker({id:Marker.TRIANGLE, position: Marker.END, type: Marker.TRIANGLE});
+        drawer = this.lookAndFeel.getDrawerFor(newModel);
+        drawer.svgArea = this;
+        drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
+    }
+
+    get lookAndFeel() {
+        return this._lookAndFeel;
+    }
+
+    // TODO: Change all drawings when the look and feel is changed.
+    set lookAndFeel(value) {
+        this._lookAndFeel = value;
     }
 
     get svg() {
         return this._svg;
+
     }
 
     get namespace() {
@@ -120,20 +167,20 @@ export default class SVGArea extends AreaDefaults {
 
     addLayer(layer) {
         layer.onChangeVisibility = this.handleLayerVisibilityChange.bind(this);
-        return super.addLayer({layer: layer});
+        return super.addLayer(layer);
     }
 
-    handleLayerVisibilityChange(layer, oldValue, newValue) {
+    handleLayerVisibilityChange({layer, oldValue, newValue} = {}) {
         if (oldValue !== newValue) {
             if (newValue === true) {
                 // Make all elements in the layer visible.
                 Object.keys(layer.elements).forEach(function (id) {
-                    layer.getElement(id).stylingAttributes.visible = true;
+                    layer.getElement(id).style.visible = true;
                 });
             } else {
                 // Hide all elements in the layer.
                 Object.keys(layer.elements).forEach(function (id) {
-                    layer.getElement(id).stylingAttributes.visible = false;
+                    layer.getElement(id).style.visible = false;
                 });
             }
         }
@@ -141,99 +188,75 @@ export default class SVGArea extends AreaDefaults {
 
     // Callback methods called by HTML SVG element events.
     fireOnClick(event) {
-        notifyListeners(this._onClick, this, event.clientX, event.clientY, event);
+        notifyListeners({listener: this._onClick, target: this}, event.clientX, event.clientY, event);
     }
 
     fireOnDblClick(event) {
-        notifyListeners(this._onDblClick, this, event.clientX, event.clientY, event);
+        notifyListeners({listener: this._onDblClick, target: this}, event.clientX, event.clientY, event);
     }
 
     fireOnMouseDown(event) {
-        notifyListeners(this._onMouseDown, this, event.clientX, event.clientY, event);
+        notifyListeners({listener: this._onMouseDown, target: this}, event.clientX, event.clientY, event);
     }
 
     fireOnMouseMove(event) {
-        notifyListeners(this._onMouseMove, this, event.clientX, event.clientY, event);
+        notifyListeners({listener: this._onMouseMove, target: this}, event.clientX, event.clientY, event);
     }
 
     fireOnMouseUp(event) {
-        notifyListeners(this._onMouseUp, this, event.clientX, event.clientY, event);
+        notifyListeners({listener: this._onMouseUp, target: this}, event.clientX, event.clientY, event);
     }
 
-    addElement(element, layer) {
+    addElement({element, layer} = {}) {
         if (!layer || layer === null) {
-            layer = this.firstLayer;
+            layer = this.topLayer;
         }
-        element.addTag(SVGArea.LAYER, layer);
+        element.addTag({key: SVGAreaConstants.LAYER, value: layer});
         layer.addElement(element);
         return element;
     }
 
     removeElement(element) {
-        element.getTag(SVGArea.LAYER).removeElement(element);
-        this.svg.removeChild(element.drawn);
+        element.getTag(SVGAreaConstants.LAYER).removeElement(element);
+        this.svg.removeChild(element.getTag(SVGAreaConstants.DRAWN));
     }
 
     /**
      * Draw a new circle with the specified parameters.
-     * @param centerX
-     * @param centerY
-     * @param radius
-     * @param layer
      */
-    circ({centerX = 0, centerY = 0, radius = 7, layer = this.topLayer} = {}) {
+    circ({centerX, cx, centerY, cy, x1, x, y1, y, diameter, d, radius, r, style, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new circle and set its id.
-        let newCircle = new Circle(centerX, centerY, radius);
-        newCircle.id = this.generateElementId();
+        let newModel = new Circle(...arguments);
+        newModel.id = this.generateElementId();
 
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newCircle);
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
         drawer.svgArea = this;
-        let drawnCircle = drawer.draw(newCircle);
-        this.svg.appendChild(drawnCircle);
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
 
-        newCircle.drawn = drawnCircle;
+        newModel.addTag({key: SVGAreaConstants.DRAWN, value: drawn});
 
-        this.registerEvents(newCircle, drawnCircle);
+        this.registerEvents(newModel, drawn);
 
-        return this.addElement(newCircle, layer);
+        return this.addElement({element: newModel, layer: layer});
     }
 
     /**
      * @see {@link circ}
      */
-    circle(parameterObject) {
-        return this.circ(parameterObject);
+    circle() {
+        return this.circ(...arguments);
     }
 
     /**
      * Draw a new ellipse with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: centerX, centerY, radiusX, radiusY, preserveAspectRatio, and layer.
      */
-    ellipse(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('centerX' in parameterObject)) {
-            parameterObject.centerX = 50;
-        }
-        if (!('centerY' in parameterObject)) {
-            parameterObject.centerY = 50;
-        }
-        if (!('radiusX' in parameterObject)) {
-            parameterObject.radiusX = 100;
-        }
-        if (!('radiusY' in parameterObject)) {
-            parameterObject.radiusY = 50;
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
+    ellipse({centerX, cx, centerY, cy, x, x1, y, y1, x2, y2, width, w, height, h, dx, diameterX, radiusX, rx, dy, diameterY, radiusY, ry, style, preserveAspectRatio, layer = this.topLayer} = {}) {
 
         //*****************************
         // Create a new ellipse and set its id.
-        let newEllipse = new Ellipse(parameterObject.centerX, parameterObject.centerY, parameterObject.radiusX, parameterObject.radiusY);
+        let newEllipse = new Ellipse(...arguments);
         newEllipse.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -242,40 +265,20 @@ export default class SVGArea extends AreaDefaults {
         let drawnEllipse = drawer.draw(newEllipse);
         this.svg.appendChild(drawnEllipse);
 
-        newEllipse.drawn = drawnEllipse;
+        newEllipse.addTag({key: SVGAreaConstants.DRAWN, value: drawnEllipse});
 
         this.registerEvents(newEllipse, drawnEllipse);
 
-        return this.addElement(newEllipse, parameterObject.layer);
+        return this.addElement({element: newEllipse, layer: layer});
     }
 
     /**
      * Draw a new rectangle with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, and layer.
      */
-    rect(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x1' in parameterObject)) {
-            parameterObject.x1 = 10;
-        }
-        if (!('y1' in parameterObject)) {
-            parameterObject.y1 = 10;
-        }
-        if (!('x2' in parameterObject)) {
-            parameterObject.x2 = 10;
-        }
-        if (!('y2' in parameterObject)) {
-            parameterObject.y2 = 10;
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    rect({x1, x, y1, y, x2, y2, width, w, height, h, style, preserveAspectRatio, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new rectangle and set its id.
-        let newRectangle = new Rectangle(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2);
+        let newRectangle = new Rectangle(...arguments);
         newRectangle.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -284,53 +287,26 @@ export default class SVGArea extends AreaDefaults {
         let drawnRectangle = drawer.draw(newRectangle);
         this.svg.appendChild(drawnRectangle);
 
-        newRectangle.drawn = drawnRectangle;
+        newRectangle.addTag({key: SVGAreaConstants.DRAWN, value: drawnRectangle});
 
         this.registerEvents(newRectangle, drawnRectangle);
 
-        return this.addElement(newRectangle, parameterObject.layer);
+        return this.addElement({element: newRectangle, layer: layer});
     }
 
     /**
      * @see {@link rect}
      */
-    rectangle(parameterObject) {
-        return this.rect(parameterObject);
+    rectangle() {
+        return this.rect(...arguments);
     }
 
     /**
      * Draw a new diamond with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x1, y1, width, height, preserveAspectRatio, stylingAttributes, and layer.
      */
-    diamond(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x1' in parameterObject)) {
-            parameterObject.x1 = 10;
-        }
-        if (!('y1' in parameterObject)) {
-            parameterObject.y1 = 10;
-        }
-        if (!('width' in parameterObject)) {
-            parameterObject.width = 50;
-        }
-        if (!('height' in parameterObject)) {
-            parameterObject.height = 50;
-        }
-        if (!('preserveAspectRatio' in parameterObject)) {
-            parameterObject.preserveAspectRatio = true;
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes();
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
-        //*****************************
+    diamond({x1, x, y1, y, x2, width, w, y2, height, h, style, preserveAspectRatio, layer = this.topLayer} = {}) {
         // Create a new diamond and set its id.
-        let newDiamond = new Diamond(parameterObject.x1, parameterObject.y1, parameterObject.width, parameterObject.height, parameterObject.preserveAspectRatio, parameterObject.stylingAttributes);
+        let newDiamond = new Diamond(...arguments);
         newDiamond.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -339,43 +315,20 @@ export default class SVGArea extends AreaDefaults {
         let drawnDiamond = drawer.draw(newDiamond);
         this.svg.appendChild(drawnDiamond);
 
-        newDiamond.drawn = drawnDiamond;
+        newDiamond.addTag({key: SVGAreaConstants.DRAWN, value: drawnDiamond});
 
         this.registerEvents(newDiamond, drawnDiamond);
 
-        return this.addElement(newDiamond, parameterObject.layer);
+        return this.addElement({element: newDiamond, layer: layer});
     }
 
     /**
      * Draw a new text with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x, y, text, stylingAttributes, fontStylingAttributes, and layer.
      */
-    txt(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x' in parameterObject)) {
-            parameterObject.x = 10;
-        }
-        if (!('y' in parameterObject)) {
-            parameterObject.y = 10;
-        }
-        if (!('text' in parameterObject)) {
-            parameterObject.text = "This is an example text";
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes(1, "black", "black");
-        }
-        if (!('fontStylingAttributes' in parameterObject)) {
-            parameterObject.fontStylingAttributes = new FontStylingAttributes();
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    txt({x1, x, y1, y, text = "Default text", style, fontStyle, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new text and set its id.
-        let newText = new Text(parameterObject.x, parameterObject.y, parameterObject.text, parameterObject.stylingAttributes, parameterObject.fontStylingAttributes);
+        let newText = new Text(...arguments);
         newText.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -384,51 +337,28 @@ export default class SVGArea extends AreaDefaults {
         let drawnText = drawer.draw(newText);
         this.svg.appendChild(drawnText);
 
-        newText.drawn = drawnText;
-        newText.text = parameterObject.text; // Recalculate the text width calling a listener.
+        newText.addTag({key: SVGAreaConstants.DRAWN, value: drawnText});
+        newText.text = text; // Recalculate the text width calling a listener.
 
         this.registerEvents(newText, drawnText);
 
-        return this.addElement(newText, parameterObject.layer);
+        return this.addElement({element: newText, layer: layer});
     }
 
     /**
      * @see {@link txt}
      */
-    text(parameterObject) {
-        return this.txt(parameterObject);
+    text() {
+        return this.txt(...arguments);
     }
 
     /**
      * Draw a new image with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x, y, width, height, image, and layer.
      */
-    img(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x' in parameterObject)) {
-            parameterObject.x = 10;
-        }
-        if (!('y' in parameterObject)) {
-            parameterObject.y = 10;
-        }
-        if (!('width' in parameterObject)) {
-            parameterObject.width = 50;
-        }
-        if (!('height' in parameterObject)) {
-            parameterObject.height = 50;
-        }
-        if (!('image' in parameterObject)) {
-            parameterObject.image = null;
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    img({id, x1, x, y1, y, x2, y2, width, w, height, h, style, preserveAspectRatio, image, img, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new image and set its id.
-        let newImage = new Image(parameterObject.x, parameterObject.y, parameterObject.width, parameterObject.height, parameterObject.image);
+        let newImage = new Image(...arguments);
         newImage.id = this.generateElementId();
 
         let lookAndFeel = new LookAndFeel();
@@ -437,238 +367,118 @@ export default class SVGArea extends AreaDefaults {
         let drawnImage = drawer.draw(newImage);
         this.svg.appendChild(drawnImage);
 
-        newImage.drawn = drawnImage;
+        newImage.addTag({key: SVGAreaConstants.DRAWN, value: drawnImage});
 
         this.registerEvents(newImage, drawnImage);
 
-        return this.addElement(newImage, parameterObject.layer);
+        return this.addElement({element: newImage, layer: layer});
     }
 
     /**
      * @see {@link img}
      */
-    image(parameterObject) {
-        return this.img(parameterObject);
+    image() {
+        return this.img(...arguments);
     }
 
     /**
      * Draw a new vertical group with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x, y, stylingAttributes, groupStylingAttributes, and layer.
      */
-    vGroup(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x' in parameterObject)) {
-            parameterObject.x = 10;
-        }
-        if (!('y' in parameterObject)) {
-            parameterObject.y = 10;
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes();
-        }
-        if (!('groupStylingAttributes' in parameterObject)) {
-            parameterObject.groupStylingAttributes = new GroupStylingAttributes();
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    vGroup({x1, x, y1, y, style, groupStyle, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new vertical group and set its id.
-        let newVGroup = new VerticalGroup(parameterObject.x, parameterObject.y, parameterObject.stylingAttributes, parameterObject.groupStylingAttributes);
-        newVGroup.id = this.generateElementId();
+        let newModel = new VerticalGroup(...arguments);
+        newModel.id = this.generateElementId();
 
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newVGroup);
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
         drawer.svgArea = this;
-        let drawnVGroup = drawer.draw(newVGroup);
-        this.svg.appendChild(drawnVGroup);
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
 
-        newVGroup.drawn = drawnVGroup;
+        newModel.addTag({key: SVGAreaConstants.DRAWN, value: drawn});
 
-        this.registerEvents(newVGroup, drawnVGroup);
+        this.registerEvents(newModel, drawn);
 
-        return this.addElement(newVGroup, parameterObject.layer);
+        return this.addElement({element: newModel, layer: layer});
     }
 
     /**
      * @see {@link vGroup}
      */
-    verticalGroup(parameterObject) {
-        return this.vGroup(parameterObject);
-    }
-
-    /**
-     * Draw a new linear group with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, stylingAttributes, groupStylingAttributes, and layer.
-     */
-    lGroup(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x1' in parameterObject)) {
-            parameterObject.x1 = 10;
-        }
-        if (!('y1' in parameterObject)) {
-            parameterObject.y1 = 10;
-        }
-        if (!('x2' in parameterObject)) {
-            parameterObject.x2 = 100;
-        }
-        if (!('y2' in parameterObject)) {
-            parameterObject.y2 = 100;
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes();
-        }
-        if (!('groupStylingAttributes' in parameterObject)) {
-            parameterObject.groupStylingAttributes = new GroupStylingAttributes(0, 0);
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
-        //*****************************
-        // Create a new linear group and set its id.
-        let newLinearGroup = new LinearGroup(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2, parameterObject.stylingAttributes, parameterObject.groupStylingAttributes);
-        newLinearGroup.id = this.generateElementId();
-
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newLinearGroup);
-        drawer.svgArea = this;
-        let drawnLinearGroup = drawer.draw(newLinearGroup);
-        this.svg.appendChild(drawnLinearGroup);
-
-        newLinearGroup.drawn = drawnLinearGroup;
-
-        this.registerEvents(newLinearGroup, drawnLinearGroup);
-
-        return this.addElement(newLinearGroup, parameterObject.layer);
-    }
-
-    /**
-     * @see {@link lGroup}
-     */
-    linearGroup(parameterObject) {
-        return this.lGroup(parameterObject);
+    verticalGroup() {
+        return this.vGroup(...arguments);
     }
 
     /**
      * Draw a new line with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: x1, y1, x2, y2, stylingAttributes, and layer.
      */
-    line(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('x1' in parameterObject)) {
-            parameterObject.x1 = 10;
-        }
-        if (!('y1' in parameterObject)) {
-            parameterObject.y1 = 10;
-        }
-        if (!('x2' in parameterObject)) {
-            parameterObject.x2 = 100;
-        }
-        if (!('y2' in parameterObject)) {
-            parameterObject.y2 = 10;
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes();
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    line({id, x1, x, y1, y, x2, y2, style, layer = this.topLayer} = {}) {
         //*****************************
         // Create a new line and set its id.
-        let newLine = new Line(parameterObject.x1, parameterObject.y1, parameterObject.x2, parameterObject.y2, parameterObject.stylingAttributes);
-        newLine.id = this.generateElementId();
+        let newModel = new Line(...arguments);
+        newModel.id = this.generateElementId();
 
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newLine);
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
         drawer.svgArea = this;
-        let drawnLine = drawer.draw(newLine);
-        this.svg.appendChild(drawnLine);
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
 
-        newLine.drawn = drawnLine;
+        newModel.addTag({key: SVGAreaConstants.DRAWN, value: drawn});
 
-        this.registerEvents(newLine, drawnLine);
+        this.registerEvents(newModel, drawn);
 
-        return this.addElement(newLine, parameterObject.layer);
+        return this.addElement({element: newModel, layer: layer});
     }
 
     /**
-     * Draw a new poly line with the specified parameters.
-     * @param parameterObject An object with the following optional attributes: stylingAttributes and layer.
-     * @param pairOfCoordinates An undefined odd number of coordinates (x and y).
+     * Draw a new polyline with the specified parameters.
+     * @param layer
+     * @param style
+     * @param pairsOfCoordinates
      */
-    polyLine(parameterObject, pairOfCoordinates) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('stylingAttributes' in parameterObject)) {
-            parameterObject.stylingAttributes = new StylingAttributes(1, "black", "none");
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
+    polyLine({layer = this.topLayer, style, initialMarker, endMarker, curve} = {}) {
         //*****************************
         // Create a new line and set its id.
-        let coordinates = Array.from(arguments).slice(1);
-        let newPolyline = new PolyLine(parameterObject.stylingAttributes, coordinates);
-        newPolyline.id = this.generateElementId();
+        let newModel = new PolyLine(...arguments);
+        newModel.id = this.generateElementId();
 
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newPolyline);
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
         drawer.svgArea = this;
-        let drawnLine = drawer.draw(newPolyline);
-        this.svg.appendChild(drawnLine);
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
 
-        newPolyline.drawn = drawnLine;
+        newModel.addTag({key: SVGAreaConstants.DRAWN, value: drawn});
 
-        this.registerEvents(newPolyline, drawnLine);
+        this.registerEvents(newModel, drawn);
 
-        return this.addElement(newPolyline, parameterObject.layer);
+        return this.addElement({element: newModel, layer: layer});
+    }
+
+    boxVerticesDecorator({decorated, topLeft, topRight, bottomLeft, bottomRight, vertexSize, layer} = {}) {
+        //*****************************
+        // Create a new box vertices decorator and set its id based on the decorated id.
+        let newModel = new BoxVerticesDecorator(...arguments);
+        newModel.id = this.generateElementId();
+
+        let drawer = this.lookAndFeel.getDrawerFor(newModel);
+        drawer.svgArea = this;
+        let drawn = drawer.draw(newModel);
+        this.svg.appendChild(drawn);
+
+        newModel.addTag({key: SVGAreaConstants.DRAWN, value: drawn});
+        newModel.notifyListeners(ChangeListenerConstants.POSITION, ChangeListenerConstants.DIMENSION);
+
+        this.registerEvents(newModel, drawn);
+
+        return this.addElement({element: newModel, layer: layer});
     }
 
     /**
-     * Draw a new box vertices decorator with the specified parameters.
-     * @param parameterObject An object with the following required attributes: decorated; and the following optional attributes: layer.
+     * @private
+     * Register events for the drawn and the model.
+     * @param model The model.
+     * @param drawn The drawn.
      */
-    boxVerticesDecorator(parameterObject) {
-        if(!parameterObject || parameterObject === null) {
-            parameterObject = {};
-        }
-        if (!('decorated' in parameterObject)) {
-            throw "An object to decorated is required to create a new Box Vertices Decorator";
-        }
-        if (!('layer' in parameterObject)) {
-            parameterObject.layer = this.topLayer;
-        }
-
-        //*****************************
-        // Create a new box vertices decorator and set its id.
-        let newBoxVerticesDecorator = new BoxVerticesDecorator(parameterObject.decorated);
-        newBoxVerticesDecorator.id = parameterObject.decorated.id;
-
-        let lookAndFeel = new LookAndFeel();
-        let drawer = lookAndFeel.getDrawerFor(newBoxVerticesDecorator);
-        drawer.svgArea = this;
-        let drawnBoxVerticesDecorator = drawer.draw(newBoxVerticesDecorator);
-        this.svg.appendChild(drawnBoxVerticesDecorator);
-
-        newBoxVerticesDecorator.drawn = drawnBoxVerticesDecorator;
-        newBoxVerticesDecorator.notifyListeners(ChangeListener.POSITION, ChangeListener.DIMENSION);
-
-        this.registerEvents(newBoxVerticesDecorator, drawnBoxVerticesDecorator);
-
-        return this.addElement(newBoxVerticesDecorator, parameterObject.layer);
-    }
-
     registerEvents(model, drawn) {
         drawn.onclick = model.fireOnClick.bind(model);
         drawn.ondblclick = model.fireOnDblClick.bind(model);

@@ -10,8 +10,8 @@
 
 import GraphicalElement from './graphical-element.js';
 import BoundingBox from './bounding-box.js';
-import StylingAttributes from "./styling-attributes";
-import ChangeListener from "./change-listener";
+import {checkRedundantArguments, getNonNullValue, isNull, error} from "./util";
+import ChangeListenerConstants from "./listener/change-listener-constants";
 
 /**
  * This class implements ellipses.
@@ -23,8 +23,99 @@ import ChangeListener from "./change-listener";
  */
 export default class Ellipse extends GraphicalElement {
 
-    constructor(centerX = 0, centerY = 0, radiusX = 50, radiusY = 25, ellipseStylingAttributes = new StylingAttributes(), ellipsePreserveAspectRatio = false) {
-        super({x: centerX - radiusX, y: centerY - radiusY, width: radiusX * 2, height: radiusY * 2, stylingAttributes: ellipseStylingAttributes, preserveAspectRatio: ellipsePreserveAspectRatio});
+    constructor({id, centerX, cx, centerY, cy, x, x1, y, y1, x2, y2, width, w, height, h, dx, diameterX, radiusX, rx, dy, diameterY, radiusY, ry, style, preserveAspectRatio} = {}) {
+        // **************************************
+        // * VALIDATE ARGUMENTS.
+        // **************************************
+        // Check whether there are redundant arguments.
+        if (checkRedundantArguments(radiusX, rx, diameterX, dx, width, w, x2)) {
+            error("Warning: More than one of the following arguments was informed: radiusX, rx, diameterX, dx, width, w, and x2.");
+        }
+        if (checkRedundantArguments(radiusY, ry, diameterY, dy, height, h, y2)) {
+            error("Warning: More than one of the following arguments was informed: radiusY, ry, diameterY, dy, height, h, and y2.");
+        }
+        // **************************************
+        let needToAdjustDiameterX = false;
+        let needToAdjustDiameterY = false;
+        if (isNull(radiusX) && isNull(rx)) {
+            if (isNull(diameterX) && isNull(dx)) {
+                if (isNull(x2)) {
+                    if (isNull(width) && isNull(w)) {
+                        diameterX = 14;
+                    } else {
+                        diameterX = getNonNullValue(width, w);
+                    }
+                } else {
+                    diameterX = x2; // Need to be adjusted later - when x1 is calculated.
+                    needToAdjustDiameterX = true;
+                }
+            } else {
+                diameterX = getNonNullValue(diameterX, dx);
+            }
+        } else {
+            diameterX = getNonNullValue(radiusX, rx) * 2;
+        }
+        if (isNull(radiusY) && isNull(ry)) {
+            if (isNull(diameterY) && isNull(dy)) {
+                if (isNull(y2)) {
+                    if (isNull(height) && isNull(h)) {
+                        diameterY = 7; // Need to be adjusted later - when y1 is calculated.
+                    } else {
+                        diameterY = getNonNullValue(height, h);
+                    }
+                } else {
+                    diameterY = y2;
+                    needToAdjustDiameterY = true;
+                }
+            } else {
+                diameterY = getNonNullValue(diameterY, dy);
+            }
+        } else {
+            diameterY = getNonNullValue(radiusY, ry) * 2;
+        }
+        if (isNull(centerX) && isNull(cx)) {
+            if (isNull(x) && isNull(x1)) {
+                x1 = 0;
+            } else {
+                x1 = getNonNullValue(x1, x);
+                if (needToAdjustDiameterX) {
+                    diameterX -= x1;
+                }
+            }
+        } else {
+            if (needToAdjustDiameterX) {
+                let radiusX = diameterX - getNonNullValue(centerX, cx);
+                x1 = getNonNullValue(centerX, cx) - radiusX;
+            } else {
+                x1 = getNonNullValue(centerX, cx) - diameterX / 2;
+            }
+        }
+        if (isNull(centerY) && isNull(cy)) {
+            if (isNull(y) && isNull(y1)) {
+                y1 = 0;
+            } else {
+                y1 = getNonNullValue(y1, y);
+                if (needToAdjustDiameterY) {
+                    diameterY -= y1;
+                }
+            }
+        } else {
+            if (needToAdjustDiameterY) {
+                let radiusY = diameterY - getNonNullValue(centerY, cy);
+                y1 = getNonNullValue(centerY, cy) - radiusY;
+            } else {
+                y1 = getNonNullValue(centerY, cy) - diameterY / 2;
+            }
+        }
+        super({
+            id,
+            x1: x1,
+            y1: y1,
+            width: diameterX,
+            height: diameterY,
+            style: style,
+            preserveAspectRatio: preserveAspectRatio
+        });
     }
 
     get width() {
@@ -35,7 +126,7 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.width = value;
         this.enableChangeNotifications();
-        this.notifyListeners(ChangeListener.DIMENSION);
+        this.notifyListeners(ChangeListenerConstants.DIMENSION);
     }
 
     get height() {
@@ -46,7 +137,7 @@ export default class Ellipse extends GraphicalElement {
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
         this.enableChangeNotifications();
-        this.notifyListeners(ChangeListener.DIMENSION);
+        this.notifyListeners(ChangeListenerConstants.DIMENSION);
     }
 
     get centerX() {
@@ -119,14 +210,22 @@ export default class Ellipse extends GraphicalElement {
         return x2;
     }
 
-    contentBox(width = 1, height = 1) {
-        let sqrt2 = Math.sqrt(2);
-        let rectHeight = (this.height / 2) * sqrt2;
-        let rectWidth = (this.width / 2) * sqrt2;
-        let deltaX = (this.width - rectWidth) / 2;
-        let deltaY = (this.height - rectHeight) / 2;
+    contentBox({width, w, height, h} = {}) {
+        width = getNonNullValue(width, w, this.width);
+        height = getNonNullValue(height, h, this.height);
 
-        let contentBox = new BoundingBox(this.x + deltaX, this.y + deltaY, this.x + this.width - deltaX, this.y + this.height - deltaY);
+        let sqrt2 = Math.sqrt(2);
+        let rectHeight = (height / 2) * sqrt2;
+        let rectWidth = (width / 2) * sqrt2;
+        let deltaX = (width - rectWidth) / 2;
+        let deltaY = (height - rectHeight) / 2;
+
+        let contentBox = new BoundingBox({
+            x1: this.x1 + deltaX,
+            y1: this.y + deltaY,
+            x2: this.x1 + width - deltaX,
+            y2: this.y1 + height - deltaY
+        });
 
         return contentBox;
     }

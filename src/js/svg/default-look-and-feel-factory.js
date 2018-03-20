@@ -1,5 +1,24 @@
 /**
- * Created by Leandro Luque on 08/06/2017.
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 /* JSHint configurations */
@@ -20,8 +39,6 @@ import Text from '../core/text.js';
 import DefaultTextDrawer from './default-text-drawer.js';
 import VerticalGroup from '../core/vertical-group.js';
 import DefaultVerticalGroupDrawer from './default-vertical-group-drawer.js';
-import LinearGroup from '../core/linear-group.js';
-import DefaultLinearGroupDrawer from './default-linear-group-drawer.js';
 import Line from '../core/line.js';
 import DefaultLineDrawer from './default-line-drawer.js';
 import Image from '../core/image.js';
@@ -30,35 +47,44 @@ import DefaultPolyLineDrawer from "./default-polyline-drawer";
 import PolyLine from "../core/polyline";
 import BoxVerticesDecorator from "../core/box-vertices-decorator";
 import DefaultBoxVerticesDecoratorDrawer from "./default-box-vertices-decorator-drawer";
+import Marker from "../core/marker";
+import DefaultMarkerDrawer from "./default-marker-drawer";
 
 /**
- * This class implements a default look and feel factory.
+ * This class implements a default look and feel factory for SVG areas.
  */
 export default class DefaultLookAndFeelFactory {
 
+    /**
+     * Get a SVG drawer for the specified element.
+     * @param {GraphicalElement} element The element must be a subclass of graphical element.
+     * @return {*} A SVG drawer for the specified element.
+     */
     getDrawerFor(element) {
-        if (Object.getPrototypeOf(element) === Circle.prototype) {
+        if(element instanceof Marker) {
+            return new DefaultMarkerDrawer();
+        }  else if (element instanceof Circle) {
             return new DefaultCircleDrawer();
-        } else if (Object.getPrototypeOf(element) === Ellipse.prototype) {
+        } else if (element instanceof Ellipse) {
             return new DefaultEllipseDrawer();
-        } else if (Object.getPrototypeOf(element) === Rectangle.prototype) {
+        } else if (element instanceof Rectangle) {
             return new DefaultRectangleDrawer();
-        } else if (Object.getPrototypeOf(element) === Diamond.prototype) {
+        } else if (element instanceof Diamond) {
             return new DefaultDiamondDrawer();
-        } else if (Object.getPrototypeOf(element) === Text.prototype) {
+        } else if (element instanceof Text) {
             return new DefaultTextDrawer();
-        } else if (Object.getPrototypeOf(element) === VerticalGroup.prototype) {
+        } else if (element instanceof VerticalGroup) {
             return new DefaultVerticalGroupDrawer();
-        } else if (Object.getPrototypeOf(element) === LinearGroup.prototype) {
-            return new DefaultLinearGroupDrawer();
-        } else if (Object.getPrototypeOf(element) === Line.prototype) {
+        } else if (element instanceof Line) {
             return new DefaultLineDrawer();
-        } else if (Object.getPrototypeOf(element) === PolyLine.prototype) {
+        } else if (element instanceof PolyLine) {
             return new DefaultPolyLineDrawer();
-        } else if (Object.getPrototypeOf(element) === Image.prototype) {
+        } else if (element instanceof Image) {
             return new DefaultImageDrawer();
-        } else if (Object.getPrototypeOf(element) === BoxVerticesDecorator.prototype) {
+        } else if (element instanceof BoxVerticesDecorator) {
             return new DefaultBoxVerticesDecoratorDrawer();
+        } else {
+            throw "No SVG drawer was found for the element.";
         }
     }
 

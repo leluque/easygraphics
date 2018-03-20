@@ -9,8 +9,11 @@
 'use strict';
 
 import DefaultDrawer from './default-drawer.js';
-import LookAndFeel from './look-and-feel.js';
-import VGroupRotationChangeListener from "./vgroup-rotation-change-listener";
+import {isNotNull} from "../core/util";
+import VerticalGroupChildrenChangeListener from "./listener/vgroup-children-change-listener";
+import VerticalGroupChangeListener from "./listener/vgroup-change-listener";
+import VerticalGroupDimensionChangeListener from "./listener/vgroup-dimension-change-listener";
+import VerticalGroupFrameChangeListener from "./listener/vgroup-frame-change-listener";
 
 export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
@@ -24,9 +27,9 @@ export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
         newGroup.setAttribute('shape-rendering', 'inherit');
         newGroup.setAttribute('pointer-events', 'all');
 
-        let lookAndFeel = new LookAndFeel();
+        let lookAndFeel = this.svgArea.lookAndFeel;
 
-        if (element.frame !== null) {
+        if (isNotNull(element.frame)) {
             let drawer = lookAndFeel.getDrawerFor(element.frame);
             drawer.svgArea = this.svgArea;
             var drawnFrame = drawer.draw(element.frame);
@@ -36,18 +39,16 @@ export default class DefaultVerticalGroupDrawer extends DefaultDrawer {
 
         let i = 0;
         for (i = 0; i < element.countChildren(); i++) {
-            let child = element.getChildAt(i);
-            //let drawer = lookAndFeel.getDrawerFor(child);
-            //drawer.svgArea = this.svgArea;
-            //var drawnChild = drawer.draw(child);
-            //child.drawn = drawnChild;
-            //newGroup.appendChild(drawnChild);
+            let child = element.childAt(i);
             newGroup.appendChild(child.drawn);
         }
 
         //*****************************
-        // Add change listeners.
-        element.addChangeListener(new VGroupRotationChangeListener());
+        // Add change listener.
+        element.addChangeListener(new VerticalGroupDimensionChangeListener());
+        element.addChangeListener(new VerticalGroupChangeListener());
+        element.addChangeListener(new VerticalGroupChildrenChangeListener(element));
+        element.addChangeListener(new VerticalGroupFrameChangeListener(element));
 
         return newGroup;
     }

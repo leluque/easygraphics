@@ -64,19 +64,19 @@ describe('AreaDefaults', () => {
 		
 		it('The layer stack must have the order: l_1, l_5, l_2, l_3, l_4.', () => {
 			let layer5 = areaDefaults.getLayerAt(4);
-			areaDefaults.moveLayerTo({layer: layer5, targetPosition: 1});
+			areaDefaults.moveLayerTo({layer: layer5, position: 1});
 			assert.deepEqual(areaDefaults.layerStack.map(o => o.id), ["l_1","l_5","l_2","l_3","l_4"]);
 		});
 		
 		it('The layer stack must have the order: l_1, l_2, l_4, l_5.', () => {
 			let layer3 = areaDefaults.getLayerAt(2);
-			areaDefaults.removeLayer({layer: layer3});
+			areaDefaults.removeLayer(layer3);
 			assert.deepEqual(areaDefaults.layerStack.map(o => o.id), ["l_1","l_2","l_4","l_5"]);
 		});
 
 		it('The layer stack size must be equal 4', () => {
 			let layer3 = areaDefaults.getLayerAt(2);
-			areaDefaults.removeLayer({layer: layer3});
+			areaDefaults.removeLayer(layer3);
 			assert.equal(areaDefaults.countLayers(), 4);
 		});
 		
@@ -87,7 +87,7 @@ describe('AreaDefaults', () => {
 
 		it('The layer removing callback function must be called.', function(done) {
 			areaDefaults.onRemoveLayer = function() {done();};
-			areaDefaults.removeLayer({layer: areaDefaults.getLayerAt(2)});
+			areaDefaults.removeLayer(areaDefaults.getLayerAt(2));
 		});
 		
 		it('The layer moving callback function must be called (1).', function(done) {

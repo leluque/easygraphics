@@ -8,6 +8,7 @@
     "url": "git+https://github.com/leluque/easygraphics.git"
   },
   "jshintConfig": {
+    "devel": true,
     "undef": true,
     "unused": false,
     "globals": {
@@ -18,7 +19,7 @@
   "scripts": {
     "lint": "jshint src",
     "prepareFolders": "mkdirp build/js",
-	"test": "mocha --compilers js:babel-core/register ./test/**/*.spec.js",
+    "test": "mocha --compilers js:babel-core/register ./test/**/*.spec.js",
     "build:js": "webpack --progress --colors --watch",
     "copyTests": "cpx run/** build",
     "start": "npm run lint && npm run test && npm run prepareFolders && npm run copyTests && npm run build:js",
@@ -42,6 +43,7 @@
     "babel-loader": "^7.1.2",
     "babel-minify-webpack-plugin": "^0.2.0",
     "babel-preset-es2015": "^6.24.1",
+    "circular-dependency-plugin": "^4.4.0",
     "cpx": "^1.5.0",
     "eslint": "^4.15.0",
     "eslint-loader": "^1.9.0",

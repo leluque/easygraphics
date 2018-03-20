@@ -9,53 +9,84 @@
 'use strict';
 
 import GraphicalElement from './graphical-element';
-import StylingAttributes from './styling-attributes';
+import Style from './style/style';
 import BoundingBox from "./bounding-box";
 import Point from "./point";
 
 export default class PolyLine extends GraphicalElement {
 
-    constructor(polyLineStylingAttributes = new StylingAttributes(1)) {
-        super({x: 0, y: 0, width: 0, height: 0, stylingAttributes: polyLineStylingAttributes});
+    constructor({
+                    id, curve = false, startMarker, endMarker, style = new Style({
+            strokeWidth: 1,
+            strokeColor: "black",
+            fillColor: "none"
+        })
+                }) {
+        super({id: id, x: 0, y: 0, width: 0, height: 0, style: style, preserveAspectRatio: false});
         this._idCount = 1;
         this._points = [];
         let coordinates = Array.from(arguments).slice(1);
-        if (Array.isArray(coordinates)) {
-            coordinates = coordinates[0]; // SVGArea may have passed it as an array.
-        }
 
         for (let i = 0; i < coordinates.length; i += 2) {
             this.addPoint(coordinates[i], coordinates[i + 1]);
         }
+
+        this._curve = curve;
+        this._startMarker = startMarker;
+        this._endMarker = endMarker;
+
         this.updateBoundingBox();
     }
 
-    get x1() {
-        return this.x;
+    get curve() {
+        return this._curve;
     }
 
-    set x1(value) {
-        this.x = value;
+    set curve(value) {
+        this._curve = value;
     }
 
-    get y1() {
-        return this.y;
+    get startMarker() {
+        return this._startMarker;
     }
 
-    set y1(value) {
-        this.y = value;
+    set startMarker(value) {
+        this._startMarker = value;
+    }
+
+    get endMarker() {
+        return this._endMarker;
+    }
+
+    set endMarker(value) {
+        this._endMarker = value;
+    }
+
+    get preserveAspectRatio() {
+        return false;
+    }
+
+    /**
+     * The line aspect ratio is always false. This method throws an exception if the argument
+     * is different of false.
+     * @param {boolean} value true, if the aspect ratio must be preserved. false, otherwise.
+     */
+    set preserveAspectRatio(value) {
+        if (value !== false) {
+            throw "The polyline aspect ratio has always to be false.";
+        }
     }
 
     get minWidth() {
-        if (this.stylingAttributes !== null) {
-            return this.stylingAttributes.strokeWidth;
+        if (this.style !== null) {
+            return this.style.strokeWidth;
         }
         return 1;
     }
 
     get minHeight() {
-        if (this.stylingAttributes !== null) {
-            return this.stylingAttributes.strokeWidth;
+        if (this.style !== null) {
+            return this.style.strokeWidth;
         }
         return 1;
     }
@@ -73,7 +104,7 @@ export default class PolyLine extends GraphicalElement {
     }
 
     addPoint(x, y) {
-        this._points.push(new Point(x, y, this.generateId()));
+        this._points.push(new Point({x: x, y: y, id: this.generateId()}));
         return true;
     }
 
@@ -128,14 +159,19 @@ export default class PolyLine extends GraphicalElement {
                 maxY = this._points[i].y;
             }
         }
-        return new BoundingBox(minX, minY, maxX, maxY);
+        return new BoundingBox({x1: minX, y1: minY, x2: maxX, y2: maxY});
     }
 
     updateBoundingBox() {
         let boundingBox = this.findBoundingBox();
-        this.x1 = boundingBox.x1;
-        this.y1 = boundingBox.y1;
-        this.x2 = boundingBox.x2;
-        this.y2 = boundingBox.y2;
+        if (boundingBox.x1 === Number.MAX_SAFE_INTEGER ||
+            boundingBox.y1 === Number.MAX_SAFE_INTEGER ||
+            boundingBox.x2 === Number.MIN_SAFE_INTEGER ||
+            boundingBox.y2 === Number.MIN_SAFE_INTEGER) {
+            return;
+        }
+        this.moveTo({x: boundingBox.x1, y: boundingBox.y1});
+        this.resizeTo({width: boundingBox.x2 - this.x1, height: boundingBox.y2 - this.y1});
     }
+
 }

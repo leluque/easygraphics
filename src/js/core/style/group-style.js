@@ -1,0 +1,138 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+'use strict';
+
+import {checkRedundantArguments, error, getNonNullValue} from "../util";
+import ChangeListenerConstants from "../listener/change-listener-constants";
+import DefaultStyle from "./default-style";
+import VerticalGravity from "../vertical-gravity";
+
+export default class GroupStyle extends DefaultStyle {
+
+    constructor({leftPadding, lPadding, rightPadding, rPadding, topPadding, tPadding, bottomPadding, bPadding, verGravity, vGravity, spaceBetweenChildren = 0} = {}) {
+        super();
+        // **************************************
+        // Check whether there are redundant arguments.
+        if (checkRedundantArguments(leftPadding, lPadding)) {
+            error("Warning: Both leftPadding and lPadding were informed.");
+        }
+        if (checkRedundantArguments(rightPadding, rPadding)) {
+            error("Warning: Both rightPadding and rPadding were informed.");
+        }
+        if (checkRedundantArguments(topPadding, tPadding)) {
+            error("Warning: Both topPadding and tPadding were informed.");
+        }
+        if (checkRedundantArguments(bottomPadding, bPadding)) {
+            error("Warning: Both bottomPadding and bPadding were informed.");
+        }
+        if (checkRedundantArguments(verGravity, vGravity)) {
+            error("Warning: Both verGravity and vGravity were informed.");
+        }
+        // **************************************
+
+        this._leftPadding = getNonNullValue(leftPadding, lPadding, 0);
+        this._rightPadding = getNonNullValue(rightPadding, rPadding, 0);
+        this._topPadding = getNonNullValue(topPadding, tPadding, 0);
+        this._bottomPadding = getNonNullValue(bottomPadding, bPadding, 0);
+        this._spaceBetweenChildren = spaceBetweenChildren;
+        this._target = null;
+        this._verGravity = verGravity;
+    }
+
+    static get defaultVerGravity() {
+        return VerticalGravity.MIDDLE;
+    }
+
+    get verGravity() {
+        return this._verGravity;
+    }
+
+    set verGravity(value) {
+        this._verGravity = value;
+    }
+
+    get leftPadding() {
+        return this._leftPadding;
+    }
+
+    set leftPadding(value) {
+        this._leftPadding = value;
+        this.notifyTarget();
+    }
+
+    get rightPadding() {
+        return this._rightPadding;
+    }
+
+    set rightPadding(value) {
+        this._rightPadding = value;
+        this.notifyTarget();
+    }
+
+    get topPadding() {
+        return this._topPadding;
+    }
+
+    set topPadding(value) {
+        this._topPadding = value;
+        this.notifyTarget();
+    }
+
+    get bottomPadding() {
+        return this._bottomPadding;
+    }
+
+    set bottomPadding(value) {
+        this._bottomPadding = value;
+        this.notifyTarget();
+    }
+
+    get spaceBetweenChildren() {
+        return this._spaceBetweenChildren;
+    }
+
+    set spaceBetweenChildren(value) {
+        this._spaceBetweenChildren = value;
+        this.notifyTarget();
+    }
+
+    get target() {
+        return this._target;
+    }
+
+    set target(value) {
+        this._target = value;
+    }
+
+    notifyTarget() {
+        if (this.target !== undefined && this.target !== null) {
+            this.target.notifyListeners(ChangeListenerConstants.STYLING);
+        }
+    }
+
+}

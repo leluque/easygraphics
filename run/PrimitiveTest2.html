@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EasyGraphics Test 2</title>
+    <script src="../build/js/easygraphics.js"></script>
+
+    <style>
+        #svg {
+            border: 1px solid #000;
+        }
+    </style>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
+    </style>
+
+</head>
+<body>
+
+<svg id="svg" width="1024" height="768"></svg>
+
+<script>
+
+		//****************************
+		// Code to move elements using drag-and-drop and to resize box vertex decorated elements.
+		let selectedElement = null;
+		let relativeXPosition = -1;
+		let relativeYPosition = -1;
+		let originalXPosition = -1;
+		let originalYPosition = -1;
+		let originalX2Position = -1;
+		let originalY2Position = -1;
+		let originalWidth = -1;
+		let originalHeight = -1;
+		function select(element, x, y, event) { 
+			if(element instanceof easygraphics.GraphicalElement) {
+				console.log('A graphical element was selected.');
+				selectedElement = element;
+				if(null !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) && undefined !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
+					console.log("  The graphical element is a vertex.");
+					originalXPosition = selectedElement.getTag(easygraphics.GraphicalElement.PARENT).x1;
+					originalYPosition = selectedElement.getTag(easygraphics.GraphicalElement.PARENT).y1;
+					originalX2Position = element.x2;
+					originalY2Position = element.y2;
+					originalWidth = element.width;
+					originalHeight = element.height;
+				}
+				relativeXPosition = x - element.x1;
+				relativeYPosition = y - element.y1;
+				event.stopPropagation();
+			} else {
+				selectedElement = null;
+			}
+		}
+		function move(element, x, y, event) {
+			if(selectedElement !== null) {
+				console.log(x + ", " + y);
+				if(null !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) && undefined !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
+					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
+						selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.TOP_RIGHT) {
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth + x - relativeXPosition;
+					}
+					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
+						selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_LEFT) {
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height = originalHeight + y - relativeYPosition;
+					}
+					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.TOP_LEFT) {
+						//selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth - x + relativeXPosition;
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).x1 = originalXPosition + (x - relativeXPosition);
+					}
+				} else {
+					selectedElement.moveTo({x: x - relativeXPosition, y: y - relativeYPosition});
+				}
+			}
+		}
+		function unselect(element, x, y, event) { 
+			selectedElement = null;
+			relativeXPosition = -1;
+			relativeYPosition = -1;
+			
+		}
+
+
+		(function () {
+        let svgArea = new easygraphics.Area.init("#svg");
+		svgArea.onMouseDown = select;
+		svgArea.onMouseMove = move;
+		svgArea.onMouseUp = unselect;
+		
+		// Draw an ellipse.
+        let ellipse = svgArea.ellipse();
+		ellipse.moveTo({x: 30, y: 30});
+		ellipse.width = 100;
+		ellipse.height = 70;
+				
+		// Draw a decorated ellipse.
+		let ellipse1 = svgArea.ellipse();
+		ellipse1.moveTo({x: 200, y: 30});
+		ellipse1.width = 100;
+		ellipse1.height = 70;
+		let ellipse1Decorator = svgArea.boxVerticesDecorator({decorated: ellipse1});
+		ellipse1Decorator.onMouseDown = select;
+		ellipse1Decorator.onMouseMove = move;
+		ellipse1Decorator.onMouseUp = unselect;
+		ellipse1Decorator.onVertexMouseDown = select;
+
+		// Draw a rectangle.
+		let rectangle = svgArea.rect();
+		rectangle.width = 100;
+		rectangle.height = 50;
+		rectangle.moveTo({x: 30, y: 130});
+		
+		// Draw a rectangle.
+		let rectangle1 = svgArea.rect();
+		rectangle1.width = 100;
+		rectangle1.height = 50;
+		rectangle1.moveTo({x: 200, y: 130});
+		rectangle1.onMouseDown = select;
+		rectangle1.onMouseMove = move;
+		rectangle1.onMouseUp = unselect;
+		
+		// Draw a circle.
+		let circle = svgArea.circle();
+		circle.width = 100;
+		circle.moveTo({x: 30, y: 210});
+
+		// Draw a diamond.
+		let diamond = svgArea.diamond();
+		diamond.width = 100;
+		diamond.height = 90;
+		diamond.moveTo({x: 30, y: 340});
+
+		// Draw a text.
+		let text = svgArea.text({text: "My Text"});
+		text.moveTo({x: 50, y: 460});
+		
+		//****************************
+        // UML Entity Class.
+        let rectangle2 = svgArea.rect();
+		//let rectangle2 = svgArea.rect({x1: 0, x2: 70, y1:0, y2: 18});
+        umlClass = svgArea.vGroup({x: 200, y: 340, groupStyle: new easygraphics.GroupStyle({spaceBetweenChildren: 10}), vGravity: easygraphics.VerticalGravity.TOP});
+		umlClass.frame = rectangle2;
+        let stereotype = svgArea.text({text: "<<Entity>>"});
+        stereotype.fontStyle.style = "italic";
+		umlClass.neverHideContent = true;
+        umlClass.addChild({element: stereotype, hGravity: easygraphics.HorizontalGravity.RIGHT});
+        umlClass.addChild({element: svgArea.text({text: "<<< TRY TO MODE ME >>>"}), horGravity: easygraphics.HorizontalGravity.CENTER});
+        umlClass.addChild({element: svgArea.line({x1: 0, y1: 0, x2: 1, y2: 0}), horResizingPolicy: easygraphics.ResizePolicy.MATCH_PARENT});
+		umlClass.addChild({element: svgArea.text({text: "<<< TRY TO MODE ME >>>"}), horGravity: easygraphics.HorizontalGravity.CENTER});
+
+		umlClass.moveTo({x: 50, y:50});
+		
+		let classDecorator = svgArea.boxVerticesDecorator({decorated: umlClass});
+		classDecorator.onMouseDown = select;
+		classDecorator.onMouseMove = move;
+		classDecorator.onMouseUp = unselect;
+		classDecorator.onVertexMouseDown = select;
+
+		
+		/*		let attribute = svgArea.text({text: "<<< TRY DO EDIT ME: String >>>"});
+        umlClass.addChild(attribute);
+
+		// Editable attribute.
+		attribute.onDblClick = function(element, x, y, event) {
+			defaultTextEditor(x, y, element);
+			event.stopPropagation();
+		}
+		
+		let textName = svgArea.text({text: "- name: String"});
+        umlClass.addChild(textName);
+        umlClass.addChild(svgArea.text({text: "- birthDate: Date"}));
+        umlClass.addChild(svgArea.line({x1: 0, y1: 0, x2: 1, y2: 0}), easygraphics.VerticalGroup.MATCH_PARENT);
+        umlClass.addChild(svgArea.text({text: "+ save(): void"}));
+        umlClass.addChild(svgArea.text({text: "+ update(): void"}));
+        text = svgArea.text({text: "+ findByRegistry(registry: String): List<Customer>"});
+        umlClass.addChild(text);
+		let classDecorator = svgArea.boxVerticesDecorator({decorated: umlClass});
+		classDecorator.onMouseDown = select;
+		classDecorator.onMouseMove = move;
+		classDecorator.onMouseUp = unselect;
+		classDecorator.onVertexMouseDown = select;*/
+		
+		//****************************
+        // UML Use Case.
+/*        let umlUseCase1 = svgArea.vGroup({x: 300, y: 320, groupStyle: new easygraphics.GroupStyle(0, 0)});
+		let ellipse2 = svgArea.ellipse({preserveAspectRatio: true});
+        umlUseCase1.frame = ellipse2;
+		umlUseCase1.minWidth = 1;
+		umlUseCase1.minHeight = 1;
+        umlUseCase1.addChild(svgArea.text({text: "Other Use Case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        let line = svgArea.line({x1: 0, y1: 0, x2: 1, y2: 0});
+        umlUseCase1.addChild(line, easygraphics.VerticalGroup.MATCH_PARENT);
+        umlUseCase1.addChild(svgArea.text({text: "extension points"}, new easygraphics.FontStyle(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase1.addChild(svgArea.text({text: "Another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase1.addChild(svgArea.text({text: "Yet another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		umlUseCase1.addChild(svgArea.text({text: "=============="}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		umlUseCase1.addChild(svgArea.text({text: ">>> TRY TO MOVE ME <<<"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		
+		// Drag and drop.
+		umlUseCase1.onMouseDown = select;
+		umlUseCase1.onMouseMove = move;
+		umlUseCase1.onMouseUp = unselect;*/
+        //****************************
+
+		//****************************
+        // UML Use Case 2.
+/*        let umlUseCase2 = svgArea.vGroup({x: 400, y: 320, groupStyle: new easygraphics.GroupStyle(0, 0)});
+		let ellipse3 = svgArea.ellipse();
+        umlUseCase2.frame = ellipse3;
+		umlUseCase2.minWidth = 1;
+		umlUseCase2.minHeight = 1;
+        umlUseCase2.addChild(svgArea.text({text: "Other Use Case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase2.addChild(svgArea.line({x1: 0, y1: 0, x2: 1, y2: 0}), easygraphics.VerticalGroup.MATCH_PARENT);
+        umlUseCase2.addChild(svgArea.text({text: "extension points"}, new easygraphics.FontStyle(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase2.addChild(svgArea.text({text: "Another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase2.addChild(svgArea.text({text: "Yet another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		umlUseCase2.addChild(svgArea.text({text: "=============="}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		umlUseCase2.addChild(svgArea.text({text: ">>> TRY TO MOVE ME <<<"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+		
+		// Drag and drop.
+		umlUseCase2.onMouseDown = select;
+		umlUseCase2.onMouseMove = move;
+		umlUseCase2.onMouseUp = unselect;*/
+        //****************************
+		
+		//let polyline = svgArea.polyLine({curve: true, endMarker: easygraphics.Marker.FILLED_TRIANGLE, style: new easygraphics.Style({strokeWidth: 1, strokeColor: "#00F", fillColor: "none"})}, 50, 500, 100, 550, 200, 600);
+		let polyline = svgArea.polyLine({curve: true, endMarker: easygraphics.Marker.TRIANGLE, style: new easygraphics.Style({strokeWidth: 1, strokeColor: "#00F", fillColor: "none"})}, 50, 500, 100, 550, 200, 600);
+    })();
+		
+</script>
+
+<button type="button" onclick="changeDimensions()">Change dimensions</button>
+<button type="button" onclick="move()">Move</button>
+<button type="button" onclick="changeStyle()">Change style</button>
+<button type="button" onclick="changeText()">Change text</button>
+<button type="button" onclick="fitContent()">Fit content</button>
+
+</body>
+</html>

@@ -1,87 +1,169 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 03/07/2017.
- */
-
 'use strict';
 
+// **********************************************
 /**
- * This method returns the angle in degrees between two lines.
- * @param ax1 The first line x1 coordinate.
- * @param ay1 The first line y1 coordinate.
- * @param ax2 The first line x2 coordinate.
- * @param ay2 The first line y2 coordinate.
- * @param bx1 The second line x1 coordinate.
- * @param by1 The second line y1 coordinate.
- * @param bx2 The second line x2 coordinate.
- * @param by2 The second line y2 coordinate.
- * @returns {number} The angle in degrees between the two lines.
+ * Convert the angle from degrees to radians.
+ * @param {number} degrees The angle in degrees.
+ * @return {number} The angle in radians.
  */
-export function angleBetween2Lines(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {
-    let angle1 = Math.atan2(ay1 - ay2, ax1 - ax2);
-    let angle2 = Math.atan2(by1 - by2, bx1 - bx2);
-    return toDegrees(Math.abs(angle1) - Math.abs(angle2));
-}
-
-/**
- * This method calculates the angle in degrees between two vectors with origin at (0, 0).
- * @param ax2 The x-coordinate of the second point (1st vector).
- * @param ay2 The y-coordinate of the second point (1st vector).
- * @param bx2 The x-coordinate of the second point (2nd vector).
- * @param by2 The y-coordinate of the second point (2nd vector).
- * @returns {number} The angle between the two vectors in degrees.
- */
-export function angleBetween2Vectors(ax2, ay2, bx2, by2) {
-    // See http://www.wikihow.com/Find-the-Angle-Between-Two-Vectors
-
-    // Convert y cartesian coordinate to y drawing coordinate.
-    ay2 *= -1;
-    by2 *= -1;
-
-    // Calculate the length of each vector.
-    let lengthV1 = Math.sqrt(ax2 * ax2 + ay2 * ay2);
-    let lengthV2 = Math.sqrt(bx2 * bx2 + by2 * by2);
-
-    // Calculate the scalar product of the two vectors.
-    let scalarProduct = ax2 * bx2 + ay2 * by2;
-
-    // Calculate the cosine of the angle between the two vectors.
-    let cosine = scalarProduct / (lengthV1 * lengthV2);
-
-    // Find the angle based on the arccosine.
-    let angle = Math.acos(cosine);
-    return toDegrees(angle);
-}
-
-// Converts from degrees to radians.
 export function toRadians(degrees) {
     return degrees * Math.PI / 180;
 }
 
-// Converts from radians to degrees.
+/**
+ * Convert the angle from radians to degrees.
+ * @param {number} radians The angle in radians.
+ * @return {number} The angle in degrees.
+ */
+
 export function toDegrees(radians) {
     return radians * 180 / Math.PI;
 }
 
-export function notifyListeners(listener, target) {
-    if (listener !== null && listener) {
+// **********************************************
+
+/**
+ * Notify the listener and inform the target.
+ * @param listener The listener.
+ * @param target The target.
+ */
+export function notifyListeners({listener, target} = {}) {
+    if (listener !== undefined && listener !== null) {
         if (typeof(listener) === "function") {
-            listener(target, ...Array.prototype.slice.call(arguments, 2));
+            listener(target, ...Array.prototype.slice.call(arguments, 1));
         } else {
             throw "Callback is not a function: " + typeof(listener);
         }
     }
 }
 
-export function validateArgumentsObject(argumentsObject, key, defaultValue) {
-    if (!(key in argumentsObject)) {
-        if (typeof(defaultValue) === 'function') {
-            argumentsObject[key] = defaultValue();
-        } else {
-            argumentsObject[key] = defaultValue;
+/**
+ * Return the arguments received as argument in an array.
+ * @see https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+ * @return {any[]} An array with the content of arguments.
+ */
+export function getArgumentsAsArray() {
+    var args = new Array(arguments.length);
+    for (let i = 0; i < args.length; ++i) {
+        args[i] = arguments[i];
+    }
+    return args;
+}
+
+export function getNonNullValue() {
+    let args = getArgumentsAsArray(...arguments);
+    for (let i = 0; i < args.length; ++i) {
+        if (isNotNull(args[i])) {
+            return args[i];
         }
     }
+}
+
+export function isNotNull(value) {
+    return value !== undefined && value !== null; // May be faster than != null.
+}
+
+export function isNull(value) {
+    return value === undefined || value === null; // May be faster than == null.
+}
+
+/**
+ * Check whether the informed arguments have more than one value different of null.
+ * @return {boolean} true, if the informed arguments have more than one value different of null. false, otherwise.
+ */
+export function checkRedundantArguments() {
+    let args = getArgumentsAsArray(arguments);
+    let howMany = 0;
+    for (let i = 0; i < args.length; ++i) {
+        if (isNotNull(args[i])) {
+            howMany++;
+        }
+    }
+    return howMany > 1;
+}
+
+/**
+ * Check whether the number of informed arguments is bigger than the specified number.
+ * @return {boolean} true, if the number of informed arguments is bigger than the specified number.
+ */
+export function checkIfNumberOfArgumentsExceed() {
+    let args = getArgumentsAsArray(arguments);
+    let howMany = 0;
+    for (let i = 1; i < args.length; ++i) {
+        if (isNotNull(args[i])) {
+            howMany++;
+        }
+    }
+    return howMany > args[0];
+}
+
+/**
+ * Check whether the argument is an integer.
+ * @param value The argument.
+ * @return {boolean} true, if it is an integer. false, otherwise.
+ */
+export function isInt(value) {
+    return !isNaN(value) &&
+        parseInt(Number(value)) == value &&
+        !isNaN(parseInt(value, 10));
+}
+
+export function isNotInt(value) {
+    return !isInt(value);
+}
+
+export function isBoolean(value) {
+    return typeof(value) == typeof(true);
+}
+
+export function isNotBoolean(value) {
+    return !isBoolean(value);
+}
+
+export function error(message) {
+    console.log(message);
+    throw message;
+}
+
+export function warning(message) {
+    console.log(message);
+}
+
+export function isNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+export function isNotANumber(value) {
+    return isNaN(parseFloat(value)) || !isFinite(value);
+}
+
+export function isNotABoolean(value) {
+    return typeof(value) !== typeof(true);
 }

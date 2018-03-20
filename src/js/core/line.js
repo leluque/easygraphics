@@ -1,56 +1,55 @@
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /* JSHint configurations */
 /* jshint esversion: 6 */
 /* jshint -W097 */
 
-/**
- * Created by Leandro Luque on 08/06/2017.
- */
-
 'use strict';
 
 import GraphicalElement from './graphical-element.js';
-import StylingAttributes from './styling-attributes';
+import Style from "./style/style";
 
 export default class Line extends GraphicalElement {
 
-    constructor(x1 = 10, y1 = 10, x2 = 1, y2 = 1, lineStylingAttributes = new StylingAttributes(1)) {
-        super({
-            x: x1,
-            y: y1,
-            width: x2 - x1 + lineStylingAttributes.strokeWidth,
-            height: y2 - y1 + lineStylingAttributes.strokeWidth,
-            stylingAttributes: lineStylingAttributes
-        });
+    constructor({id, x1, x, y1, y, x2, y2, style = new Style({strokeWidth: 1})} = {}) {
+        super(...arguments);
+        super.preserveAspectRatio = false;
     }
 
-    get x1() {
-        return this.x;
+    get preserveAspectRatio() {
+        return false;
     }
 
-    set x1(value) {
-        this.x = value;
-    }
-
-    get y1() {
-        return this.y;
-    }
-
-    set y1(value) {
-        this.y = value;
-    }
-
-    get minWidth() {
-        if (this.stylingAttributes !== null) {
-            return this.stylingAttributes.strokeWidth;
+    /**
+     * The line aspect ratio is always false. This method throws an exception if the argument
+     * is different of false.
+     * @param {boolean} value true, if the aspect ratio must be preserved. false, otherwise.
+     */
+    set preserveAspectRatio(value) {
+        if (value !== false) {
+            throw "The line aspect ratio has always to be false.";
         }
-        return 1;
-    }
-
-    get minHeight() {
-        if (this.stylingAttributes !== null) {
-            return this.stylingAttributes.strokeWidth;
-        }
-        return 1;
     }
 
 }

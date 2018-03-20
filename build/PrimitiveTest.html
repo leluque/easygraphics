@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Primitive Test</title>
+    <title>EasyGraphics Test</title>
     <script src="../build/js/easygraphics.js"></script>
 
     <style>
         #svg {
             border: 1px solid #000;
         }
-
     </style>
 
     <style>
@@ -75,9 +74,6 @@
 					selectedElement.x = x - relativeXPosition;
 					selectedElement.y = y - relativeYPosition;
 				}
-				/*if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.BOX_VERTICES_TAG)) {
-					console.log(selectedElement.getTag(easygraphics.BoxVerticesDecorator.BOX_VERTICES_TAG).x);
-				}*/
 			}
 		}
 		function unselect(element, x, y, event) { 
@@ -93,10 +89,10 @@
         //****************************
         // UML Entity Class.
         rect = svgArea.rect()
-        umlClass = svgArea.vGroup({x: 10, y: 10, groupStylingAttributes: new easygraphics.GroupStylingAttributes()});
-        umlClass.frame = rect;
+        umlClass = svgArea.vGroup({x: 10, y: 10, groupStyle: new easygraphics.GroupStyle()});
+		umlClass.frame = rect;
         let stereotype = svgArea.text({text: "<<Entity>>"});
-        stereotype.fontStylingAttributes.style = "italic";
+        stereotype.fontStyle.style = "italic";
         umlClass.addChild(stereotype, easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlClass.addChild(svgArea.text({text: "<<< TRY TO MODE ME >>>"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlClass.addChild(svgArea.line(), easygraphics.VerticalGroup.MATCH_PARENT);
@@ -143,12 +139,12 @@
 
         //****************************
         // UML Use Case.
-        let umlUseCase1 = svgArea.vGroup({x: 300, y: 320, groupStylingAttributes: new easygraphics.GroupStylingAttributes(0, 0)});
+        let umlUseCase1 = svgArea.vGroup({x: 300, y: 320, groupStyle: new easygraphics.GroupStyle(0, 0)});
         umlUseCase1.frame = svgArea.ellipse();
         umlUseCase1.addChild(svgArea.text({text: "Other Use Case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         //let line = svgArea.line();
         //umlUseCase1.addChild(line, easygraphics.VerticalGroup.MATCH_PARENT);
-        umlUseCase1.addChild(svgArea.text({text: "extension points"}, new easygraphics.FontStylingAttributes(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
+        umlUseCase1.addChild(svgArea.text({text: "extension points"}, new easygraphics.FontStyle(family = "'Roboto', sans-serif", size = 13, weight = "500", style = "normal", target = null)), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlUseCase1.addChild(svgArea.text({text: "Another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
         umlUseCase1.addChild(svgArea.text({text: "Yet another use case"}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
 		umlUseCase1.addChild(svgArea.text({text: "=============="}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER);
@@ -160,7 +156,7 @@
 		umlUseCase1.onMouseUp = unselect;
         //****************************
 		
-		svgArea.polyLine({stylingAttributes: new easygraphics.StylingAttributes(1, "#00F", "none")}, 50, 560, 100, 550, 200, 600);
+		svgArea.polyLine({style: new easygraphics.Style(1, "#00F", "none")}, 50, 560, 100, 550, 200, 600);
 	
 		ellipse = svgArea.ellipse({centerX: 200, centerY: 100, radiusX: 50, radiusY: 25});
 	
@@ -200,8 +196,8 @@
 
         //****************************
         // Vertical group with weight.
-        let vGroupWeight = svgArea.vGroup({x: 650, y: 450, groupStylingAttributes: new easygraphics.GroupStylingAttributes(0, 0)});
-        vGroupWeight.addChild(svgArea.line({x1: 10, y1: 10, x2: 10, y2: 100, stylingAttributes: new easygraphics.StylingAttributes(3)}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 1);
+        let vGroupWeight = svgArea.vGroup({x: 650, y: 450, groupStyle: new easygraphics.GroupStyle(0, 0)});
+        vGroupWeight.addChild(svgArea.line({x1: 10, y1: 10, x2: 10, y2: 100, style: new easygraphics.Style(3)}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 1);
         vGroupWeight.addChild(svgArea.diamond({width: 20, height: 20}), easygraphics.VerticalGroup.WRAP_CONTENT, easygraphics.VerticalGroup.CENTER, 0, -2);
         vGroupWeight.rotation = 45;
         //****************************
