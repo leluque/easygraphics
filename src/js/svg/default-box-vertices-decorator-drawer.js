@@ -38,7 +38,11 @@ import BoxVerticesDecoratorDecoratedDimensionChangeListener from "../core/listen
 import GraphicalElement from "../core/graphical-element";
 import ChangeListenerConstants from "../core/listener/change-listener-constants";
 import SVGAreaConstants from "./svg-area-constants";
+import {error} from "../core/util";
 
+/**
+ * This class draws BoxVerticesDecorator.
+ */
 export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
 
     constructor(svgArea) {
@@ -47,51 +51,55 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
 
     /**
      * Draw a box vertices decorator on a SVG area and return the generated SVG element.
-     * @param {BoxVerticesDecorator} element The box vertices decorator to be drawn.
+     * @param {BoxVerticesDecorator} boxVerticesDecorator The box vertices decorator to be drawn.
      * @return A SVG group element.
      */
-    draw(element) {
+    draw(boxVerticesDecorator) {
         let newGroup = document.createElementNS(this.svgArea.namespace, "g");
-        newGroup.setAttribute("id", element.id);
+        newGroup.setAttribute("id", boxVerticesDecorator.id);
         newGroup.setAttribute('shape-rendering', 'inherit');
         newGroup.setAttribute('pointer-events', 'all');
 
-        if (element.decorated !== null) {
-            newGroup.appendChild(element.decorated.getTag(SVGAreaConstants.DRAWN));
+        if (null !== boxVerticesDecorator.decorated) {
+            let decorated = boxVerticesDecorator.decorated;
+            newGroup.appendChild(decorated.getTag(SVGAreaConstants.DRAWN));
 
-            // Copy the decorated position before removing its listener.
-            element.moveTo({x: element.decorated.x1, y: element.decorated.y1});
-            element.resizeTo({width: element.decorated.width, height: element.decorated.height});
-            element.decorated.disableChangeNotifications();
-            element.decorated.moveTo({x: 0, y: 0});
-            element.decorated.enableChangeNotifications();
-            element.decorated.notifyListeners(ChangeListenerConstants.POSITION);
+            // Copy the decorated position (before changing it to 0,0) and dimension before removing its listener.
+            boxVerticesDecorator.moveTo({x: decorated.x1, y: decorated.y1});
+            boxVerticesDecorator.resizeTo({
+                width: decorated.width,
+                height: decorated.height
+            });
+            decorated.disableChangeNotifications();
+            decorated.moveTo({x: 0, y: 0});
+            decorated.enableChangeNotifications();
+            decorated.notifyListeners(ChangeListenerConstants.POSITION);
 
             //*****************************
             // Remove the decorated listener related to position, dimension, and rotation.
             // These events will be handled by the decorator group.
-            element.decorated.removeChangeListenerByType(ChangeListenerConstants.POSITION, ChangeListenerConstants.ROTATION);
-            element.decorated.addChangeListener(new BoxVerticesDecoratorDecoratedPositionChangeListener(element));
-            element.decorated.addChangeListener(new BoxVerticesDecoratorDecoratedRotationChangeListener(element));
-            element.decorated.addChangeListener(new BoxVerticesDecoratorDecoratedDimensionChangeListener(element));
+            decorated.removeChangeListenerByType(ChangeListenerConstants.POSITION, ChangeListenerConstants.DIMENSION, ChangeListenerConstants.ROTATION);
+            decorated.addChangeListener(new BoxVerticesDecoratorDecoratedPositionChangeListener(boxVerticesDecorator));
+            decorated.addChangeListener(new BoxVerticesDecoratorDecoratedRotationChangeListener(boxVerticesDecorator));
+            decorated.addChangeListener(new BoxVerticesDecoratorDecoratedDimensionChangeListener(boxVerticesDecorator));
         }
 
         //*****************************
         // Add group change listener.
-        element.addChangeListener(new BoxVerticesDecoratorChangeListener());
+        boxVerticesDecorator.addChangeListener(new BoxVerticesDecoratorChangeListener());
 
-        let vertexSize = element.vertexSize;
+        let vertexSize = boxVerticesDecorator.vertexSize;
         let halfSize = (vertexSize - 1) / 2;
 
         let lookAndFeel = this.svgArea.lookAndFeel;
         let style = new Style({strokeWidth: 0, strokeColor: "black", fillColor: "black"});
 
         // Draw the box vertices.
-        if (true === element.topLeft) {
-            element.addTag({
+        if (true === boxVerticesDecorator.topLeft) {
+            boxVerticesDecorator.addTag({
                 key: BoxVerticesDecorator.TOP_LEFT, value: this.generateVertex({
                     position: BoxVerticesDecorator.TOP_LEFT,
-                    element: element,
+                    element: boxVerticesDecorator,
                     halfSize: halfSize,
                     style: style,
                     lookAndFeel: lookAndFeel,
@@ -99,11 +107,11 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
                 })
             });
         }
-        if (true === element.topRight) {
-            element.addTag({
+        if (true === boxVerticesDecorator.topRight) {
+            boxVerticesDecorator.addTag({
                 key: BoxVerticesDecorator.TOP_RIGHT, value: this.generateVertex({
                     position: BoxVerticesDecorator.TOP_RIGHT,
-                    element: element,
+                    element: boxVerticesDecorator,
                     halfSize: halfSize,
                     style: style,
                     lookAndFeel: lookAndFeel,
@@ -111,11 +119,11 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
                 })
             });
         }
-        if (true === element.bottomLeft) {
-            element.addTag({
+        if (true === boxVerticesDecorator.bottomLeft) {
+            boxVerticesDecorator.addTag({
                 key: BoxVerticesDecorator.BOTTOM_LEFT, value: this.generateVertex({
                     position: BoxVerticesDecorator.BOTTOM_LEFT,
-                    element: element,
+                    element: boxVerticesDecorator,
                     halfSize: halfSize,
                     style: style,
                     lookAndFeel: lookAndFeel,
@@ -123,11 +131,11 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
                 })
             });
         }
-        if (true === element.bottomRight) {
-            element.addTag({
+        if (true === boxVerticesDecorator.bottomRight) {
+            boxVerticesDecorator.addTag({
                 key: BoxVerticesDecorator.BOTTOM_RIGHT, value: this.generateVertex({
                     position: BoxVerticesDecorator.BOTTOM_RIGHT,
-                    element: element,
+                    element: boxVerticesDecorator,
                     halfSize: halfSize,
                     style: style,
                     lookAndFeel: lookAndFeel,
@@ -142,16 +150,16 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
     generateVertex({position, element, halfSize, style, lookAndFeel, group} = {}) {
         let x1 = 0 - halfSize;
         let y1 = 0 - halfSize;
-        if (position === BoxVerticesDecorator.TOP_RIGHT) {
+        if (BoxVerticesDecorator.TOP_RIGHT === position) {
             x1 = element.width - halfSize;
-        } else if (position === BoxVerticesDecorator.BOTTOM_LEFT) {
+        } else if (BoxVerticesDecorator.BOTTOM_LEFT === position) {
             y1 = element.height - halfSize;
-        } else if (position === BoxVerticesDecorator.BOTTOM_RIGHT) {
+        } else if (BoxVerticesDecorator.BOTTOM_RIGHT === position) {
             x1 = element.width - halfSize;
             y1 = element.height - halfSize;
-        } else if (position === BoxVerticesDecorator.TOP_LEFT) {
+        } else if (BoxVerticesDecorator.TOP_LEFT === position) {
         } else {
-            throw "The position is invalid.";
+            error("The position is invalid.");
         }
 
         let vertex = new Rectangle({
@@ -164,6 +172,7 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
         vertex.addTag({key: BoxVerticesDecorator.VERTEX, value: position});
         vertex.addTag({key: BoxVerticesDecorator.IS_VERTEX, value: true});
         vertex.addTag({key: GraphicalElement.PARENT, value: element});
+
         // Get a drawer for the vertex.
         let drawer = lookAndFeel.getDrawerFor(vertex);
         drawer.svgArea = this.svgArea;

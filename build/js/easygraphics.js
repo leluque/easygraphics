@@ -2176,12 +2176,21 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
             this._propagateToDecorated++;
         }
     }, {
-        key: "getAbsY2",
-        value: function getAbsY2() {
-            return this.decorated.getAbsY2();
-        }
-    }, {
         key: "resizeTo",
+
+
+        /*    get y2() {
+                return this.decorated.y2;
+            }
+        
+            set y2(value) {
+                this.decorated.y2 = value;
+            }
+        
+            getAbsY2() {
+                return this.decorated.getAbsY2();
+            }*/
+
         value: function resizeTo() {
             var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
                 width = _ref2.width,
@@ -2422,14 +2431,6 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
         },
         set: function set(value) {
             this.decorated.minHeight = value;
-        }
-    }, {
-        key: "y2",
-        get: function get() {
-            return this.decorated.y2;
-        },
-        set: function set(value) {
-            this.decorated.y2 = value;
         }
     }, {
         key: "minWidth",
@@ -7682,6 +7683,8 @@ var _changeListenerConstants = __webpack_require__(0);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
+var _util = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7699,11 +7702,11 @@ var BoxVerticesDecoratorDecoratedPositionChangeListener = function (_ChangeListe
     function BoxVerticesDecoratorDecoratedPositionChangeListener(decorator) {
         _classCallCheck(this, BoxVerticesDecoratorDecoratedPositionChangeListener);
 
-        if (decorator === undefined || decorator === null) {
-            throw "The decorator cannot be null.";
+        if ((0, _util.isNull)(decorator)) {
+            (0, _util.error)("The decorator cannot be null.");
         }
         if (!(decorator instanceof _graphicalElement2.default)) {
-            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+            (0, _util.error)("The decorator must be an instance of GraphicalElement or one of its subclasses.");
         }
 
         var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedPositionChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedPositionChangeListener)).call(this, _changeListenerConstants2.default.POSITION));
@@ -7717,15 +7720,12 @@ var BoxVerticesDecoratorDecoratedPositionChangeListener = function (_ChangeListe
 
 
         /**
-         * Update the position and the rotation of the decorator.
+         * Update the position of the decorator.
          */
         value: function update() {
             this.decorator.disableChangeNotifications();
-            this.decorator.x1 = this.decorator.decorated.x1;
-            this.decorator.y1 = this.decorator.decorated.y1;
-            this.decorator.rotation = this.decorator.decorated.rotation;
-            this.decorator.rotationCenterX = this.decorator.decorated.rotationCenterX;
-            this.decorator.rotationCenterY = this.decorator.decorated.rotationCenterY;
+            var decorated = this.decorator.decorated;
+            this.decorator.moveTo({ x: decorated.x1, y: decorated.y1 });
             this.decorator.enableChangeNotifications();
             this.decorator.notifyListeners(_changeListenerConstants2.default.POSITION, _changeListenerConstants2.default.ROTATION);
         }
@@ -7793,6 +7793,8 @@ var _changeListenerConstants = __webpack_require__(0);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
+var _util = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7810,11 +7812,11 @@ var BoxVerticesDecoratorDecoratedRotationChangeListener = function (_ChangeListe
     function BoxVerticesDecoratorDecoratedRotationChangeListener(decorator) {
         _classCallCheck(this, BoxVerticesDecoratorDecoratedRotationChangeListener);
 
-        if (decorator === undefined || decorator === null) {
-            throw "The decorator cannot be null.";
+        if ((0, _util.isNull)(decorator)) {
+            (0, _util.error)("The decorator cannot be null.");
         }
         if (!(decorator instanceof _graphicalElement2.default)) {
-            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+            (0, _util.error)("The decorator must be an instance of GraphicalElement or one of its subclasses.");
         }
 
         var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedRotationChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedRotationChangeListener)).call(this, _changeListenerConstants2.default.ROTATION));
@@ -7832,9 +7834,10 @@ var BoxVerticesDecoratorDecoratedRotationChangeListener = function (_ChangeListe
          */
         value: function update() {
             this.decorator.disableChangeNotifications();
-            this.decorator.rotation = this.decorator.decorated.rotation;
-            this.decorator.rotationCenterX = this.decorator.decorated.rotationCenterX;
-            this.decorator.rotationCenterY = this.decorator.decorated.rotationCenterY;
+            var decorated = this.decorator.decorated;
+            this.decorator.rotation = decorated.rotation;
+            this.decorator.rotationCenterX = decorated.rotationCenterX;
+            this.decorator.rotationCenterY = decorated.rotationCenterY;
             this.decorator.enableChangeNotifications();
             this.decorator.notifyListeners(_changeListenerConstants2.default.ROTATION);
         }
@@ -7906,6 +7909,8 @@ var _changeListenerConstants = __webpack_require__(0);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
+var _util = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7923,11 +7928,11 @@ var BoxVerticesDecoratorDecoratedDimensionChangeListener = function (_ChangeList
     function BoxVerticesDecoratorDecoratedDimensionChangeListener(decorator) {
         _classCallCheck(this, BoxVerticesDecoratorDecoratedDimensionChangeListener);
 
-        if (decorator === undefined || decorator === null) {
-            throw "The decorator cannot be null.";
+        if ((0, _util.isNull)(decorator)) {
+            (0, _util.error)("The decorator cannot be null.");
         }
         if (!(decorator instanceof _graphicalElement2.default)) {
-            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+            (0, _util.error)("The decorator must be an instance of GraphicalElement or one of its subclasses.");
         }
 
         var _this = _possibleConstructorReturn(this, (BoxVerticesDecoratorDecoratedDimensionChangeListener.__proto__ || Object.getPrototypeOf(BoxVerticesDecoratorDecoratedDimensionChangeListener)).call(this, _changeListenerConstants2.default.DIMENSION));
@@ -7948,10 +7953,6 @@ var BoxVerticesDecoratorDecoratedDimensionChangeListener = function (_ChangeList
             var halfSize = (this.decorator.vertexSize - 1) / 2;
             var newX = this.decorator.width - halfSize;
             var newY = this.decorator.height - halfSize;
-            this.decorator.disablePropagationToDecorated();
-            //this.decorator.width = this.decorator.decorated.width;
-            //this.decorator.height = this.decorator.decorated.height;
-            this.decorator.enablePropagationToDecorated();
 
             this.decorator.getTag(_boxVerticesDecorator2.default.TOP_RIGHT).moveXTo(newX);
             this.decorator.getTag(_boxVerticesDecorator2.default.BOTTOM_LEFT).moveYTo(newY);
@@ -9980,6 +9981,8 @@ var _svgAreaConstants = __webpack_require__(1);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
+var _util = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9988,6 +9991,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * This class draws BoxVerticesDecorator.
+ */
 var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
     _inherits(DefaultBoxVerticesDecoratorDrawer, _DefaultDrawer);
 
@@ -9999,55 +10005,59 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
 
     /**
      * Draw a box vertices decorator on a SVG area and return the generated SVG element.
-     * @param {BoxVerticesDecorator} element The box vertices decorator to be drawn.
+     * @param {BoxVerticesDecorator} boxVerticesDecorator The box vertices decorator to be drawn.
      * @return A SVG group element.
      */
 
 
     _createClass(DefaultBoxVerticesDecoratorDrawer, [{
         key: 'draw',
-        value: function draw(element) {
+        value: function draw(boxVerticesDecorator) {
             var newGroup = document.createElementNS(this.svgArea.namespace, "g");
-            newGroup.setAttribute("id", element.id);
+            newGroup.setAttribute("id", boxVerticesDecorator.id);
             newGroup.setAttribute('shape-rendering', 'inherit');
             newGroup.setAttribute('pointer-events', 'all');
 
-            if (element.decorated !== null) {
-                newGroup.appendChild(element.decorated.getTag(_svgAreaConstants2.default.DRAWN));
+            if (null !== boxVerticesDecorator.decorated) {
+                var decorated = boxVerticesDecorator.decorated;
+                newGroup.appendChild(decorated.getTag(_svgAreaConstants2.default.DRAWN));
 
-                // Copy the decorated position before removing its listener.
-                element.moveTo({ x: element.decorated.x1, y: element.decorated.y1 });
-                element.resizeTo({ width: element.decorated.width, height: element.decorated.height });
-                element.decorated.disableChangeNotifications();
-                element.decorated.moveTo({ x: 0, y: 0 });
-                element.decorated.enableChangeNotifications();
-                element.decorated.notifyListeners(_changeListenerConstants2.default.POSITION);
+                // Copy the decorated position (before changing it to 0,0) and dimension before removing its listener.
+                boxVerticesDecorator.moveTo({ x: decorated.x1, y: decorated.y1 });
+                boxVerticesDecorator.resizeTo({
+                    width: decorated.width,
+                    height: decorated.height
+                });
+                decorated.disableChangeNotifications();
+                decorated.moveTo({ x: 0, y: 0 });
+                decorated.enableChangeNotifications();
+                decorated.notifyListeners(_changeListenerConstants2.default.POSITION);
 
                 //*****************************
                 // Remove the decorated listener related to position, dimension, and rotation.
                 // These events will be handled by the decorator group.
-                element.decorated.removeChangeListenerByType(_changeListenerConstants2.default.POSITION, _changeListenerConstants2.default.ROTATION);
-                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedPositionChangeListener2.default(element));
-                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedRotationChangeListener2.default(element));
-                element.decorated.addChangeListener(new _boxVerticesDecoratorDecoratedDimensionChangeListener2.default(element));
+                decorated.removeChangeListenerByType(_changeListenerConstants2.default.POSITION, _changeListenerConstants2.default.DIMENSION, _changeListenerConstants2.default.ROTATION);
+                decorated.addChangeListener(new _boxVerticesDecoratorDecoratedPositionChangeListener2.default(boxVerticesDecorator));
+                decorated.addChangeListener(new _boxVerticesDecoratorDecoratedRotationChangeListener2.default(boxVerticesDecorator));
+                decorated.addChangeListener(new _boxVerticesDecoratorDecoratedDimensionChangeListener2.default(boxVerticesDecorator));
             }
 
             //*****************************
             // Add group change listener.
-            element.addChangeListener(new _boxVerticesDecoratorChangeListener2.default());
+            boxVerticesDecorator.addChangeListener(new _boxVerticesDecoratorChangeListener2.default());
 
-            var vertexSize = element.vertexSize;
+            var vertexSize = boxVerticesDecorator.vertexSize;
             var halfSize = (vertexSize - 1) / 2;
 
             var lookAndFeel = this.svgArea.lookAndFeel;
             var style = new _style2.default({ strokeWidth: 0, strokeColor: "black", fillColor: "black" });
 
             // Draw the box vertices.
-            if (true === element.topLeft) {
-                element.addTag({
+            if (true === boxVerticesDecorator.topLeft) {
+                boxVerticesDecorator.addTag({
                     key: _boxVerticesDecorator2.default.TOP_LEFT, value: this.generateVertex({
                         position: _boxVerticesDecorator2.default.TOP_LEFT,
-                        element: element,
+                        element: boxVerticesDecorator,
                         halfSize: halfSize,
                         style: style,
                         lookAndFeel: lookAndFeel,
@@ -10055,11 +10065,11 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                     })
                 });
             }
-            if (true === element.topRight) {
-                element.addTag({
+            if (true === boxVerticesDecorator.topRight) {
+                boxVerticesDecorator.addTag({
                     key: _boxVerticesDecorator2.default.TOP_RIGHT, value: this.generateVertex({
                         position: _boxVerticesDecorator2.default.TOP_RIGHT,
-                        element: element,
+                        element: boxVerticesDecorator,
                         halfSize: halfSize,
                         style: style,
                         lookAndFeel: lookAndFeel,
@@ -10067,11 +10077,11 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                     })
                 });
             }
-            if (true === element.bottomLeft) {
-                element.addTag({
+            if (true === boxVerticesDecorator.bottomLeft) {
+                boxVerticesDecorator.addTag({
                     key: _boxVerticesDecorator2.default.BOTTOM_LEFT, value: this.generateVertex({
                         position: _boxVerticesDecorator2.default.BOTTOM_LEFT,
-                        element: element,
+                        element: boxVerticesDecorator,
                         halfSize: halfSize,
                         style: style,
                         lookAndFeel: lookAndFeel,
@@ -10079,11 +10089,11 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                     })
                 });
             }
-            if (true === element.bottomRight) {
-                element.addTag({
+            if (true === boxVerticesDecorator.bottomRight) {
+                boxVerticesDecorator.addTag({
                     key: _boxVerticesDecorator2.default.BOTTOM_RIGHT, value: this.generateVertex({
                         position: _boxVerticesDecorator2.default.BOTTOM_RIGHT,
-                        element: element,
+                        element: boxVerticesDecorator,
                         halfSize: halfSize,
                         style: style,
                         lookAndFeel: lookAndFeel,
@@ -10107,15 +10117,15 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
 
             var x1 = 0 - halfSize;
             var y1 = 0 - halfSize;
-            if (position === _boxVerticesDecorator2.default.TOP_RIGHT) {
+            if (_boxVerticesDecorator2.default.TOP_RIGHT === position) {
                 x1 = element.width - halfSize;
-            } else if (position === _boxVerticesDecorator2.default.BOTTOM_LEFT) {
+            } else if (_boxVerticesDecorator2.default.BOTTOM_LEFT === position) {
                 y1 = element.height - halfSize;
-            } else if (position === _boxVerticesDecorator2.default.BOTTOM_RIGHT) {
+            } else if (_boxVerticesDecorator2.default.BOTTOM_RIGHT === position) {
                 x1 = element.width - halfSize;
                 y1 = element.height - halfSize;
-            } else if (position === _boxVerticesDecorator2.default.TOP_LEFT) {} else {
-                throw "The position is invalid.";
+            } else if (_boxVerticesDecorator2.default.TOP_LEFT === position) {} else {
+                (0, _util.error)("The position is invalid.");
             }
 
             var vertex = new _rectangle2.default({
@@ -10128,6 +10138,7 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
             vertex.addTag({ key: _boxVerticesDecorator2.default.VERTEX, value: position });
             vertex.addTag({ key: _boxVerticesDecorator2.default.IS_VERTEX, value: true });
             vertex.addTag({ key: _graphicalElement2.default.PARENT, value: element });
+
             // Get a drawer for the vertex.
             var drawer = lookAndFeel.getDrawerFor(vertex);
             drawer.svgArea = this.svgArea;

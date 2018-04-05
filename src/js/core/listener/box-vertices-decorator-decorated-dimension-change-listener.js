@@ -31,6 +31,7 @@ import ChangeListener from './change-listener.js';
 import BoxVerticesDecorator from "../box-vertices-decorator";
 import GraphicalElement from "../graphical-element";
 import ChangeListenerConstants from "./change-listener-constants";
+import {error, isNull} from "../util";
 
 /**
  * This class implements a listener for changes in the dimension of box vertices decorators' decorated.
@@ -39,11 +40,11 @@ export default class BoxVerticesDecoratorDecoratedDimensionChangeListener
     extends ChangeListener {
 
     constructor(decorator) {
-        if (decorator === undefined || decorator === null) {
-            throw "The decorator cannot be null.";
+        if (isNull(decorator)) {
+            error("The decorator cannot be null.");
         }
         if (!(decorator instanceof GraphicalElement)) {
-            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+            error("The decorator must be an instance of GraphicalElement or one of its subclasses.");
         }
 
         super(ChangeListenerConstants.DIMENSION);
@@ -62,13 +63,9 @@ export default class BoxVerticesDecoratorDecoratedDimensionChangeListener
         let halfSize = (this.decorator.vertexSize - 1) / 2;
         let newX = this.decorator.width - halfSize;
         let newY = this.decorator.height - halfSize;
-        this.decorator.disablePropagationToDecorated();
-        //this.decorator.width = this.decorator.decorated.width;
-        //this.decorator.height = this.decorator.decorated.height;
-        this.decorator.enablePropagationToDecorated();
 
-        this.decorator.getTag(BoxVerticesDecorator.TOP_RIGHT).moveXTo(newX);
-        this.decorator.getTag(BoxVerticesDecorator.BOTTOM_LEFT).moveYTo(newY);
+        this.decorator.getTag(BoxVerticesDecorator.TOP_RIGHT).moveTo({x: newX});
+        this.decorator.getTag(BoxVerticesDecorator.BOTTOM_LEFT).moveTo({y: newY});
         this.decorator.getTag(BoxVerticesDecorator.BOTTOM_RIGHT).moveTo({x: newX, y: newY});
     }
 

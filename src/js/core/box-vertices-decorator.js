@@ -237,7 +237,7 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this.decorated.minHeight = value;
     }
 
-    get y2() {
+/*    get y2() {
         return this.decorated.y2;
     }
 
@@ -247,7 +247,7 @@ export default class BoxVerticesDecorator extends GraphicalElement {
 
     getAbsY2() {
         return this.decorated.getAbsY2();
-    }
+    }*/
 
     resizeTo({width, w, height, h} = {}) {
         this.decorated.resizeTo({width, w, height, h});

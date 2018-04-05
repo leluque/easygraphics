@@ -30,6 +30,7 @@
 import ChangeListener from './change-listener.js';
 import GraphicalElement from "../graphical-element";
 import ChangeListenerConstants from "./change-listener-constants";
+import {error, isNull} from "../util";
 
 /**
  * This class implements a listener for changes in the position of box vertices decorators' decorated.
@@ -38,11 +39,11 @@ export default class BoxVerticesDecoratorDecoratedPositionChangeListener
     extends ChangeListener {
 
     constructor(decorator) {
-        if (decorator === undefined || decorator === null) {
-            throw "The decorator cannot be null.";
+        if (isNull(decorator)) {
+            error("The decorator cannot be null.");
         }
         if (!(decorator instanceof GraphicalElement)) {
-            throw "The decorator must be an instance of GraphicalElement or one of its subclasses.";
+            error("The decorator must be an instance of GraphicalElement or one of its subclasses.");
         }
 
         super(ChangeListenerConstants.POSITION);
@@ -54,15 +55,12 @@ export default class BoxVerticesDecoratorDecoratedPositionChangeListener
     }
 
     /**
-     * Update the position and the rotation of the decorator.
+     * Update the position of the decorator.
      */
     update() {
         this.decorator.disableChangeNotifications();
-        this.decorator.x1 = this.decorator.decorated.x1;
-        this.decorator.y1 = this.decorator.decorated.y1;
-        this.decorator.rotation = this.decorator.decorated.rotation;
-        this.decorator.rotationCenterX = this.decorator.decorated.rotationCenterX;
-        this.decorator.rotationCenterY = this.decorator.decorated.rotationCenterY;
+        let decorated = this.decorator.decorated;
+        this.decorator.moveTo({x: decorated.x1, y: decorated.y1})
         this.decorator.enableChangeNotifications();
         this.decorator.notifyListeners(ChangeListenerConstants.POSITION, ChangeListenerConstants.ROTATION);
     }
