@@ -60,7 +60,7 @@ export default class BoxVerticesDecoratorDecoratedPositionChangeListener
     update() {
         this.decorator.disableChangeNotifications();
         let decorated = this.decorator.decorated;
-        this.decorator.moveTo({x: decorated.x1, y: decorated.y1})
+        this.decorator.moveTo({x: decorated.x1, y: decorated.y1});
         this.decorator.enableChangeNotifications();
         this.decorator.notifyListeners(ChangeListenerConstants.POSITION, ChangeListenerConstants.ROTATION);
     }

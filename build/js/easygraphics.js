@@ -107,164 +107,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-/**
- * This class was implemented to avoid circular dependencies involving ChangeListener.
- * These constants were originally inside ChangeListener.
- */
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ChangeListenerConstants = function () {
-    function ChangeListenerConstants() {
-        _classCallCheck(this, ChangeListenerConstants);
-    }
-
-    _createClass(ChangeListenerConstants, null, [{
-        key: "REMOVE",
-        get: function get() {
-            return "remove";
-        }
-    }, {
-        key: "DIMENSION",
-        get: function get() {
-            return "dimension";
-        }
-    }, {
-        key: "POSITION",
-        get: function get() {
-            return "position";
-        }
-    }, {
-        key: "ROTATION",
-        get: function get() {
-            return "rotation";
-        }
-    }, {
-        key: "STYLING",
-        get: function get() {
-            return "styling";
-        }
-    }, {
-        key: "OTHER",
-        get: function get() {
-            return "other";
-        }
-    }]);
-
-    return ChangeListenerConstants;
-}();
-
-exports.default = ChangeListenerConstants;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @license
- * Copyright (c) 2015 Example Corporation Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-
-
-/**
- * This class was implemented to avoid circular dependencies involving SVGArea.
- * These constants were originally inside SVGArea.
- */
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var SVGAreaConstants = function () {
-    function SVGAreaConstants() {
-        _classCallCheck(this, SVGAreaConstants);
-    }
-
-    _createClass(SVGAreaConstants, null, [{
-        key: "LAYER",
-        get: function get() {
-            return "layer";
-        }
-    }, {
-        key: "DRAWN",
-        get: function get() {
-            return "svg_area_drawn";
-        }
-    }]);
-
-    return SVGAreaConstants;
-}();
-
-exports.default = SVGAreaConstants;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @license
- * Copyright (c) 2015 Example Corporation Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-
-
 // **********************************************
 /**
  * Convert the angle from degrees to radians.
@@ -437,6 +279,164 @@ function isNotABoolean(value) {
 }
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+
+
+/**
+ * This class was implemented to avoid circular dependencies involving ChangeListener.
+ * These constants were originally inside ChangeListener.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ChangeListenerConstants = function () {
+    function ChangeListenerConstants() {
+        _classCallCheck(this, ChangeListenerConstants);
+    }
+
+    _createClass(ChangeListenerConstants, null, [{
+        key: "REMOVE",
+        get: function get() {
+            return "remove";
+        }
+    }, {
+        key: "DIMENSION",
+        get: function get() {
+            return "dimension";
+        }
+    }, {
+        key: "POSITION",
+        get: function get() {
+            return "position";
+        }
+    }, {
+        key: "ROTATION",
+        get: function get() {
+            return "rotation";
+        }
+    }, {
+        key: "STYLING",
+        get: function get() {
+            return "styling";
+        }
+    }, {
+        key: "OTHER",
+        get: function get() {
+            return "other";
+        }
+    }]);
+
+    return ChangeListenerConstants;
+}();
+
+exports.default = ChangeListenerConstants;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+
+
+/**
+ * This class was implemented to avoid circular dependencies involving SVGArea.
+ * These constants were originally inside SVGArea.
+ */
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SVGAreaConstants = function () {
+    function SVGAreaConstants() {
+        _classCallCheck(this, SVGAreaConstants);
+    }
+
+    _createClass(SVGAreaConstants, null, [{
+        key: "LAYER",
+        get: function get() {
+            return "layer";
+        }
+    }, {
+        key: "DRAWN",
+        get: function get() {
+            return "svg_area_drawn";
+        }
+    }]);
+
+    return SVGAreaConstants;
+}();
+
+exports.default = SVGAreaConstants;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -570,17 +570,17 @@ var _style = __webpack_require__(10);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _boundingBox = __webpack_require__(9);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _observable = __webpack_require__(27);
+var _observable = __webpack_require__(28);
 
 var _observable2 = _interopRequireDefault(_observable);
 
@@ -1243,12 +1243,12 @@ var GraphicalElement = function (_Observable) {
         ,
         set: function set(value) {
             if (value === this._x2) return;
-            if (value < this._x1) {
+            if (this._x1 > value) {
                 throw "x2 must be greater than x1.";
             }
 
             this.validateMinWidth(value - this._x1);
-            if (this.preserveAspectRatio === true) {
+            if (true === this.preserveAspectRatio) {
                 var aspectRatio = this.height / this.width;
                 var newWidth = value - this._x1;
                 this.validateMinHeight(aspectRatio * newWidth);
@@ -1507,11 +1507,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -1599,11 +1599,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -1691,11 +1691,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -1768,7 +1768,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1932,11 +1932,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _defaultStyle = __webpack_require__(26);
+var _defaultStyle = __webpack_require__(27);
 
 var _defaultStyle2 = _interopRequireDefault(_defaultStyle);
 
@@ -2101,7 +2101,7 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2177,20 +2177,6 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
         }
     }, {
         key: "resizeTo",
-
-
-        /*    get y2() {
-                return this.decorated.y2;
-            }
-        
-            set y2(value) {
-                this.decorated.y2 = value;
-            }
-        
-            getAbsY2() {
-                return this.decorated.getAbsY2();
-            }*/
-
         value: function resizeTo() {
             var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
                 width = _ref2.width,
@@ -2440,6 +2426,17 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
         set: function set(value) {
             this.decorated.minWidth = value;
         }
+
+        /*    get y2() {
+                return this.decorated.y2;
+            }
+              set y2(value) {
+                this.decorated.y2 = value;
+            }
+              getAbsY2() {
+                return this.decorated.getAbsY2();
+            }*/
+
     }, {
         key: "x2",
         get: function get() {
@@ -2973,6 +2970,366 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _util = __webpack_require__(0);
+
+var _layer = __webpack_require__(29);
+
+var _layer2 = _interopRequireDefault(_layer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AreaDefaults = function () {
+    function AreaDefaults() {
+        _classCallCheck(this, AreaDefaults);
+
+        // Define a new object to store layers.
+        // It works like a map, but with complexity on search of O(1).
+        // The key is the layer id.
+        this._layers = {};
+        // Layer stack. It is used to define the drawing layerStack of the layers' elements.
+        this._layerStack = [];
+
+        // Id count.
+        this._elementIdCount = 1;
+        this._layerIdCount = 1;
+
+        // Layer-related event listener.
+        // -----------------------------
+        // Functions that receive the area and the changed layer as arguments.
+        this._onAddLayer = null;
+        this._onRemoveLayer = null;
+        // Function that receives the area.
+        this._onChangeLayerOrder = null;
+
+        // Create a default layer that will be used if the user does not create a new one.
+        this.newLayer();
+    }
+
+    _createClass(AreaDefaults, [{
+        key: "moveLayerUp",
+
+
+        /**
+         * Move the specified layer one position to the top of the layer stack.
+         * @param layer The layer that must be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+        value: function moveLayerUp(layer) {
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
+            // If it is not the layer at the top.
+            if (layerPosition < this._layerStack.length - 1) {
+                // Remove the layer from its position.
+                this._layerStack.splice(layerPosition, 1);
+                // Add the layer to the next position.
+                this._layerStack.splice(layerPosition + 1, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Move the specified layer one position to the bottom of the layer stack.
+         * @param layer The layer that must be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+
+    }, {
+        key: "moveLayerDown",
+        value: function moveLayerDown(layer) {
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
+            // If it is not the layer at the bottom.
+            if (layerPosition > 0) {
+                // Remove the layer from its position.
+                this._layerStack.splice(layerPosition, 1);
+                // Add the layer to the previous position.
+                this._layerStack.splice(layerPosition - 1, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Move the specified layer to the specified position of the layer stack.
+         * @param layer The layer that must be moved.
+         * @param position The position to which the layer has to be moved.
+         * @returns {boolean} true, if the layer was moved. false, otherwise.
+         */
+
+    }, {
+        key: "moveLayerTo",
+        value: function moveLayerTo() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+                layer = _ref.layer,
+                l = _ref.l,
+                position = _ref.position,
+                pos = _ref.pos;
+
+            layer = (0, _util.getNonNullValue)(layer, l);
+            position = (0, _util.getNonNullValue)(position, pos);
+            // Argument is not a layer.
+            if (!(layer instanceof _layer2.default)) {
+                throw "The element to be moved must be a layer";
+            }
+            if (position < 0 || position >= this._layerStack.length) {
+                throw "The position is invalid.";
+            }
+            var layerPosition = this._layerStack.map(function (o) {
+                return o.id;
+            }).indexOf(layer.id);
+            // If it is not at the targeted position.
+            if (layerPosition !== position) {
+                // Remove the layer from its position.
+                this._layerStack.splice(layerPosition, 1);
+                // Add the layer to the targeted position.
+                this._layerStack.splice(position, 0, layer);
+                this.notifyLayerOrderChanging();
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "newLayer",
+        value: function newLayer() {
+            return this.addLayer(new _layer2.default({ id: this.generateLayerId() }));
+        }
+    }, {
+        key: "addLayer",
+        value: function addLayer(layer) {
+            // Argument is not a layer.
+            if ((0, _util.isNull)(_layer2.default)) {
+                throw "The layer cannot be null.";
+            }
+            if (!(layer instanceof _layer2.default)) {
+                throw "Area's layers must be instances of Layer. It is an instance of " + layer.prototype !== null && layer.prototype !== undefined ? layer.prototype.name : "null" + ".";
+            }
+            // If a layer with the same id does not exist in the area, add it.
+            if (!(layer.id in this._layers)) {
+                this._layers[layer.id] = layer;
+                this._layerStack.push(layer);
+                this.notifyLayerAddition(layer);
+                return layer;
+            } else {
+                throw "The area already has a layer with id " + layer.id + ".";
+            }
+        }
+    }, {
+        key: "countLayers",
+        value: function countLayers() {
+            return Object.keys(this._layers).length;
+        }
+
+        /**
+         * Return the layer that has the specified id.
+         * @param {string} id The layer id.
+         * @returns {Layer} The layer.
+         */
+
+    }, {
+        key: "getLayer",
+        value: function getLayer(id) {
+            return this._layers[id];
+        }
+
+        /**
+         * Return the layer that has the specified id.
+         * @param {string} id The layer id.
+         * @returns {Layer} The layer.
+         */
+
+    }, {
+        key: "getLayerAt",
+        value: function getLayerAt(position) {
+            if (position < 0 || position >= this._layerStack.length) {
+                throw "The position is invalid.";
+            }
+            return this._layerStack[position];
+        }
+
+        /**
+         * Return an array of layer ids.
+         * @returns {string[]} An array of layers id.
+         */
+
+    }, {
+        key: "getLayersIds",
+        value: function getLayersIds() {
+            return Object.keys(this._layers);
+        }
+
+        /**
+         * Remove the layer from the area if it exists.
+         * @param layer The layer that must be removed.
+         * @returns {boolean} true, if the layer was removed. false, otherwise.
+         */
+
+    }, {
+        key: "removeLayer",
+        value: function removeLayer(layer) {
+            // Argument is not a layer.
+            if (!(layer instanceof _layer2.default)) {
+                throw "The element to be removed must be a layer";
+            }
+            if (layer.id in this._layers) {
+                delete this._layers[layer.id];
+                this._layerStack.splice(this._layerStack.map(function (o) {
+                    return o.id;
+                }).indexOf(layer.id), 1);
+                this.notifyLayerRemoval(layer);
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: "notifyLayerAddition",
+        value: function notifyLayerAddition(addedLayer) {
+            (0, _util.notifyListeners)({ listener: this.onAddLayer, target: this }, addedLayer);
+        }
+    }, {
+        key: "notifyLayerRemoval",
+        value: function notifyLayerRemoval(removedLayer) {
+            (0, _util.notifyListeners)({ listener: this.onRemoveLayer, target: this }, removedLayer);
+        }
+    }, {
+        key: "notifyLayerOrderChanging",
+        value: function notifyLayerOrderChanging() {
+            (0, _util.notifyListeners)({ listener: this.onChangeLayerOrder, target: this }, null);
+        }
+    }, {
+        key: "generateElementId",
+        value: function generateElementId() {
+            return "e_" + this._elementIdCount++;
+        }
+    }, {
+        key: "generateLayerId",
+        value: function generateLayerId() {
+            return "l_" + this._layerIdCount++;
+        }
+    }, {
+        key: "toString",
+        value: function toString() {
+            return "Area with " + this.countLayers() + ": " + this._layerStack.map(function (o) {
+                return o.id;
+            }).join();
+        }
+    }, {
+        key: "bottomLayer",
+        get: function get() {
+            if (this._layerStack.length > 0) {
+                return this._layerStack[0];
+            }
+            throw "The area has no layers.";
+        }
+    }, {
+        key: "topLayer",
+        get: function get() {
+            if (this._layerStack.length > 0) {
+                return this._layerStack[this._layerStack.length - 1];
+            }
+            throw "The area has no layers.";
+        }
+    }, {
+        key: "onAddLayer",
+        get: function get() {
+            return this._onAddLayer;
+        },
+        set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
+            this._onAddLayer = value;
+        }
+    }, {
+        key: "onChangeLayerOrder",
+        get: function get() {
+            return this._onChangeLayerOrder;
+        },
+        set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
+            this._onChangeLayerOrder = value;
+        }
+    }, {
+        key: "onRemoveLayer",
+        get: function get() {
+            return this._onRemoveLayer;
+        },
+        set: function set(value) {
+            if (typeof value !== 'function') {
+                throw "The callback must be a function.";
+            }
+            this._onRemoveLayer = value;
+        }
+    }, {
+        key: "elementIdCount",
+        get: function get() {
+            return this._elementIdCount;
+        }
+    }, {
+        key: "layerIdCount",
+        get: function get() {
+            return this._layerIdCount;
+        }
+    }, {
+        key: "layerStack",
+        get: function get() {
+            return this._layerStack;
+        }
+    }]);
+
+    return AreaDefaults;
+}();
+
+exports.default = AreaDefaults;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @license
+ * Copyright (c) 2015 Example Corporation Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/* JSHint configurations */
+/* jshint esversion: 6 */
+/* jshint -W097 */
+
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2981,13 +3338,13 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _boundingBox = __webpack_require__(9);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -3190,7 +3547,7 @@ var Circle = function (_GraphicalElement) {
 exports.default = Circle;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3237,7 +3594,7 @@ var _boundingBox = __webpack_require__(9);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3357,7 +3714,7 @@ var Diamond = function (_GraphicalElement) {
 exports.default = Diamond;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3389,9 +3746,9 @@ var _boundingBox = __webpack_require__(9);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -3692,7 +4049,7 @@ var Ellipse = function (_GraphicalElement) {
 exports.default = Ellipse;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3735,7 +4092,7 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3796,7 +4153,7 @@ var Image = function (_GraphicalElement) {
 exports.default = Image;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3901,7 +4258,7 @@ var Line = function (_GraphicalElement) {
 exports.default = Line;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3952,7 +4309,7 @@ var _fontStyle = __webpack_require__(31);
 
 var _fontStyle2 = _interopRequireDefault(_fontStyle);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -4046,7 +4403,7 @@ var Text = function (_GraphicalElement) {
 exports.default = Text;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4124,7 +4481,7 @@ var HorizontalGravity = function () {
 exports.default = HorizontalGravity;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4193,7 +4550,7 @@ var VerticalGravity = function () {
 exports.default = VerticalGravity;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4271,7 +4628,7 @@ var ResizePolicy = function () {
 exports.default = ResizePolicy;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4323,11 +4680,11 @@ var _groupStyle = __webpack_require__(35);
 
 var _groupStyle2 = _interopRequireDefault(_groupStyle);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _verticalGroupStyleChangeListener = __webpack_require__(33);
 
@@ -4337,7 +4694,7 @@ var _verticalGroupFrameChangeListener = __webpack_require__(34);
 
 var _verticalGroupFrameChangeListener2 = _interopRequireDefault(_verticalGroupFrameChangeListener);
 
-var _verticalGravity = __webpack_require__(22);
+var _verticalGravity = __webpack_require__(23);
 
 var _verticalGravity2 = _interopRequireDefault(_verticalGravity);
 
@@ -4349,11 +4706,11 @@ var _boundingBox = __webpack_require__(9);
 
 var _boundingBox2 = _interopRequireDefault(_boundingBox);
 
-var _resizePolicy = __webpack_require__(23);
+var _resizePolicy = __webpack_require__(24);
 
 var _resizePolicy2 = _interopRequireDefault(_resizePolicy);
 
-var _horizontalGravity = __webpack_require__(21);
+var _horizontalGravity = __webpack_require__(22);
 
 var _horizontalGravity2 = _interopRequireDefault(_horizontalGravity);
 
@@ -5860,7 +6217,7 @@ var VerticalGroup = function (_GraphicalElement) {
 exports.default = VerticalGroup;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5899,7 +6256,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _circle = __webpack_require__(15);
+var _circle = __webpack_require__(16);
 
 var _circle2 = _interopRequireDefault(_circle);
 
@@ -5907,7 +6264,7 @@ var _defaultCircleDrawer = __webpack_require__(63);
 
 var _defaultCircleDrawer2 = _interopRequireDefault(_defaultCircleDrawer);
 
-var _ellipse = __webpack_require__(17);
+var _ellipse = __webpack_require__(18);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
@@ -5923,7 +6280,7 @@ var _defaultRectangleDrawer = __webpack_require__(69);
 
 var _defaultRectangleDrawer2 = _interopRequireDefault(_defaultRectangleDrawer);
 
-var _diamond = __webpack_require__(16);
+var _diamond = __webpack_require__(17);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
@@ -5931,7 +6288,7 @@ var _defaultDiamondDrawer = __webpack_require__(64);
 
 var _defaultDiamondDrawer2 = _interopRequireDefault(_defaultDiamondDrawer);
 
-var _text = __webpack_require__(20);
+var _text = __webpack_require__(21);
 
 var _text2 = _interopRequireDefault(_text);
 
@@ -5939,7 +6296,7 @@ var _defaultTextDrawer = __webpack_require__(70);
 
 var _defaultTextDrawer2 = _interopRequireDefault(_defaultTextDrawer);
 
-var _verticalGroup = __webpack_require__(24);
+var _verticalGroup = __webpack_require__(25);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
@@ -5947,7 +6304,7 @@ var _defaultVerticalGroupDrawer = __webpack_require__(71);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _line = __webpack_require__(19);
+var _line = __webpack_require__(20);
 
 var _line2 = _interopRequireDefault(_line);
 
@@ -5955,7 +6312,7 @@ var _defaultLineDrawer = __webpack_require__(67);
 
 var _defaultLineDrawer2 = _interopRequireDefault(_defaultLineDrawer);
 
-var _image = __webpack_require__(18);
+var _image = __webpack_require__(19);
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -6043,7 +6400,7 @@ var DefaultLookAndFeelFactory = function () {
 exports.default = DefaultLookAndFeelFactory;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6080,7 +6437,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _observable = __webpack_require__(27);
+var _observable = __webpack_require__(28);
 
 var _observable2 = _interopRequireDefault(_observable);
 
@@ -6107,7 +6464,7 @@ var DefaultStyle = function (_Observable) {
 exports.default = DefaultStyle;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6146,7 +6503,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6257,7 +6614,7 @@ var Observable = function () {
 exports.default = Observable;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6298,7 +6655,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _graphicalElement = __webpack_require__(4);
 
@@ -6472,366 +6829,6 @@ var Layer = function () {
 exports.default = Layer;
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @license
- * Copyright (c) 2015 Example Corporation Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-/* JSHint configurations */
-/* jshint esversion: 6 */
-/* jshint -W097 */
-
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(2);
-
-var _layer = __webpack_require__(28);
-
-var _layer2 = _interopRequireDefault(_layer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AreaDefaults = function () {
-    function AreaDefaults() {
-        _classCallCheck(this, AreaDefaults);
-
-        // Define a new object to store layers.
-        // It works like a map, but with complexity on search of O(1).
-        // The key is the layer id.
-        this._layers = {};
-        // Layer stack. It is used to define the drawing layerStack of the layers' elements.
-        this._layerStack = [];
-
-        // Id count.
-        this._elementIdCount = 1;
-        this._layerIdCount = 1;
-
-        // Layer-related event listener.
-        // -----------------------------
-        // Functions that receive the area and the changed layer as arguments.
-        this._onAddLayer = null;
-        this._onRemoveLayer = null;
-        // Function that receives the area.
-        this._onChangeLayerOrder = null;
-
-        // Create a default layer that will be used if the user does not create a new one.
-        this.newLayer();
-    }
-
-    _createClass(AreaDefaults, [{
-        key: "moveLayerUp",
-
-
-        /**
-         * Move the specified layer one position to the top of the layer stack.
-         * @param layer The layer that must be moved.
-         * @returns {boolean} true, if the layer was moved. false, otherwise.
-         */
-        value: function moveLayerUp(layer) {
-            var layerPosition = this._layerStack.map(function (o) {
-                return o.id;
-            }).indexOf(layer.id);
-            // If it is not the layer at the top.
-            if (layerPosition < this._layerStack.length - 1) {
-                // Remove the layer from its position.
-                this._layerStack.splice(layerPosition, 1);
-                // Add the layer to the next position.
-                this._layerStack.splice(layerPosition + 1, 0, layer);
-                this.notifyLayerOrderChanging();
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Move the specified layer one position to the bottom of the layer stack.
-         * @param layer The layer that must be moved.
-         * @returns {boolean} true, if the layer was moved. false, otherwise.
-         */
-
-    }, {
-        key: "moveLayerDown",
-        value: function moveLayerDown(layer) {
-            var layerPosition = this._layerStack.map(function (o) {
-                return o.id;
-            }).indexOf(layer.id);
-            // If it is not the layer at the bottom.
-            if (layerPosition > 0) {
-                // Remove the layer from its position.
-                this._layerStack.splice(layerPosition, 1);
-                // Add the layer to the previous position.
-                this._layerStack.splice(layerPosition - 1, 0, layer);
-                this.notifyLayerOrderChanging();
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Move the specified layer to the specified position of the layer stack.
-         * @param layer The layer that must be moved.
-         * @param position The position to which the layer has to be moved.
-         * @returns {boolean} true, if the layer was moved. false, otherwise.
-         */
-
-    }, {
-        key: "moveLayerTo",
-        value: function moveLayerTo() {
-            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-                layer = _ref.layer,
-                l = _ref.l,
-                position = _ref.position,
-                pos = _ref.pos;
-
-            layer = (0, _util.getNonNullValue)(layer, l);
-            position = (0, _util.getNonNullValue)(position, pos);
-            // Argument is not a layer.
-            if (!(layer instanceof _layer2.default)) {
-                throw "The element to be moved must be a layer";
-            }
-            if (position < 0 || position >= this._layerStack.length) {
-                throw "The position is invalid.";
-            }
-            var layerPosition = this._layerStack.map(function (o) {
-                return o.id;
-            }).indexOf(layer.id);
-            // If it is not at the targeted position.
-            if (layerPosition !== position) {
-                // Remove the layer from its position.
-                this._layerStack.splice(layerPosition, 1);
-                // Add the layer to the targeted position.
-                this._layerStack.splice(position, 0, layer);
-                this.notifyLayerOrderChanging();
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: "newLayer",
-        value: function newLayer() {
-            return this.addLayer(new _layer2.default({ id: this.generateLayerId() }));
-        }
-    }, {
-        key: "addLayer",
-        value: function addLayer(layer) {
-            // Argument is not a layer.
-            if ((0, _util.isNull)(_layer2.default)) {
-                throw "The layer cannot be null.";
-            }
-            if (!(layer instanceof _layer2.default)) {
-                throw "Area's layers must be instances of Layer. It is an instance of " + layer.prototype !== null && layer.prototype !== undefined ? layer.prototype.name : "null" + ".";
-            }
-            // If a layer with the same id does not exist in the area, add it.
-            if (!(layer.id in this._layers)) {
-                this._layers[layer.id] = layer;
-                this._layerStack.push(layer);
-                this.notifyLayerAddition(layer);
-                return layer;
-            } else {
-                throw "The area already has a layer with id " + layer.id + ".";
-            }
-        }
-    }, {
-        key: "countLayers",
-        value: function countLayers() {
-            return Object.keys(this._layers).length;
-        }
-
-        /**
-         * Return the layer that has the specified id.
-         * @param {string} id The layer id.
-         * @returns {Layer} The layer.
-         */
-
-    }, {
-        key: "getLayer",
-        value: function getLayer(id) {
-            return this._layers[id];
-        }
-
-        /**
-         * Return the layer that has the specified id.
-         * @param {string} id The layer id.
-         * @returns {Layer} The layer.
-         */
-
-    }, {
-        key: "getLayerAt",
-        value: function getLayerAt(position) {
-            if (position < 0 || position >= this._layerStack.length) {
-                throw "The position is invalid.";
-            }
-            return this._layerStack[position];
-        }
-
-        /**
-         * Return an array of layer ids.
-         * @returns {string[]} An array of layers id.
-         */
-
-    }, {
-        key: "getLayersIds",
-        value: function getLayersIds() {
-            return Object.keys(this._layers);
-        }
-
-        /**
-         * Remove the layer from the area if it exists.
-         * @param layer The layer that must be removed.
-         * @returns {boolean} true, if the layer was removed. false, otherwise.
-         */
-
-    }, {
-        key: "removeLayer",
-        value: function removeLayer(layer) {
-            // Argument is not a layer.
-            if (!(layer instanceof _layer2.default)) {
-                throw "The element to be removed must be a layer";
-            }
-            if (layer.id in this._layers) {
-                delete this._layers[layer.id];
-                this._layerStack.splice(this._layerStack.map(function (o) {
-                    return o.id;
-                }).indexOf(layer.id), 1);
-                this.notifyLayerRemoval(layer);
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: "notifyLayerAddition",
-        value: function notifyLayerAddition(addedLayer) {
-            (0, _util.notifyListeners)({ listener: this.onAddLayer, target: this }, addedLayer);
-        }
-    }, {
-        key: "notifyLayerRemoval",
-        value: function notifyLayerRemoval(removedLayer) {
-            (0, _util.notifyListeners)({ listener: this.onRemoveLayer, target: this }, removedLayer);
-        }
-    }, {
-        key: "notifyLayerOrderChanging",
-        value: function notifyLayerOrderChanging() {
-            (0, _util.notifyListeners)({ listener: this.onChangeLayerOrder, target: this }, null);
-        }
-    }, {
-        key: "generateElementId",
-        value: function generateElementId() {
-            return "e_" + this._elementIdCount++;
-        }
-    }, {
-        key: "generateLayerId",
-        value: function generateLayerId() {
-            return "l_" + this._layerIdCount++;
-        }
-    }, {
-        key: "toString",
-        value: function toString() {
-            return "Area with " + this.countLayers() + ": " + this._layerStack.map(function (o) {
-                return o.id;
-            }).join();
-        }
-    }, {
-        key: "bottomLayer",
-        get: function get() {
-            if (this._layerStack.length > 0) {
-                return this._layerStack[0];
-            }
-            throw "The area has no layers.";
-        }
-    }, {
-        key: "topLayer",
-        get: function get() {
-            if (this._layerStack.length > 0) {
-                return this._layerStack[this._layerStack.length - 1];
-            }
-            throw "The area has no layers.";
-        }
-    }, {
-        key: "onAddLayer",
-        get: function get() {
-            return this._onAddLayer;
-        },
-        set: function set(value) {
-            if (typeof value !== 'function') {
-                throw "The callback must be a function.";
-            }
-            this._onAddLayer = value;
-        }
-    }, {
-        key: "onChangeLayerOrder",
-        get: function get() {
-            return this._onChangeLayerOrder;
-        },
-        set: function set(value) {
-            if (typeof value !== 'function') {
-                throw "The callback must be a function.";
-            }
-            this._onChangeLayerOrder = value;
-        }
-    }, {
-        key: "onRemoveLayer",
-        get: function get() {
-            return this._onRemoveLayer;
-        },
-        set: function set(value) {
-            if (typeof value !== 'function') {
-                throw "The callback must be a function.";
-            }
-            this._onRemoveLayer = value;
-        }
-    }, {
-        key: "elementIdCount",
-        get: function get() {
-            return this._elementIdCount;
-        }
-    }, {
-        key: "layerIdCount",
-        get: function get() {
-            return this._layerIdCount;
-        }
-    }, {
-        key: "layerStack",
-        get: function get() {
-            return this._layerStack;
-        }
-    }]);
-
-    return AreaDefaults;
-}();
-
-exports.default = AreaDefaults;
-
-/***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6871,7 +6868,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -6991,7 +6988,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -7120,15 +7117,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _horizontalGravity = __webpack_require__(21);
+var _horizontalGravity = __webpack_require__(22);
 
 var _horizontalGravity2 = _interopRequireDefault(_horizontalGravity);
 
-var _resizePolicy = __webpack_require__(23);
+var _resizePolicy = __webpack_require__(24);
 
 var _resizePolicy2 = _interopRequireDefault(_resizePolicy);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7478,17 +7475,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _defaultStyle = __webpack_require__(26);
+var _defaultStyle = __webpack_require__(27);
 
 var _defaultStyle2 = _interopRequireDefault(_defaultStyle);
 
-var _verticalGravity = __webpack_require__(22);
+var _verticalGravity = __webpack_require__(23);
 
 var _verticalGravity2 = _interopRequireDefault(_verticalGravity);
 
@@ -7679,11 +7676,11 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7789,11 +7786,11 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7905,11 +7902,11 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7954,8 +7951,8 @@ var BoxVerticesDecoratorDecoratedDimensionChangeListener = function (_ChangeList
             var newX = this.decorator.width - halfSize;
             var newY = this.decorator.height - halfSize;
 
-            this.decorator.getTag(_boxVerticesDecorator2.default.TOP_RIGHT).moveXTo(newX);
-            this.decorator.getTag(_boxVerticesDecorator2.default.BOTTOM_LEFT).moveYTo(newY);
+            this.decorator.getTag(_boxVerticesDecorator2.default.TOP_RIGHT).moveTo({ x: newX });
+            this.decorator.getTag(_boxVerticesDecorator2.default.BOTTOM_LEFT).moveTo({ y: newY });
             this.decorator.getTag(_boxVerticesDecorator2.default.BOTTOM_RIGHT).moveTo({ x: newX, y: newY });
         }
     }, {
@@ -8014,11 +8011,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -8095,7 +8092,7 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8177,7 +8174,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8259,7 +8256,7 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8364,7 +8361,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8469,7 +8466,7 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8553,7 +8550,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8635,11 +8632,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -8853,7 +8850,7 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -8939,7 +8936,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -9021,7 +9018,7 @@ var _generalDimensionChangeListener = __webpack_require__(6);
 
 var _generalDimensionChangeListener2 = _interopRequireDefault(_generalDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -9115,7 +9112,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -9327,11 +9324,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -9478,7 +9475,7 @@ var _generalPositionChangeListener = __webpack_require__(7);
 
 var _generalPositionChangeListener2 = _interopRequireDefault(_generalPositionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -9561,11 +9558,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -9664,11 +9661,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -9973,15 +9970,15 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10775,7 +10772,7 @@ var _polyline = __webpack_require__(13);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11129,7 +11126,7 @@ var _defaultDrawer = __webpack_require__(5);
 
 var _defaultDrawer2 = _interopRequireDefault(_defaultDrawer);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _vgroupChildrenChangeListener = __webpack_require__(58);
 
@@ -11244,9 +11241,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
-var _defaultLookAndFeelFactory = __webpack_require__(25);
+var _defaultLookAndFeelFactory = __webpack_require__(26);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
@@ -11339,11 +11336,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _circle = __webpack_require__(15);
+var _circle = __webpack_require__(16);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _ellipse = __webpack_require__(17);
+var _ellipse = __webpack_require__(18);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
@@ -11351,23 +11348,23 @@ var _rectangle = __webpack_require__(14);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _diamond = __webpack_require__(16);
+var _diamond = __webpack_require__(17);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _text = __webpack_require__(20);
+var _text = __webpack_require__(21);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _image = __webpack_require__(18);
+var _image = __webpack_require__(19);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _verticalGroup = __webpack_require__(24);
+var _verticalGroup = __webpack_require__(25);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
-var _line = __webpack_require__(19);
+var _line = __webpack_require__(20);
 
 var _line2 = _interopRequireDefault(_line);
 
@@ -11383,21 +11380,21 @@ var _boxVerticesDecorator = __webpack_require__(11);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _areaDefaults = __webpack_require__(29);
+var _areaDefaults = __webpack_require__(15);
 
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
-var _defaultLookAndFeelFactory = __webpack_require__(25);
+var _defaultLookAndFeelFactory = __webpack_require__(26);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -12097,11 +12094,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ResizePolicy = exports.VerticalGravity = exports.HorizontalGravity = exports.Marker = exports.GraphicalElement = exports.BoxVerticesDecorator = exports.Ellipse = exports.Area = exports.SVGArea = exports.VerticalGroup = exports.GroupStyle = exports.FontStyle = exports.Style = undefined;
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -12121,11 +12118,11 @@ var _graphicalElement = __webpack_require__(4);
 
 var _graphicalElement2 = _interopRequireDefault(_graphicalElement);
 
-var _layer = __webpack_require__(28);
+var _layer = __webpack_require__(29);
 
 var _layer2 = _interopRequireDefault(_layer);
 
-var _areaDefaults = __webpack_require__(29);
+var _areaDefaults = __webpack_require__(15);
 
 var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
 
@@ -12133,23 +12130,23 @@ var _boxVerticesDecorator = __webpack_require__(11);
 
 var _boxVerticesDecorator2 = _interopRequireDefault(_boxVerticesDecorator);
 
-var _circle = __webpack_require__(15);
+var _circle = __webpack_require__(16);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _diamond = __webpack_require__(16);
+var _diamond = __webpack_require__(17);
 
 var _diamond2 = _interopRequireDefault(_diamond);
 
-var _ellipse = __webpack_require__(17);
+var _ellipse = __webpack_require__(18);
 
 var _ellipse2 = _interopRequireDefault(_ellipse);
 
-var _image = __webpack_require__(18);
+var _image = __webpack_require__(19);
 
 var _image2 = _interopRequireDefault(_image);
 
-var _line = __webpack_require__(19);
+var _line = __webpack_require__(20);
 
 var _line2 = _interopRequireDefault(_line);
 
@@ -12169,7 +12166,7 @@ var _fontStyle = __webpack_require__(31);
 
 var _fontStyle2 = _interopRequireDefault(_fontStyle);
 
-var _text = __webpack_require__(20);
+var _text = __webpack_require__(21);
 
 var _text2 = _interopRequireDefault(_text);
 
@@ -12177,15 +12174,15 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _horizontalGravity = __webpack_require__(21);
+var _horizontalGravity = __webpack_require__(22);
 
 var _horizontalGravity2 = _interopRequireDefault(_horizontalGravity);
 
-var _verticalGravity = __webpack_require__(22);
+var _verticalGravity = __webpack_require__(23);
 
 var _verticalGravity2 = _interopRequireDefault(_verticalGravity);
 
-var _resizePolicy = __webpack_require__(23);
+var _resizePolicy = __webpack_require__(24);
 
 var _resizePolicy2 = _interopRequireDefault(_resizePolicy);
 
@@ -12209,7 +12206,7 @@ var _groupStyle = __webpack_require__(35);
 
 var _groupStyle2 = _interopRequireDefault(_groupStyle);
 
-var _verticalGroup = __webpack_require__(24);
+var _verticalGroup = __webpack_require__(25);
 
 var _verticalGroup2 = _interopRequireDefault(_verticalGroup);
 
@@ -12225,7 +12222,7 @@ var _boxVerticesDecoratorDecoratedDimensionChangeListener = __webpack_require__(
 
 var _boxVerticesDecoratorDecoratedDimensionChangeListener2 = _interopRequireDefault(_boxVerticesDecoratorDecoratedDimensionChangeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
@@ -12381,7 +12378,7 @@ var _defaultVerticalGroupDrawer = __webpack_require__(71);
 
 var _defaultVerticalGroupDrawer2 = _interopRequireDefault(_defaultVerticalGroupDrawer);
 
-var _defaultLookAndFeelFactory = __webpack_require__(25);
+var _defaultLookAndFeelFactory = __webpack_require__(26);
 
 var _defaultLookAndFeelFactory2 = _interopRequireDefault(_defaultLookAndFeelFactory);
 
@@ -12631,11 +12628,11 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
@@ -12712,15 +12709,15 @@ var _changeListener = __webpack_require__(3);
 
 var _changeListener2 = _interopRequireDefault(_changeListener);
 
-var _svgAreaConstants = __webpack_require__(1);
+var _svgAreaConstants = __webpack_require__(2);
 
 var _svgAreaConstants2 = _interopRequireDefault(_svgAreaConstants);
 
-var _changeListenerConstants = __webpack_require__(0);
+var _changeListenerConstants = __webpack_require__(1);
 
 var _changeListenerConstants2 = _interopRequireDefault(_changeListenerConstants);
 
-var _util = __webpack_require__(2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12815,14 +12812,30 @@ var _svgArea = __webpack_require__(73);
 
 var _svgArea2 = _interopRequireDefault(_svgArea);
 
+var _util = __webpack_require__(0);
+
+var _areaDefaults = __webpack_require__(15);
+
+var _areaDefaults2 = _interopRequireDefault(_areaDefaults);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * This class may be used to return a proper area for an HTML element.
+ */
 var Area = function () {
     function Area() {
         _classCallCheck(this, Area);
     }
+
+    /**
+     * Return a proper area for the HTML element selected by the specified selector.
+     * @param selector The element selector.
+     * @return {AreaDefaults} A proper area.
+     */
+
 
     _createClass(Area, null, [{
         key: "init",
@@ -12833,7 +12846,7 @@ var Area = function () {
             if (name.toLowerCase() === "svg") {
                 return new _svgArea2.default(selector);
             } else {
-                throw "Invalid area tag type: " + name;
+                (0, _util.error)("Invalid area tag type: " + name);
             }
         }
     }]);

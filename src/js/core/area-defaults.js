@@ -188,7 +188,7 @@ export default class AreaDefaults {
 
     addLayer(layer) {
         // Argument is not a layer.
-        if(isNull(Layer)) {
+        if (isNull(Layer)) {
             throw "The layer cannot be null.";
         }
         if (!(layer instanceof Layer)) {

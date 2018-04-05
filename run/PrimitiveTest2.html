@@ -33,6 +33,10 @@
 		let originalY2Position = -1;
 		let originalWidth = -1;
 		let originalHeight = -1;
+		let clickedX = -1;
+		let clickedY = -1;
+		let firstWidth = -1;
+		let firstHeight = -1;
 		function select(element, x, y, event) { 
 			if(element instanceof easygraphics.GraphicalElement) {
 				console.log('A graphical element was selected.');
@@ -45,6 +49,10 @@
 					originalY2Position = element.y2;
 					originalWidth = element.width;
 					originalHeight = element.height;
+					clickedX = x;
+					clickedY = y;
+					firstWidth = selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width;
+					firstHeight = selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height;
 				}
 				relativeXPosition = x - element.x1;
 				relativeYPosition = y - element.y1;
@@ -59,15 +67,21 @@
 				if(null !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) && undefined !== selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX)) {
 					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
 						selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.TOP_RIGHT) {
-						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth + x - relativeXPosition;
+						//selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth + x - relativeXPosition;
+						//selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth + clickedX - x;
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = firstWidth - (parseInt(clickedX) - parseInt(x));
+						//console.log("atualizando para : " + (firstWidth - (parseInt(clickedX) - parseInt(x))));
 					}
 					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_RIGHT || 
 						selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.BOTTOM_LEFT) {
-						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height = originalHeight + y - relativeYPosition;
+						//selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height = originalHeight + y - relativeYPosition;
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).height = firstHeight - (parseInt(clickedY) - parseInt(y));
 					}
 					if(selectedElement.getTag(easygraphics.BoxVerticesDecorator.VERTEX) === easygraphics.BoxVerticesDecorator.TOP_LEFT) {
-						//selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = originalWidth - x + relativeXPosition;
-						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).x1 = originalXPosition + (x - relativeXPosition);
+					    if(x < originalXPosition) {
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).moveTo({x: originalXPosition + (x - relativeXPosition)});
+						selectedElement.getTag(easygraphics.GraphicalElement.PARENT).width = firstWidth + (parseInt(clickedX) - parseInt(x));
+						}
 					}
 				} else {
 					selectedElement.moveTo({x: x - relativeXPosition, y: y - relativeYPosition});

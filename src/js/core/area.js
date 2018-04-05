@@ -28,19 +28,28 @@
 'use strict';
 
 import SVGArea from "../svg/svg-area";
+import {error} from "./util";
+import AreaDefaults from "./area-defaults";
 
+/**
+ * This class may be used to return a proper area for an HTML element.
+ */
 export default class Area {
 
     constructor() {
-
     }
 
+    /**
+     * Return a proper area for the HTML element selected by the specified selector.
+     * @param selector The element selector.
+     * @return {AreaDefaults} A proper area.
+     */
     static init(selector = "#area") {
         let name = document.querySelector(selector).tagName;
         if (name.toLowerCase() === "svg") {
             return new SVGArea(selector);
         } else {
-            throw "Invalid area tag type: " + name;
+            error("Invalid area tag type: " + name);
         }
     }
 

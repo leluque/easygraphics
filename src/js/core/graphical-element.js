@@ -317,12 +317,12 @@ export default class GraphicalElement extends Observable {
      */
     set x2(value) {
         if (value === this._x2) return;
-        if (value < this._x1) {
+        if (this._x1 > value) {
             throw "x2 must be greater than x1.";
         }
 
         this.validateMinWidth(value - this._x1);
-        if (this.preserveAspectRatio === true) {
+        if (true === this.preserveAspectRatio) {
             let aspectRatio = this.height / this.width;
             let newWidth = (value - this._x1);
             this.validateMinHeight(aspectRatio * newWidth);

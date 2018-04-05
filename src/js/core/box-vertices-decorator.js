@@ -100,14 +100,6 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         return 0 === this._propagateToDecorated;
     }
 
-    enablePropagationToDecorated() {
-        this._propagateToDecorated--;
-    }
-
-    disablePropagationToDecorated() {
-        this._propagateToDecorated++;
-    }
-
     get vertexSize() {
         return this._vertexSize;
     }
@@ -219,7 +211,6 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this.decorated.width = value;
     }
 
-
     get height() {
         return this.decorated.height;
     }
@@ -227,7 +218,6 @@ export default class BoxVerticesDecorator extends GraphicalElement {
     set height(value) {
         this.decorated.height = value;
     }
-
 
     get minHeight() {
         return this.decorated.minHeight;
@@ -237,17 +227,41 @@ export default class BoxVerticesDecorator extends GraphicalElement {
         this.decorated.minHeight = value;
     }
 
-/*    get y2() {
-        return this.decorated.y2;
+    get minWidth() {
+        return this.decorated.minWidth;
     }
 
-    set y2(value) {
-        this.decorated.y2 = value;
+    set minWidth(value) {
+        this.decorated.minWidth = value;
     }
 
-    getAbsY2() {
-        return this.decorated.getAbsY2();
-    }*/
+    /*    get y2() {
+            return this.decorated.y2;
+        }
+
+        set y2(value) {
+            this.decorated.y2 = value;
+        }
+
+        getAbsY2() {
+            return this.decorated.getAbsY2();
+        }*/
+
+    get x2() {
+        return this.decorated.x2;
+    }
+
+    set x2(value) {
+        this.decorated.x2 = value;
+    }
+
+    enablePropagationToDecorated() {
+        this._propagateToDecorated--;
+    }
+
+    disablePropagationToDecorated() {
+        this._propagateToDecorated++;
+    }
 
     resizeTo({width, w, height, h} = {}) {
         this.decorated.resizeTo({width, w, height, h});
@@ -255,14 +269,6 @@ export default class BoxVerticesDecorator extends GraphicalElement {
 
     widthToFit(boundingBox) {
         return this.decorated.widthToFit(boundingBox);
-    }
-
-    get minWidth() {
-        return this.decorated.minWidth;
-    }
-
-    set minWidth(value) {
-        this.decorated.minWidth = value;
     }
 
     changeX2(value) {
@@ -295,14 +301,6 @@ export default class BoxVerticesDecorator extends GraphicalElement {
 
     heightToFit(boundingBox) {
         return this.decorated.heightToFit(boundingBox);
-    }
-
-    get x2() {
-        return this.decorated.x2;
-    }
-
-    set x2(value) {
-        this.decorated.x2 = value;
     }
 
     getAbsX2() {
