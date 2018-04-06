@@ -2409,6 +2409,7 @@ var BoxVerticesDecorator = function (_GraphicalElement) {
         },
         set: function set(value) {
             this.decorated.height = value;
+            console.log("Changing height to " + value);
         }
     }, {
         key: "minHeight",
@@ -4004,6 +4005,7 @@ var Ellipse = function (_GraphicalElement) {
             return _get(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'height', this);
         },
         set: function set(value) {
+            console.log("Changing ELLIPSE height to " + value);
             this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
             _set(Ellipse.prototype.__proto__ || Object.getPrototypeOf(Ellipse.prototype), 'height', value, this);
             this.enableChangeNotifications();
@@ -6016,7 +6018,7 @@ var VerticalGroup = function (_GraphicalElement) {
             }
             if (value < this.minWidth) {
                 (0, _util.warning)("The new width must be greater than minWidth. Nothing to change. Id: " + this.id + ".");
-                return;
+                value = this.minWidth;
             }
             // Check whether the new width has a valid value.
             // If the content can be hidden, any value greater than zero (0) is valid. Otherwise, some verification
@@ -6109,7 +6111,7 @@ var VerticalGroup = function (_GraphicalElement) {
             }
             if (value < this.minHeight) {
                 (0, _util.warning)("The new height must be greater than minHeight. Nothing to change. Id: " + this.id + ".");
-                return;
+                value = this.minHeight;
             }
             // Check whether the new height has a valid value.
             // If the content can be hidden, any value greater than zero (0) is valid. Otherwise, some verification
@@ -10031,9 +10033,9 @@ var DefaultBoxVerticesDecoratorDrawer = function (_DefaultDrawer) {
                 decorated.notifyListeners(_changeListenerConstants2.default.POSITION);
 
                 //*****************************
-                // Remove the decorated listener related to position, dimension, and rotation.
+                // Remove the decorated listener related to position and rotation.
                 // These events will be handled by the decorator group.
-                decorated.removeChangeListenerByType(_changeListenerConstants2.default.POSITION, _changeListenerConstants2.default.DIMENSION, _changeListenerConstants2.default.ROTATION);
+                decorated.removeChangeListenerByType(_changeListenerConstants2.default.POSITION, _changeListenerConstants2.default.ROTATION);
                 decorated.addChangeListener(new _boxVerticesDecoratorDecoratedPositionChangeListener2.default(boxVerticesDecorator));
                 decorated.addChangeListener(new _boxVerticesDecoratorDecoratedRotationChangeListener2.default(boxVerticesDecorator));
                 decorated.addChangeListener(new _boxVerticesDecoratorDecoratedDimensionChangeListener2.default(boxVerticesDecorator));

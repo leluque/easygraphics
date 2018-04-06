@@ -551,7 +551,7 @@ export default class VerticalGroup extends GraphicalElement {
         }
         if (value < this.minWidth) {
             warning("The new width must be greater than minWidth. Nothing to change. Id: " + this.id + ".");
-            return;
+            value = this.minWidth;
         }
         // Check whether the new width has a valid value.
         // If the content can be hidden, any value greater than zero (0) is valid. Otherwise, some verification
@@ -642,7 +642,7 @@ export default class VerticalGroup extends GraphicalElement {
         }
         if (value < this.minHeight) {
             warning("The new height must be greater than minHeight. Nothing to change. Id: " + this.id + ".");
-            return;
+            value = this.minHeight;
         }
         // Check whether the new height has a valid value.
         // If the content can be hidden, any value greater than zero (0) is valid. Otherwise, some verification

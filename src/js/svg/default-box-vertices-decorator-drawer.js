@@ -76,9 +76,9 @@ export default class DefaultBoxVerticesDecoratorDrawer extends DefaultDrawer {
             decorated.notifyListeners(ChangeListenerConstants.POSITION);
 
             //*****************************
-            // Remove the decorated listener related to position, dimension, and rotation.
+            // Remove the decorated listener related to position and rotation.
             // These events will be handled by the decorator group.
-            decorated.removeChangeListenerByType(ChangeListenerConstants.POSITION, ChangeListenerConstants.DIMENSION, ChangeListenerConstants.ROTATION);
+            decorated.removeChangeListenerByType(ChangeListenerConstants.POSITION, ChangeListenerConstants.ROTATION);
             decorated.addChangeListener(new BoxVerticesDecoratorDecoratedPositionChangeListener(boxVerticesDecorator));
             decorated.addChangeListener(new BoxVerticesDecoratorDecoratedRotationChangeListener(boxVerticesDecorator));
             decorated.addChangeListener(new BoxVerticesDecoratorDecoratedDimensionChangeListener(boxVerticesDecorator));

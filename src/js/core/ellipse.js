@@ -134,6 +134,7 @@ export default class Ellipse extends GraphicalElement {
     }
 
     set height(value) {
+        console.log("Changing ELLIPSE height to " + value);
         this.disableChangeNotifications(); // Avoid unnecessary repeated notifications.
         super.height = value;
         this.enableChangeNotifications();

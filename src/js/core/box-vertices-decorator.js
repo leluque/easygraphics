@@ -217,6 +217,7 @@ export default class BoxVerticesDecorator extends GraphicalElement {
 
     set height(value) {
         this.decorated.height = value;
+        console.log("Changing height to " + value);
     }
 
     get minHeight() {
